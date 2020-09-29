@@ -1,11 +1,13 @@
 import express from 'express';
-import booksService from '../books-service.js';
+import bookData from '../data/books-data.js';
 
 const booksController = express.Router();
 
 booksController
-    .get(() => {
+    .get('/', async (req, res) => {
+        const books = await bookData.getAll();
 
+        res.status(200).send(books);
     })
 
     .get(() => {
