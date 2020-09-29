@@ -36,7 +36,7 @@ CREATE TABLE `ban_status` (
   `description` varchar(45) NOT NULL,
   `expirationDate` date NOT NULL,
   PRIMARY KEY (`idban_status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,12 +47,14 @@ DROP TABLE IF EXISTS `books`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `books` (
-  `books_Id` int(11) NOT NULL AUTO_INCREMENT,
+  `book_Id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(45) NOT NULL,
   `author` varchar(45) NOT NULL,
   `description` varchar(45) NOT NULL,
-  `isBorrowed` tinyint(4) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`books_Id`)
+  `borrowedStatus_Id` int(11) NOT NULL,
+  PRIMARY KEY (`book_Id`),
+  KEY `fk_books_borrowed_status1_idx` (`borrowedStatus_Id`),
+  CONSTRAINT `fk_books_borrowed_status1` FOREIGN KEY (`borrowedStatus_Id`) REFERENCES `status` (`status_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -70,8 +72,22 @@ CREATE TABLE `reviews` (
   `book_Id` int(11) NOT NULL,
   PRIMARY KEY (`review_Id`),
   KEY `fk_reviews_books1_idx` (`book_Id`),
-  CONSTRAINT `fk_reviews_books1` FOREIGN KEY (`book_Id`) REFERENCES `books` (`books_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_reviews_books1` FOREIGN KEY (`book_Id`) REFERENCES `books` (`book_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `status`
+--
+
+DROP TABLE IF EXISTS `status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `status` (
+  `status_Id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(45) NOT NULL,
+  PRIMARY KEY (`status_Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +106,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_Id`),
   KEY `fk_users_ban_status_idx` (`banStatus_Id`),
   CONSTRAINT `fk_users_ban_status` FOREIGN KEY (`banStatus_Id`) REFERENCES `ban_status` (`idban_status`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -102,4 +118,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-28 23:38:05
+-- Dump completed on 2020-09-29 23:42:23
