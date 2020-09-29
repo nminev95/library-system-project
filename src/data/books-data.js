@@ -2,24 +2,29 @@ import pool from './pool.js';
 
 const getAll = async () => {
     const sql = `
-            SELECT 
-                b.books_Id as Id,
-                b.title As Title,
-                b.author AS Author,
-                b.description AS Description,
-            GROUP_CONCAT('id:', r.review_Id,', ','review:',' ', r.content SEPARATOR '; ') AS Reviews,
-            s.type As Status
-            FROM 
-                books b,
-                reviews r,
-                status s
-            WHERE
-                b.books_Id = r.book_Id;
-            `;
+        SELECT
+            b.book_Id AS id,
+            b.title AS Title, 
+            b.author AS Author, 
+            b.description as 'Description', 
+            group_concat('id:', r.review_Id,', ','review:',' ', r.content SEPARATOR '; ') as Reviews, 
+            s.type as Status 
+        from    
+            books b
+        left join 
+            reviews r
+        on 
+            b.book_Id = r.book_Id
+        join 
+            status s
+        on 
+            s.status_Id = b.borrowedStatus_Id
+        GROUP BY
+            b.book_Id
+        `;
 
     return await pool.query(sql);
 };
-
 
 const getBy = async () => {
 
