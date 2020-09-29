@@ -4,7 +4,7 @@ const getAll = async () => {
 
 };
 
-const checkForUsername = async (username) => {
+const findUser = async (username) => {
     const sql = `
     SELECT * FROM users 
     WHERE username = '${username}'`;
@@ -26,7 +26,7 @@ const remove = async () => {
 
 export default {
     getAll,
-    checkForUsername,
+    findUser,
     create,
     update,
     remove,
