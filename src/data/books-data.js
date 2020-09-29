@@ -7,11 +7,12 @@ const getAll = async () => {
                 b.title As Title,
                 b.author AS Author,
                 b.description AS Description,
-                b.isBorrowed AS isBorrowed,
-            GROUP_CONCAT('id:', r.review_Id,', ','review:',' ', r.content SEPARATOR '; ') AS Reviews
+            GROUP_CONCAT('id:', r.review_Id,', ','review:',' ', r.content SEPARATOR '; ') AS Reviews,
+            s.type As Status
             FROM 
                 books b,
-                reviews r
+                reviews r,
+                status s
             WHERE
                 b.books_Id = r.book_Id;
             `;

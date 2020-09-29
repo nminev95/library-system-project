@@ -10,5 +10,6 @@ const PORT = 3000;
 app.use(cors(), bodyParser.json());
 
 app.use('/books', booksController);
+app.use('/users', usersController);
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
