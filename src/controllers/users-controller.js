@@ -30,13 +30,13 @@ usersController
             if (!loggedUser) {
                 res.status(400).json({ message: 'Password is incorrect!' });
             }
-            res.status(200).send(loggedUser);
+            res.status(200).json(loggedUser);
         } catch (err) {
-            res.status(404).send({ message: err });
+            res.status(404).json({ message: err });
         }
     })
     .post('/logout', async (req, res) => {
-        res.status(200).send({ message: 'You have logged out! ' });
+        res.status(200).json({ message: 'You have logged out! ' });
     })
     .delete(() => {
 
