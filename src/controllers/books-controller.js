@@ -30,25 +30,34 @@ booksController
     .post('/:id/reviews', async (req, res) => {
         const review = Object.values(req.body).join('');
         const id = req.params.id;
-        
+
         const result = await booksService.createReview(review, id);
 
         res.status(201).json({ message: 'Review successfully submitted!' });
     })
-    .put('/:id/reviews/:reviewId', async (req, res) => {
-        const review = Object.values(req.body).join('');
-        const id = req.params.id;
+    .put('/:id', async (req, res) => {
+        const  id  = req.params.id;
 
-        const result = await booksService.updateBookReview(review, id);
+        const book = await booksService.getBookById(+id);
+        console.log(book);
 
-        res.status(201).json({ message: 'Review successfully updated!'});
+        if (!book) {
+            return null;
+        }
+        if (book.Status === 1 || book.Status === 2) {
+            return res.status(400).send({ message: 'The book is not available' });
+        }
+        const updatedBook = await booksService.updateBookStatus(+id);
+
+        if (!updatedBook) {
+            res.status(404).send({ message: 'Book not found!' });
+        } else {
+            res.status(200).send(updatedBook);
+        }
     })
-    .delete('/:id/reviews/:reviewId', async (req, res) => {
-        const id = req.params.reviewId;
 
-        const result = await booksService.removeReview(id);
+    .put(() => {
 
-        res.status(200).json({ message: 'Review successfully deleted!'});
     });
 
 export default booksController;

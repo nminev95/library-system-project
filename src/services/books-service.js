@@ -16,19 +16,16 @@ const createReview = async (content, id) => {
     return await booksData.pushReview(content, id);
 };
 
-const updateBookReview = async (content, id) => {
-    return await booksData.updateReview(content, id);
-};
-
-const removeReview = async (id) => {
-    return await booksData.deleteReview(id);
-};
+const updateBookStatus = async (id) => {
+return await booksData.updateBook(id);
+  
+    
+  };
 
 export default {
     getAllBooks,
     getBookById,
     getBookReviews,
     createReview,
-    updateBookReview,
-    removeReview,
+    updateBookStatus,
 };

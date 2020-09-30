@@ -98,7 +98,14 @@ const pushReview = async (content, id) => {
 
     return await pool.query(sql, [content, id]);
 };
-
+const updateBook = async (id) => {
+    const sql = `
+        UPDATE books SET
+          borrowedStatus_Id = ?
+        WHERE book_Id = ?
+    `;
+    return await pool.query(sql, [1, id]);
+};
 const updateReview = async (content, id) => {
     const sql = `
         UPDATE reviews SET
@@ -127,6 +134,7 @@ export default {
     getById,
     searchBy,
     pushReview,
+    updateBook,
     updateReview,
     deleteReview,
 };
