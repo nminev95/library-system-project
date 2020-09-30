@@ -1,7 +1,9 @@
 import booksData from '../data/books-data.js';
 
-const getAllBooks = async () => {
-    return await booksData.getAll();
+const getAllBooks = async (filter) => {
+    return filter
+    ? await booksData.searchBy('title', filter)
+    : await booksData.getAll();
 };
 
 const getBookById = async (id) => await booksData.getById('id', id);
@@ -11,24 +13,8 @@ const getBookReviews =  async (id) => {
 };
 
 
-//Admin functionalities
-const createBook = async () => {
-
-};
-
-const deleteBook = async () => {
-
-};
-
-const updateBook = async () => {
-
-};
-
 export default {
     getAllBooks,
     getBookById,
     getBookReviews,
-    createBook,
-    deleteBook,
-    updateBook,
 };

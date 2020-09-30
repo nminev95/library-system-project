@@ -5,7 +5,8 @@ const booksController = express.Router();
 
 booksController
     .get('/', async (req, res) => {
-        const books = await booksService.getAllBooks();
+        const { search } = req.query;
+        const books = await booksService.getAllBooks(search);
 
         res.status(200).json(books);
     })
@@ -27,10 +28,6 @@ booksController
         res.status(200).json(reviews);
     })
     .put(() => {
-
-    })
-
-    .post(() => {
 
     })
 
