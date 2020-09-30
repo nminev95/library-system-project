@@ -89,10 +89,20 @@ const searchBy = async (column, value) => {
     return await pool.query(sql);
 };
 
+const pushReview = async (content, id) => {
+    const sql = `
+        INSERT INTO
+            reviews(content, isDeleted, book_Id) 
+        VALUES
+            (?, '0', ?)`;
+
+    return await pool.query(sql, [content, id]);
+}
 
 export default {
     getAll,
     getReviews,
     getById,
     searchBy,
+    pushReview,
 };

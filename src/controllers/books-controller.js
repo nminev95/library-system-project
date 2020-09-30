@@ -27,6 +27,14 @@ booksController
 
         res.status(200).json(reviews);
     })
+    .post('/:id/reviews', async (req, res) => {
+        const review = Object.values(req.body).join('');
+        const id = req.params.id
+        
+        const result = await booksService.createReview(review, id);
+
+        res.status(201).json({ message: 'Review successfully submitted!' });
+    })
     .put(() => {
 
     })

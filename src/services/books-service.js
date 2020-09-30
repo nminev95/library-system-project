@@ -12,9 +12,14 @@ const getBookReviews =  async (id) => {
     return await booksData.getReviews(id);
 };
 
+const createReview = async (content, id) => {
+    return await booksData.pushReview(content, id)
+}
+
 
 export default {
     getAllBooks,
     getBookById,
     getBookReviews,
+    createReview
 };
