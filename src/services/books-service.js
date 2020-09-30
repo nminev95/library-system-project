@@ -1,13 +1,13 @@
 import booksData from '../data/books-data.js';
 
 const getAllBooks = async () => {
-     await booksData.getAll();
+    return await booksData.getAll();
 };
 
 const getBookById = async (id) => await booksData.getById('id', id);
 
 const getBookReviews =  async() => {
-    await booksData.getReviews();
+    return await booksData.getReviews();
 };
 
 
