@@ -26,7 +26,7 @@ const getAll = async () => {
     return await pool.query(sql);
 };
 
-const getById = async (value) => {
+const getById = async (column, value) => {
     const sql = `
         SELECT
             b.book_Id AS id,

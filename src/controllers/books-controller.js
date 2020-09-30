@@ -22,7 +22,7 @@ booksController
     })
     .get('/:id/reviews', async (req, res) => {
         const { id } = req.params;
-        const reviews = await booksService.getReviews(+id); //
+        const reviews = await booksService.getBookReviews(+id); //
 
         res.status(200).json(reviews);
     })

@@ -6,8 +6,8 @@ const getAllBooks = async () => {
 
 const getBookById = async (id) => await booksData.getById('id', id);
 
-const getBookReviews =  async() => {
-    return await booksData.getReviews();
+const getBookReviews =  async (id) => {
+    return await booksData.getReviews(id);
 };
 
 
