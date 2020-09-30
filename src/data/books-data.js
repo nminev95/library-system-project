@@ -97,7 +97,16 @@ const pushReview = async (content, id) => {
             (?, '0', ?)`;
 
     return await pool.query(sql, [content, id]);
-}
+};
+const updateBook = async (id) => {
+    const sql = `
+        UPDATE books SET
+          borrowedStatus_Id = ?
+        WHERE book_Id = ?
+    `;
+
+    return await pool.query(sql, [1, id]);
+};
 
 export default {
     getAll,
@@ -105,4 +114,5 @@ export default {
     getById,
     searchBy,
     pushReview,
+    updateBook,
 };
