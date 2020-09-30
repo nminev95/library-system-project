@@ -13,13 +13,17 @@ const getBookReviews =  async (id) => {
 };
 
 const createReview = async (content, id) => {
-    return await booksData.pushReview(content, id)
-}
+    return await booksData.pushReview(content, id);
+};
 
+const updateBookReview = async (content, id) => {
+    return await booksData.updateReview(content, id);
+};
 
 export default {
     getAllBooks,
     getBookById,
     getBookReviews,
-    createReview
+    createReview,
+    updateBookReview,
 };

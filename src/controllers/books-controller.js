@@ -1,4 +1,5 @@
 import express from 'express';
+import booksData from '../data/books-data.js';
 import booksService from '../services/books-service.js';
 
 const booksController = express.Router();
@@ -29,16 +30,20 @@ booksController
     })
     .post('/:id/reviews', async (req, res) => {
         const review = Object.values(req.body).join('');
-        const id = req.params.id
+        const id = req.params.id;
         
         const result = await booksService.createReview(review, id);
 
         res.status(201).json({ message: 'Review successfully submitted!' });
     })
-    .put(() => {
+    .put('/:id/reviews/:reviewId', async (req, res) => {
+        const review = Object.values(req.body).join('');
+        const id = req.params.id;
 
+        const result = await booksService.updateBookReview(review, id);
+
+        res.status(201).json({ message: 'Review successfully updated!'});
     })
-
     .delete(() => {
 
     });
