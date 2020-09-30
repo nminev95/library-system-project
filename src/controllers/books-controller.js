@@ -1,5 +1,4 @@
 import express from 'express';
-import booksData from '../data/books-data.js';
 import booksService from '../services/books-service.js';
 
 const booksController = express.Router();
@@ -44,8 +43,12 @@ booksController
 
         res.status(201).json({ message: 'Review successfully updated!'});
     })
-    .delete(() => {
+    .delete('/:id/reviews/:reviewId', async (req, res) => {
+        const id = req.params.reviewId;
 
+        const result = await booksService.removeReview(id);
+
+        res.status(200).json({ message: 'Review successfully deleted!'});
     });
 
 export default booksController;

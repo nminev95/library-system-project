@@ -110,6 +110,17 @@ const updateReview = async (content, id) => {
     return await pool.query(sql, [content, id]);
 };
 
+const deleteReview = async (id) => {
+    const sql = `
+        UPDATE reviews SET
+            isDeleted = ? 
+        WHERE 
+            review_Id = ?
+        `;
+
+    return await pool.query(sql, [1, id]);
+};
+
 export default {
     getAll,
     getReviews,
@@ -117,4 +128,5 @@ export default {
     searchBy,
     pushReview,
     updateReview,
+    deleteReview,
 };

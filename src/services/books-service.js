@@ -20,10 +20,15 @@ const updateBookReview = async (content, id) => {
     return await booksData.updateReview(content, id);
 };
 
+const removeReview = async (id) => {
+    return await booksData.deleteReview(id);
+};
+
 export default {
     getAllBooks,
     getBookById,
     getBookReviews,
     createReview,
     updateBookReview,
+    removeReview,
 };
