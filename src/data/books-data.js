@@ -1,6 +1,6 @@
 import pool from './pool.js';
 
-const getAllBooks = async () => {
+const getAll = async () => {
     const sql = `
         SELECT
             b.book_Id AS id,
@@ -52,7 +52,7 @@ const getById = async (value) => {
     return await pool.query(sql);
 };
 
-const getBookReviews = async (value) => {
+const getReviews = async (value) => {
     const sql = `
         SELECT 
             review_Id as review_id, 
@@ -67,6 +67,8 @@ const getBookReviews = async (value) => {
 const searchBy = async () => {
 
 };
+
+//Admin functionalities 
 const create = async () => {
 
 };
@@ -82,8 +84,8 @@ const remove = async () => {
 
 
 export default {
-    getAllBooks,
-    getBookReviews,
+    getAll,
+    getReviews,
     searchBy,
     getById,
     create,
