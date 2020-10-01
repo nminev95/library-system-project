@@ -36,7 +36,7 @@ booksController
         res.status(201).json({ message: 'Review successfully submitted!' });
     })
     .put('/:id', async (req, res) => {
-        const  id  = req.params.id;
+        const id = req.params.id;
 
         const book = await booksService.getBookById(+id);
         console.log(book);
@@ -47,7 +47,7 @@ booksController
         if (book.Status === 1 || book.Status === 2) {
             return res.status(400).send({ message: 'The book is not available' });
         }
-        const updatedBook = await booksService.updateBookStatus(+id);
+        const updatedBook = await booksService.borrowABook(+id);
 
         if (!updatedBook) {
             res.status(404).send({ message: 'Book not found!' });
@@ -56,8 +56,25 @@ booksController
         }
     })
 
-    .put(() => {
+    .put('/:id', async (req, res) => {
+        const id = req.params.id;
 
+        const book = await booksService.getBookById(+id);
+        console.log(book);
+
+        if (!book) {
+            return null;
+        }
+        if (book.Status === 1 && book.Borrower === +id) {
+            const updatedBook = await booksService.returnABook(+id);
+
+            if (!updatedBook) {
+                res.status(404).send({ message: 'Book not found!' });
+            } else {
+                res.status(200).send(updatedBook);
+            }
+        }
     });
+
 
 export default booksController;

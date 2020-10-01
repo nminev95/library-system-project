@@ -33,6 +33,7 @@ const getById = async (column, value) => {
             b.title AS Title, 
             b.author AS Author, 
             b.description as 'Description', 
+            b.borrower_Id as 'Borrower',
             group_concat('id:', r.review_Id,', ','review:',' ', r.content SEPARATOR '; ') as Reviews, 
             s.type as Status 
         from    
@@ -98,14 +99,37 @@ const pushReview = async (content, id) => {
 
     return await pool.query(sql, [content, id]);
 };
-const updateBook = async (id) => {
+const updateBookStatusToBorrowed = async (id, username) => {
     const sql = `
         UPDATE books SET
-          borrowedStatus_Id = ?
+          borrowedStatus_Id = ?,
+          borrower_Id = ?
         WHERE book_Id = ?
     `;
-    return await pool.query(sql, [1, id]);
+    return await pool.query(sql, [1, username, id]);
 };
+
+const updateBookStatusToFree = async (id) => {
+    const sql = `
+        UPDATE books SET
+          borrowedStatus_Id = ?,
+          borrower_Id = ?
+        WHERE book_Id = ?
+    `;
+    return await pool.query(sql, [3, 0, id]);
+};
+
+const saveBookIdToUserHistory = async (id) => {
+    const sql = `
+       INSERT INTO
+          user_history (book_id)
+       VALUES 
+        (?)`;
+
+    return await pool.query(sql[id]);
+};
+
+
 const updateReview = async (content, id) => {
     const sql = `
         UPDATE reviews SET
@@ -116,6 +140,8 @@ const updateReview = async (content, id) => {
 
     return await pool.query(sql, [content, id]);
 };
+
+
 
 const deleteReview = async (id) => {
     const sql = `
@@ -134,7 +160,9 @@ export default {
     getById,
     searchBy,
     pushReview,
-    updateBook,
+    updateBookStatusToBorrowed,
+    updateBookStatusToFree,
+    saveBookIdToUserHistory,
     updateReview,
     deleteReview,
 };
