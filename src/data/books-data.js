@@ -2,83 +2,55 @@ import pool from './pool.js';
 
 const getAll = async () => {
     const sql = `
-    SELECT
-    b.book_Id AS id,
-    b.title AS Title, 
-    b.author AS Author, 
-    b.description as 'Description',
-    s.type as Status,
-    r.review_Id as Review_Id,
-    r.content as Review
-    from books b
-    left join reviews r
-    on 
-b.book_Id = r.book_Id
-join 
-    status s
-on 
-    s.status_Id = b.borrowedStatus_Id;
+        SELECT
+            b.book_Id AS id,
+            b.title AS Title, 
+            b.author AS Author, 
+            b.description as 'Description',
+            s.type as Status,
+            r.review_Id as Review_Id,
+            r.content as Review
+        from 
+            books b
+        left join 
+            reviews r
+        on 
+            b.book_Id = r.book_Id
+        join 
+            status s
+        on 
+            s.status_Id = b.borrowedStatus_Id;
         `;
 
-    const data = await pool.query(sql);
-    const map = new Map();
-
-    for (const book of data) {
-        const { id, Title, Author, Description, Status, Review_Id, Review } = book;
-        if (!map.get(id)) {
-            map.set(id, {
-                id, Title, Author, Description, Status, Reviews: [],
-            });
-        }
-        const reviewObject = {
-            id: Review_Id,
-            review: Review,
-        };
-        map.get(id).Reviews.push(reviewObject);
-    }
-    console.log([...map.values()]);
-    return [...map.values()];
+    return await pool.query(sql);
 };
 
 const getById = async (column, value) => {
     const sql = `
-    SELECT
-    b.book_Id AS id,
-    b.title AS Title, 
-    b.author AS Author, 
-    b.description as 'Description',
-    s.type as Status,
-    r.review_Id as Review_Id,
-    r.content as Review
-    from books b
-    left join reviews r
-    on 
-b.book_Id = r.book_Id
-join 
-    status s
-on 
-    s.status_Id = b.borrowedStatus_Id
-    WHERE b.book_Id = ${value};
+        SELECT
+            b.book_Id AS id,
+            b.title AS Title, 
+            b.author AS Author, 
+            b.description as 'Description',
+            s.type as Status,
+            r.review_Id as Review_Id,
+            r.content as Review
+        from 
+            books b
+        left join 
+            reviews r
+        on 
+            b.book_Id = r.book_Id
+        join 
+            status s
+        on 
+            s.status_Id = b.borrowedStatus_Id
+        WHERE 
+            b.book_Id = ${value};
         `;
 
-    const data = await pool.query(sql);
-    const map = new Map();
+    return await pool.query(sql);
 
-    for (const book of data) {
-        const { id, Title, Author, Description, Status, Review_Id, Review } = book;
-        if (!map.get(id)) {
-            map.set(id, {
-                id, Title, Author, Description, Status, Reviews: [],
-            });
-        }
-        const reviewObject = {
-            id: Review_Id,
-            review: Review,
-        };
-        map.get(id).Reviews.push(reviewObject);
-    }
-    console.log([...map.values()]);
-    return [...map.values()];
 };
 
 const getReviews = async (value) => {
@@ -87,51 +59,42 @@ const getReviews = async (value) => {
             review_Id as review_id, 
             content as Review 
         from 
-        Reviews WHERE book_Id = ${value}
+            Reviews 
+        WHERE 
+            book_Id = ?;
         `;
 
-    return await pool.query(sql);
+    return await pool.query(sql, [value]);
 };
 
 const searchBy = async (column, value) => {
     const sql = `
-    SELECT
-    b.book_Id AS id,
-    b.title AS Title, 
-    b.author AS Author, 
-    b.description as 'Description',
-    s.type as Status,
-    r.review_Id as Review_Id,
-    r.content as Review
-    from books b
-    left join reviews r
-    on 
-b.book_Id = r.book_Id
-join 
-    status s
-on 
-    s.status_Id = b.borrowedStatus_Id
-    WHERE ${column} LIKE '%${value}%' ;
+        SELECT
+            b.book_Id AS id,
+            b.title AS Title, 
+            b.author AS Author, 
+            b.description as 'Description',
+            s.type as Status,
+            r.review_Id as Review_Id,
+            r.content as Review
+        from 
+            books b
+        left join 
+            reviews r
+        on 
+            b.book_Id = r.book_Id
+        join 
+            status s
+        on 
+            status_Id = b.borrowedStatus_Id
+        WHERE 
+            ${column} 
+        LIKE 
+            '%${value}%';
         `;
 
-    const data = await pool.query(sql);
-    const map = new Map();
+    return await pool.query(sql);
 
-    for (const book of data) {
-        const { id, Title, Author, Description, Status, Review_Id, Review } = book;
-        if (!map.get(id)) {
-            map.set(id, {
-                id, Title, Author, Description, Status, Reviews: [],
-            });
-        }
-        const reviewObject = {
-            id: Review_Id,
-            review: Review,
-        };
-        map.get(id).Reviews.push(reviewObject);
-    }
-    console.log([...map.values()]);
-    return [...map.values()];
 };
 
 const pushReview = async (content, id) => {

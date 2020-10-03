@@ -3,9 +3,13 @@ import booksData from '../data/books-data.js';
 
 const getAllBooks = booksData => {
     return async (queryType, filter) => {
-        return filter
-            ? await booksData.searchBy(queryType, filter)
-            : await booksData.getAll();
+
+        if (filter) {
+            const books = await booksData.searchBy(queryType, filter);
+            return mapReviews(books);
+        }
+        const books = await booksData.getAll();
+        return mapReviews(books);
     };
 };
 
@@ -20,7 +24,7 @@ const getBookById = booksData => {
             };
         }
 
-        return { error: null, book: book };
+        return { error: null, book: mapReviews(book) };
     };
 };
 const getBookReviews = async (id) => {
@@ -31,6 +35,30 @@ const createReview = async (content, id) => {
     return await booksData.pushReview(content, id);
 };
 
+const mapReviews = (data) => {
+    const map = new Map();
+
+    for (const book of data) {
+        const { id, Title, Author, Description, Status, Review_Id, Review } = book;
+        if (!map.get(id)) {
+            map.set(id, {
+                id, Title, Author, Description, Status, Reviews: [],
+            });
+        }
+        const reviewObject = {
+            id: Review_Id,
+            review: Review,
+        };
+        if (reviewObject.id) {
+        map.get(id).Reviews.push(reviewObject);
+        } else {
+            map.set(id, {
+                id, Title, Author, Description, Status, Reviews: 'No reviews for this book yet.',
+            });
+        }
+    }
+    return [...map.values()];
+};
 // const borrowABook = async (id) => {
 //     return await booksData.updateBookStatusToBorrowed(id);
 
