@@ -72,6 +72,27 @@ const searchBy = async (column, value) => {
     return await pool.query(sql);
 };
 
+const getBook = async (id) => {
+    const sql = `
+        SELECT * 
+        FROM books 
+        WHERE book_Id = ?
+    `;
+
+    return await pool.query(sql, [id]);
+};
+
+const updateBookInfo = async (column, value, id) => {
+    const sql = `
+    UPDATE books 
+    SET 
+        ${column} = '${value}'
+    WHERE
+        book_Id = ${id};
+    `;
+    return await pool.query(sql);
+};
+
 export default {
     getAll,
     getBy,
@@ -79,4 +100,6 @@ export default {
     searchBy,
     insertBook,
     findBook,
+    getBook,
+    updateBookInfo,
 };
