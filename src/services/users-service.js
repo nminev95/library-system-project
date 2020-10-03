@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import serviceErrors from './service-errors.js';
 import bcrypt from 'bcrypt';
-import { DEFAULT_USER_ROLE } from './../config.js';
+import jwt from 'jsonwebtoken';
+import { PRIVATE_KEY, DEFAULT_USER_ROLE } from './../config.js';
 
 const signInUser = usersData => {
     return async (username, password) => {
@@ -18,29 +19,6 @@ const signInUser = usersData => {
             error: null,
             user: user,
         };
-    };
-};
-
-const getAllUsers = usersData => {
-    return async (filter) => {
-        return filter
-            ? await usersData.searchBy('username', filter)
-            : await usersData.getAll();
-    };
-};
-
-const getUserById = usersData => {
-    return async (id) => {
-        const user = await usersData.getBy('user_Id', id);
-
-        if (!user) {
-            return {
-                error: serviceErrors.RECORD_NOT_FOUND,
-                user: null,
-            };
-        }
-
-        return { error: null, user: user };
     };
 };
 
@@ -66,7 +44,7 @@ const createUser = usersData => {
 
 const updateUser = usersData => {
     return async (id, userUpdate) => {
-        const user = await usersData.getBy('id', id);
+        const user = await usersData.getBy('user_Id', id);
         if (!user) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
@@ -88,27 +66,16 @@ const updateUser = usersData => {
     };
 };
 
-const deleteUser = usersData => {
-    return async (id) => {
-        const userToDelete = await usersData.getBy('id', id);
-        if (!userToDelete) {
-            return {
-                error: serviceErrors.RECORD_NOT_FOUND,
-                user: null,
-            };
-        }
 
-        const _ = await usersData.remove(userToDelete);
-
-        return { error: null, user: userToDelete };
-    };
+const getLoggedUserId = (request) => {
+    const requestAuthArray = request.headers.authorization.split(' ');
+    const decoded = jwt.verify(requestAuthArray[1], PRIVATE_KEY);
+    return decoded.sub;
 };
 
 export default {
     signInUser,
-    getAllUsers,
-    getUserById,
     createUser,
     updateUser,
-    deleteUser,
+    getLoggedUserId,
 };

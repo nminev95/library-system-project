@@ -17,16 +17,17 @@ authController
             });
         } else {
             const payload = {
-                sub: user.id,
+                sub: user.user_Id,
                 username: user.username,
                 role: user.role,
             };
             const token = createToken(payload);
-
+        
             res.status(200).send({
                 token: token,
             });
         }
+        
     });
 
 export default authController;
