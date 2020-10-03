@@ -11,6 +11,7 @@ booksController
         authMiddleware,
         roleMiddleware('user'),
         async (req, res) => {
+            console.log(req.user);
             const query = Object.keys(req.query).join('');
             const value = Object.values(req.query).join('');
 
@@ -53,13 +54,28 @@ booksController
         })
     //post a review
     .post('/:id/reviews', async (req, res) => {
-        const review = Object.values(req.body).join('');
-        const id = req.params.id;
+        authMiddleware,
+            roleMiddleware('user'),
+            async (req, res) => {
+                const { id } = req.params;
+                const { error, reviews } = await booksService.getBookReviews(booksData)(+id);
 
-        const result = await booksService.createReview(review, id);
+                if (error === serviceErrors.RECORD_NOT_FOUND) {
+                    res.status(404).send({ message: 'Book not found or doesn\'t have reviews yet!' });
+                } else {
+                    res.status(200).send(reviews);
+                }
+            };
+        });
+//     const review = Object.values(req.body).join('');
+//     const id = req.params.id;
+
+//     const result = await booksService.createReview(review, id);
 
         res.status(201).json({ message: 'Review successfully submitted!' });
     })
+//     res.status(201).json({ message: 'Review successfully submitted!' });
+// })
 //borrow a book
 .put('/:id', 
 authMiddleware,
