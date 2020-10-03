@@ -71,11 +71,12 @@ const mapReviews = (data) => {
     }
     return [...map.values()];
 };
-// const borrowABook = async (id) => {
-//     return await booksData.updateBookStatusToBorrowed(id);
 
 
-// };
+const borrowABook = async (bookID, userID) => {
+    return await booksData.updateBookStatusToBorrowed(bookID, userID);
+
+};
 
 // const returnABook = async (id) => {
 //     return await booksData.updateBookStatusToFree(id);
@@ -86,6 +87,6 @@ export default {
     getBookById,
     getBookReviews,
     createReview,
-   // borrowABook,
+   borrowABook,
    // returnABook,
 };

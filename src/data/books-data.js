@@ -106,24 +106,24 @@ const pushReview = async (content, id) => {
 
     return await pool.query(sql, [content, id]);
 };
-const updateBookStatusToBorrowed = async (id, username) => {
+const updateBookStatusToBorrowed = async (user_id, book_id ) => {
     const sql = `
         UPDATE books SET
           borrowedStatus_Id = ?,
           borrower_Id = ?
         WHERE book_Id = ?
     `;
-    return await pool.query(sql, [1, username, id]);
+    return await pool.query(sql, [5, user_id, book_id]);
 };
 
-const updateBookStatusToFree = async (id) => {
+const updateBookStatusToFree = async (book_id) => {
     const sql = `
         UPDATE books SET
           borrowedStatus_Id = ?,
           borrower_Id = ?
         WHERE book_Id = ?
     `;
-    return await pool.query(sql, [3, 0, id]);
+    return await pool.query(sql, [3, 0, book_id]);
 };
 
 const saveBookIdToUserHistory = async (id) => {
