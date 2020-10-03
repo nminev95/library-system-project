@@ -28,6 +28,11 @@ authController
             });
         }
         
-    });
+    })
+    .get('/signout', async (req, res) => {
+        req.logout();
+        res.status(200).send({message:'Successfull logout'});
+        res.redirect('/signin');
+      });
 
 export default authController;
