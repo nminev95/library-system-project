@@ -31,7 +31,7 @@ const getAllUsers = usersData => {
 
 const getUserById = usersData => {
     return async (id) => {
-        const user = await usersData.getBy('id', id);
+        const user = await usersData.getBy('user_Id', id);
 
         if (!user) {
             return {

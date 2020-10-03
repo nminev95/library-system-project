@@ -6,5 +6,5 @@ export default {
     /** The requirements do not allow such an operation */
     OPERATION_NOT_PERMITTED: 3,
     /** username/password mismatch */
-    INVALID_SIGNIN: 4  
-}
+    INVALID_SIGNIN: 4,
+};

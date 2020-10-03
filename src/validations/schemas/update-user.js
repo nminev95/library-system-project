@@ -9,5 +9,5 @@ export const updateUserSchema = {
         }
 
         return null;
-    }
-}
+    },
+};

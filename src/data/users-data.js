@@ -48,7 +48,7 @@ const create = async (username, password,email, role) => {
     const sql = `
         INSERT INTO users(username, password, email, role_id)
         VALUES (?,?,?, (SELECT role_id FROM roles WHERE type_of_user = ?))
-    `;
+    `; 
 
     const result = await pool.query(sql, [username, password, email, role]);
     console.log(result);

@@ -5,12 +5,19 @@ import serviceErrors from '../services/service-errors.js';
 const booksController = express.Router();
 
 booksController
-     //get all books
+    //get all books
     .get('/', async (req, res) => {
-        const { search } = req.query;
-        const books = await booksService.getAllBooks(booksData)(search);
+        const query = Object.keys(req.query).join('');
+        const value = Object.values(req.query).join('');
 
-        res.status(200).json(books);
+        if (!req.query.author) {
+            const books = await booksService.getAllBooks(booksData)(query, value);
+            res.status(200).json(books);
+        }
+        if (!req.query.title) {
+            const books = await booksService.getAllBooks(booksData)(query, value);
+            res.status(200).json(books);
+        }
     })
     //get a book by id
     .get('/:id', async (req, res) => {
@@ -39,47 +46,47 @@ booksController
 
         res.status(201).json({ message: 'Review successfully submitted!' });
     });
-    //borrow a book
-    // .put('/:id', async (req, res) => {
-    //     const id = req.params.id;
+//borrow a book
+// .put('/:id', async (req, res) => {
+//     const id = req.params.id;
 
-    //     const book = await booksService.getBookById(+id);
-    //     console.log(book);
+//     const book = await booksService.getBookById(+id);
+//     console.log(book);
 
-    //     if (!book) {
-    //         return null;
-    //     }
-    //     if (book.Status === 1 || book.Status === 2) {
-    //         return res.status(400).send({ message: 'The book is not available' });
-    //     }
-    //     const updatedBook = await booksService.borrowABook(+id);
+//     if (!book) {
+//         return null;
+//     }
+//     if (book.Status === 1 || book.Status === 2) {
+//         return res.status(400).send({ message: 'The book is not available' });
+//     }
+//     const updatedBook = await booksService.borrowABook(+id);
 
-    //     if (!updatedBook) {
-    //         res.status(404).send({ message: 'Book not found!' });
-    //     } else {
-    //         res.status(200).send(updatedBook);
-    //     }
-    // })
-    //return a book 
-    // .put('/:id', async (req, res) => {
-    //     const id = req.params.id;
+//     if (!updatedBook) {
+//         res.status(404).send({ message: 'Book not found!' });
+//     } else {
+//         res.status(200).send(updatedBook);
+//     }
+// })
+//return a book 
+// .put('/:id', async (req, res) => {
+//     const id = req.params.id;
 
-    //     const book = await booksService.getBookById(+id);
-    //     console.log(book);
+//     const book = await booksService.getBookById(+id);
+//     console.log(book);
 
-    //     if (!book) {
-    //         return null;
-    //     }
-    //     if (book.Status === 1 && book.Borrower === +id) {
-    //         const updatedBook = await booksService.returnABook(+id);
+//     if (!book) {
+//         return null;
+//     }
+//     if (book.Status === 1 && book.Borrower === +id) {
+//         const updatedBook = await booksService.returnABook(+id);
 
-    //         if (!updatedBook) {
-    //             res.status(404).send({ message: 'Book not found!' });
-    //         } else {
-    //             res.status(200).send(updatedBook);
-    //         }
-    //     }
-    // });
+//         if (!updatedBook) {
+//             res.status(404).send({ message: 'Book not found!' });
+//         } else {
+//             res.status(200).send(updatedBook);
+//         }
+//     }
+// });
 
 
 export default booksController;

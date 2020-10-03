@@ -2,9 +2,9 @@ import serviceErrors from './service-errors.js';
 import booksData from '../data/books-data.js';
 
 const getAllBooks = booksData => {
-    return async (filter) => {
+    return async (queryType, filter) => {
         return filter
-            ? await booksData.searchBy('title', filter)
+            ? await booksData.searchBy(queryType, filter)
             : await booksData.getAll();
     };
 };
