@@ -2,41 +2,55 @@ import express from 'express';
 import booksData from '../data/books-data.js';
 import booksService from '../services/books-service.js';
 import serviceErrors from '../services/service-errors.js';
+import { authMiddleware, roleMiddleware } from '../auth/auth-middleware.js';
 const booksController = express.Router();
 
 booksController
     //get all books
-    .get('/', async (req, res) => {
-        const query = Object.keys(req.query).join('');
-        const value = Object.values(req.query).join('');
+    .get('/',
+        authMiddleware,
+        roleMiddleware('user'),
+        async (req, res) => {
+            const query = Object.keys(req.query).join('');
+            const value = Object.values(req.query).join('');
 
-        if (!req.query.author) {
-            const books = await booksService.getAllBooks(booksData)(query, value);
-            res.status(200).json(books);
-        }
-        if (!req.query.title) {
-            const books = await booksService.getAllBooks(booksData)(query, value);
-            res.status(200).json(books);
-        }
-    })
+            if (!req.query.author) {
+                const books = await booksService.getAllBooks(booksData)(query, value);
+                res.status(200).json(books);
+            }
+            if (!req.query.title) {
+                const books = await booksService.getAllBooks(booksData)(query, value);
+                res.status(200).json(books);
+            }
+        })
     //get a book by id
-    .get('/:id', async (req, res) => {
-        const { id } = req.params;
-        const { error, book } = await booksService.getBookById(booksData)(+id);
+    .get('/:id',
+        authMiddleware,
+        roleMiddleware('user'),
+        async (req, res) => {
+            const { id } = req.params;
+            const { error, book } = await booksService.getBookById(booksData)(+id);
 
-        if (error === serviceErrors.RECORD_NOT_FOUND) {
-            res.status(404).send({ message: 'Book not found!' });
-        } else {
-            res.status(200).send(book);
-        }
-    })
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'Book not found!' });
+            } else {
+                res.status(200).send(book);
+            }
+        })
     //get all the reviews of a book 
-    .get('/:id/reviews', async (req, res) => {
-        const { id } = req.params;
-        const reviews = await booksService.getBookReviews(+id); //
+    .get('/:id/reviews',
+        authMiddleware,
+        roleMiddleware('user'),
+        async (req, res) => {
+            const { id } = req.params;
+            const { error, reviews } = await booksService.getBookReviews(booksData)(+id);
 
-        res.status(200).json(reviews);
-    })
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'Book not found or doesn\'t have reviews yet!' });
+            } else {
+                res.status(200).send(reviews);
+            }
+        })
     //post a review
     .post('/:id/reviews', async (req, res) => {
         const review = Object.values(req.body).join('');

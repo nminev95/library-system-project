@@ -8,7 +8,7 @@ import adminsData from '../data/admins-data.js';
 const adminsController = express.Router();
 
 adminsController
-    .get('/',
+    .get('/users',
         authMiddleware,
         roleMiddleware('admin'),
         async (req, res) => {

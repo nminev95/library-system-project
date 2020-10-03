@@ -55,8 +55,8 @@ const createBook = adminsData => {
 
         return { error: null, book: { message: 'Book was successfully added to library!'}};
     };
-
 };
+
 
 export default {
     getAllUsers,

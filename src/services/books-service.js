@@ -27,8 +27,20 @@ const getBookById = booksData => {
         return { error: null, book: mapReviews(book) };
     };
 };
-const getBookReviews = async (id) => {
-    return await booksData.getReviews(id);
+
+const getBookReviews = booksData => {
+    return async (id) => {
+        const reviews = await booksData.getReviews(id);
+
+        if (reviews.length === 0) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                reviews: null,
+            };
+        }
+
+        return { error: null, reviews: reviews};
+    };
 };
 
 const createReview = async (content, id) => {
