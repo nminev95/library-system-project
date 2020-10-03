@@ -53,6 +53,7 @@ booksController
             }
         })
     //post a review
+    // eslint-disable-next-line no-unused-vars
     .post('/:id/reviews', async (req, res) => {
         authMiddleware,
             roleMiddleware('user'),
@@ -66,16 +67,7 @@ booksController
                     res.status(200).send(reviews);
                 }
             };
-        });
-//     const review = Object.values(req.body).join('');
-//     const id = req.params.id;
-
-//     const result = await booksService.createReview(review, id);
-
-        res.status(201).json({ message: 'Review successfully submitted!' });
-    })
-//     res.status(201).json({ message: 'Review successfully submitted!' });
-// })
+        })
 //borrow a book
 .put('/:id', 
 authMiddleware,

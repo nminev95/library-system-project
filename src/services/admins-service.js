@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import adminsData from '../data/admins-data.js';
 import serviceErrors from './service-errors.js';
 
@@ -35,6 +36,7 @@ const deleteUser = adminsData => {
             };
         }
 
+       
         const _ = await adminsData.remove(userToDelete);
 
         return { error: null, user: userToDelete };
