@@ -40,8 +40,27 @@ const deleteUser = adminsData => {
     };
 };
 
+const createBook = adminsData => {
+    return async (bookInfo) => {
+        const foundBook = await adminsData.findBook(bookInfo.title, bookInfo.author);
+        
+        if (JSON.stringify(foundBook).length !== 0) {
+            return {
+                error: serviceErrors.DUPLICATE_RECORD,
+                book: null,
+            };
+        }
+
+        const newBook = await adminsData.insertBook(bookInfo.title, bookInfo.author, bookInfo.description);
+
+        return { error: null, book: newBook};
+    };
+
+};
+
 export default {
     getAllUsers,
     getUserById,
     deleteUser,
+    createBook,
 };

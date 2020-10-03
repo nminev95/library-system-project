@@ -31,16 +31,32 @@ adminsController
                 res.status(200).send(user);
             }
         })
-    .delete('/:id', async (req, res) => {
-        const { id } = req.params;
-        const { error, user } = await adminsService.deleteUser(adminsData)(+id);
+    .delete('/:id',
+        authMiddleware,
+        roleMiddleware('admin'),
+        async (req, res) => {
+            const { id } = req.params;
+            const { error, user } = await adminsService.deleteUser(adminsData)(+id);
 
-        if (error === serviceErrors.RECORD_NOT_FOUND) {
-            res.status(404).send({ message: 'User not found!' });
-        } else {
-            res.status(200).send(user);
-        }
-    });
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'User not found!' });
+            } else {
+                res.status(200).send(user);
+            }
+        })
+    .post('/books',
+        authMiddleware,
+        roleMiddleware('admin'),
+        async (req, res) => {
+            const bookInfo = req.body;
+            const { error, book } = await adminsService.createBook(adminsData)(bookInfo);
+
+            if (error === serviceErrors.DUPLICATE_RECORD) {
+                res.status(409).send({ message: 'Book is already in library!' });
+            } else {
+                res.status(201).send(book);
+            }
+        });
 
 
 export default adminsController;

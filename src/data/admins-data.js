@@ -1,13 +1,15 @@
 import pool from './pool.js';
 
-// const createBook = async () => {
-//     const sql = `
-//         INSERT INTO
-//             user_history (book_id)
-//         VALUES 
-//             (?)
-//         `;
-// };
+const insertBook = async (title, author, description) => {
+    const sql = `
+        INSERT INTO
+            books (title, author, description)
+        VALUES 
+            (?, ?, ?)
+        `;
+
+    return await pool.query(sql, [title, author, description]);
+};
 
 const getAll = async () => {
     const sql = `
@@ -16,6 +18,14 @@ const getAll = async () => {
     `;
 
     return await pool.query(sql);
+};
+
+const findBook = async (title, author) => {
+    const sql = `
+    SELECT * FROM books WHERE title = ? AND author = ?
+    `;
+
+    return await pool.query(sql, [title, author]);
 };
 
 const getBy = async (column, value) => {
@@ -54,4 +64,6 @@ export default {
     getBy,
     remove,
     searchBy,
+    insertBook,
+    findBook,
 };
