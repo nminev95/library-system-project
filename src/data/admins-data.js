@@ -13,8 +13,10 @@ const insertBook = async (title, author, description) => {
 
 const getAll = async () => {
     const sql = `
-        SELECT user_Id, username 
-        FROM users
+        SELECT 
+            user_Id, username 
+        FROM 
+            users
     `;
 
     return await pool.query(sql);
@@ -22,7 +24,18 @@ const getAll = async () => {
 
 const findBook = async (title, author) => {
     const sql = `
-    SELECT * FROM books WHERE title = ? AND author = ?
+        SELECT 
+            * 
+        FROM 
+            books 
+        WHERE 
+            title 
+        LIKE 
+            ? 
+        AND 
+            author 
+        LIKE 
+            ?
     `;
 
     return await pool.query(sql, [title, author]);

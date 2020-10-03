@@ -42,18 +42,18 @@ const deleteUser = adminsData => {
 
 const createBook = adminsData => {
     return async (bookInfo) => {
-        const foundBook = await adminsData.findBook(bookInfo.title, bookInfo.author);
-        
-        if (JSON.stringify(foundBook).length !== 0) {
+       const foundBook = await adminsData.findBook(bookInfo.title, bookInfo.author);
+       
+        if (foundBook.length !== 0) {
             return {
                 error: serviceErrors.DUPLICATE_RECORD,
-                book: null,
+                user: null,
             };
         }
 
-        const newBook = await adminsData.insertBook(bookInfo.title, bookInfo.author, bookInfo.description);
+        const _ = await adminsData.insertBook(bookInfo.title, bookInfo.author, bookInfo.description);
 
-        return { error: null, book: newBook};
+        return { error: null, book: { message: 'Book was successfully added to library!'}};
     };
 
 };
