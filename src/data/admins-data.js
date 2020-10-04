@@ -105,6 +105,35 @@ const removeBook = async (id) => {
     return await pool.query(sql, [id]);
 };
 
+const checkBookForReview = async (bookId, reviewId) => {
+    const sql = `
+    SELECT 
+        * 
+    FROM 
+        reviews 
+    WHERE 
+        book_Id = ? 
+    AND 
+        review_Id = ?
+    `;
+
+    return await pool.query(sql, [bookId, reviewId]);
+};
+
+const removeReview = async (bookId, reviewId) => {
+    const sql = `
+    DELETE 
+    FROM
+        reviews
+    WHERE 
+        book_Id = ?
+    AND 
+        review_Id = ?
+    `;
+
+    return await pool.query(sql, [bookId, reviewId]);
+};
+
 export default {
     getAll,
     getBy,
@@ -115,4 +144,6 @@ export default {
     getBook,
     updateBookInfo,
     removeBook,
+    checkBookForReview,
+    removeReview,
 };

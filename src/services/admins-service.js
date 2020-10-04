@@ -93,6 +93,23 @@ const deleteBook = adminsData => {
     };
 };
 
+const deleteReview = adminsData => {
+    return async (bookId, reviewId) => {
+        const foundReview = await adminsData.checkBookForReview(bookId, reviewId);
+
+        if (foundReview.length === 0) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                book: null,
+            };
+        }
+
+        const _ = await adminsData.removeReview(bookId, reviewId);
+
+        return { error: null, book: { message: 'Review was successfully deleted!' } };
+    };
+};
+
 const iterateOverBody = (body, id) => {
     for (const update in body) {
         adminsData.updateBookInfo(update, body[update], id);
@@ -107,4 +124,5 @@ export default {
     createBook,
     updateBook,
     deleteBook,
+    deleteReview,
 };

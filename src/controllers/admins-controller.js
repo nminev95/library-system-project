@@ -83,6 +83,24 @@ adminsController
             } else {
                 res.status(201).send(book);
             }
+        })
+    .delete('/books/:id/reviews/:id',
+        authMiddleware,
+        roleMiddleware('admin'),
+        async (req, res) => {
+            const regex = /[0-9]+/g;
+            const paramsInfo = req.originalUrl;
+            const result = paramsInfo.match(regex);
+            const bookId = result[0];
+            const reviewId = result[1];
+
+            const { error, book } = await adminsService.deleteReview(adminsData)(+bookId, +reviewId);
+
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(409).send({ message: 'Book/review not found!' });
+            } else {
+                res.status(201).send(book);
+            }
         });
 
 

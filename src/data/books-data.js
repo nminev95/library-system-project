@@ -72,7 +72,6 @@ const getById = async (column, value) => {
         `;
 
     return await pool.query(sql, [value]);
-
 };
 
 const getReviews = async (value) => {
