@@ -15,9 +15,9 @@ const getAllBooks = booksData => {
 
 const getBookById = booksData => {
     return async (id) => {
-        const book = await booksData.getById('id', id);
+        const book = await booksData.getById('user_Id', id);
 
-        if (!book) {
+        if (book.length === 0) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
                 book: null,
@@ -208,6 +208,23 @@ const deleteReview = booksData => {
     };
 };
 
+const rateBook = booksData => {
+    return async (bookId, rating) => {
+        const book = await booksData.getById('book_Id', bookId);
+
+        if (book.length === 0) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                book: null,
+            };
+        }
+
+        const _ = await booksData.insertRating(bookId, rating);
+
+        return { error: null, review: { message: 'You have successfully rated the book!' } };
+    };
+};
+
 export default {
     getAllBooks,
     getBookById,
@@ -219,4 +236,5 @@ export default {
     sendInfoToUserHistory,
     updateReview,
     deleteReview,
+    rateBook,
 };

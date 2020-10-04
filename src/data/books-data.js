@@ -157,7 +157,7 @@ const updateBookStatusToFree = async (book_id) => {
           borrower_Id = '0'
         WHERE book_Id = ?
     `;
-    return await pool.query(sql, [ book_id]);
+    return await pool.query(sql, [book_id]);
 };
 
 const getBookBorrowerId = async (book_id) => {
@@ -180,7 +180,7 @@ const sendBookIdToUserHistory = async (userId, bookId) => {
         INSERT INTO 
             users_history (user_Id, book_Id)
         VALUES 
-            (?,?)`; 
+            (?,?)`;
 
     return await pool.query(sql, [userId, bookId]);
 };
@@ -246,6 +246,16 @@ const removeReview = async (bookId, reviewId) => {
     return await pool.query(sql, [bookId, reviewId]);
 };
 
+const insertRating = async (bookId, ratingId) => {
+    const sql = `
+    INSERT INTO
+        books_has_book_ratings (book_to_be_rated_Id, rating_Id)
+    VALUES
+        (?, ?)`;
+
+    return await pool.query(sql, [bookId, ratingId]);
+};
+
 export default {
     getAll,
     getReviews,
@@ -261,4 +271,5 @@ export default {
     getReview,
     updateReview,
     removeReview,
+    insertRating,
 };
