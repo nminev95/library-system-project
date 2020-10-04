@@ -1,5 +1,13 @@
 import pool from './pool.js';
 
+/** 
+* Creates a new book in the database. 
+* @async
+* @param {string} title - the title of the book
+* @param {string} author - the author of the book
+* @param {string} description - a short description of the book
+* @returns {Promise<object>}
+*/
 const insertBook = async (title, author, description) => {
     const sql = `
         INSERT INTO
@@ -11,6 +19,11 @@ const insertBook = async (title, author, description) => {
     return await pool.query(sql, [title, author, description]);
 };
 
+/** 
+* Gets all books from the database. 
+* @async
+* @returns {Promise<object>} Promise with data from the database.
+*/
 const getAll = async () => {
     const sql = `
         SELECT 
@@ -22,6 +35,13 @@ const getAll = async () => {
     return await pool.query(sql);
 };
 
+/** 
+* Finds a book in the database. 
+* @async
+* @param {string} title - The title of the searched book.
+* @param {string} author - The author of the searched book.
+* @returns {Promise<object>} Promise with the book data if found in the database.
+*/
 const findBook = async (title, author) => {
     const sql = `
         SELECT 
@@ -41,6 +61,13 @@ const findBook = async (title, author) => {
     return await pool.query(sql, [title, author]);
 };
 
+/** 
+* Gets user info from the database. 
+* @async
+* @param {string} column - The column in the database to search in.
+* @param {any} value - The value to search for in the column.
+* @returns {Promise<object>} Promise with the user data if found in the database.
+*/
 const getBy = async (column, value) => {
     const sql = `
         SELECT user_Id, username
@@ -53,6 +80,12 @@ const getBy = async (column, value) => {
     return result[0];
 };
 
+/** 
+* Removes an user from the database.
+* @async
+* @param {number} id - The user id to search for.
+* @returns {Promise<object>} Promise.
+*/
 const remove = async (user) => {
     const sql = `
         DELETE FROM users 
@@ -62,6 +95,13 @@ const remove = async (user) => {
     return await pool.query(sql, [user.user_Id]);
 };
 
+/** 
+* Gets user info from the database. 
+* @async
+* @param {string} column - The column in the database to search in.
+* @param {any} value - The value to search for in the column.
+* @returns {Promise<object>} Promise with the user data if found in the database.
+*/
 const searchBy = async (column, value) => {
     const sql = `
         SELECT user_Id, username 
@@ -72,6 +112,12 @@ const searchBy = async (column, value) => {
     return await pool.query(sql);
 };
 
+/** 
+* Finds a book in the database by id. 
+* @async
+* @param {number} id - The id of the searched book.
+* @returns {Promise<object>} Promise with the book data if found in the database.
+*/
 const getBook = async (id) => {
     const sql = `
         SELECT * 
@@ -82,6 +128,14 @@ const getBook = async (id) => {
     return await pool.query(sql, [id]);
 };
 
+/** 
+* Finds and updates the params of a book in the database.
+* @async
+* @param {string} column - The column to be updated.
+* @param {string} value - The value to be updated.
+* @param {number} id - The book id to search for.
+* @returns {Promise<object>} Promise with the book data if found in the database.
+*/
 const updateBookInfo = async (column, value, id) => {
     const sql = `
     UPDATE books 
@@ -93,6 +147,12 @@ const updateBookInfo = async (column, value, id) => {
     return await pool.query(sql);
 };
 
+/** 
+* Removes a book from the database.
+* @async
+* @param {number} id - The book id to search for.
+* @returns {Promise<object>} Promise.
+*/
 const removeBook = async (id) => {
     const sql = `
     DELETE 
@@ -105,6 +165,13 @@ const removeBook = async (id) => {
     return await pool.query(sql, [id]);
 };
 
+/** 
+* Gets the reviews for a certain book if any.
+* @async
+* @param {number} bookId - The book id to search for.
+* @param {number} reviewId - The review id to search for.
+* @returns {Promise<object>} Promise with the review data if found in the database.
+*/
 const checkBookForReview = async (bookId, reviewId) => {
     const sql = `
     SELECT 
@@ -120,6 +187,13 @@ const checkBookForReview = async (bookId, reviewId) => {
     return await pool.query(sql, [bookId, reviewId]);
 };
 
+/** 
+* Deletes a review for a certain book from the database.
+* @async
+* @param {number} bookId - The book id to search for.
+* @param {number} reviewId - The review id to search for.
+* @returns {Promise<object>} Promise.
+*/
 const removeReview = async (bookId, reviewId) => {
     const sql = `
     DELETE 
@@ -134,6 +208,13 @@ const removeReview = async (bookId, reviewId) => {
     return await pool.query(sql, [bookId, reviewId]);
 };
 
+/** 
+* Updates a review for a certain book from the database.
+* @async
+* @param {string} content - The new review content.
+* @param {number} reviewId - The review id to search for.
+* @returns {Promise<object>} Promise.
+*/
 const changeReview = async (content, reviewId) => {
     const sql = `
     UPDATE 
@@ -147,6 +228,14 @@ const changeReview = async (content, reviewId) => {
     return await pool.query(sql, [content, reviewId]);
 };
 
+/** 
+* Adds a review for a certain book from the database.
+* @async
+* @param {string} content - The new review content.
+* @param {number} bookId - The book id to search for.
+* @param {number} user_Id - The id of the author(admin).
+* @returns {Promise<object>} Promise.
+*/
 const insertReview = async (content, bookId, user_Id) => {
     const sql = `
         INSERT INTO
