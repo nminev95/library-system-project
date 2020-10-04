@@ -1,15 +1,14 @@
 import serviceErrors from './service-errors.js';
-import booksData from '../data/books-data.js';
 
 const getAllBooks = booksData => {
     return async (queryType, filter) => {
 
         if (filter) {
             const books = await booksData.searchBy(queryType, filter);
-            return mapReviews(books);
+            return mapReviewsAndRating(books);
         }
         const books = await booksData.getAll();
-        return mapReviews(books);
+        return mapReviewsAndRating(books);
     };
 };
 
@@ -24,14 +23,14 @@ const getBookById = booksData => {
             };
         }
 
-        return { error: null, book: mapReviews(book) };
+        return { error: null, book: mapReviewsAndRating(book) };
     };
 };
 
 const getBorrowerId = booksData => {
     return async (id) => {
         const borrowerId = await booksData.getBookBorrowerId(+id);
-   
+
         if (!borrowerId) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
@@ -76,32 +75,43 @@ const createReview = booksData => {
     };
 };
 
-const mapReviews = (data) => {
+const mapReviewsAndRating = (data) => {
     const map = new Map();
 
     for (const book of data) {
-        const { id, Title, Author, Description, Status, Review_Id, Review } = book;
+        const { id, Title, Author, Description, Status, Review_Id, Review, Rating } = book;
+
         if (!map.get(id)) {
             map.set(id, {
-                id, Title, Author, Description, Status, Reviews: [],
+                id, Title, Author, Description, Status, Reviews: [], Rating,
             });
         }
         const reviewObject = {
             id: Review_Id,
             review: Review,
         };
+
         if (reviewObject.id) {
             map.get(id).Reviews.push(reviewObject);
+            if (map.get(id).Rating === null) {
+                const Reviews = map.get(id).Reviews;
+                map.set(id, {
+                    id, Title, Author, Description, Status, Reviews, Rating: 'Be the first person to rate this book!',
+                });
+            }
         } else {
             map.set(id, {
-                id, Title, Author, Description, Status, Reviews: 'No reviews for this book yet.',
+                id, Title, Author, Description, Status, Reviews: 'No reviews for this book yet!', Rating,
             });
+            if (map.get(id).Rating === null) {
+                map.set(id, {
+                    id, Title, Author, Description, Status, Reviews: 'No reviews for this book yet.', Rating: 'Be the first person to rate this book!',
+                });
+            }
         }
     }
     return [...map.values()];
 };
-
-
 
 const borrowABook = booksData => {
     return async (bookID, userID) => {
@@ -120,7 +130,7 @@ const borrowABook = booksData => {
 
 const returnABook = booksData => {
     return async (bookId) => {
-const returnedBook = await booksData.updateBookStatusToFree(+bookId);
+        const returnedBook = await booksData.updateBookStatusToFree(+bookId);
 
         if (!returnedBook) {
             return {
@@ -142,9 +152,4 @@ export default {
     returnABook,
     getBookReviews,
     createReview,
-<<<<<<< HEAD
-    borrowABook,
-    // returnABook,
-=======
->>>>>>> cce02cf7c9994004a83aece7f4f8302b1424fe22
 };

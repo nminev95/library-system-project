@@ -9,17 +9,28 @@ const getAll = async () => {
             b.description as 'Description',
             s.type as Status,
             r.review_Id as Review_Id,
-            r.content as Review
+            r.content as Review,
+            AVG(rr.rating_value) as Rating
         from 
             books b
-        left join 
+        LEFT OUTER JOIN
             reviews r
-        on 
+        ON 
             b.book_Id = r.book_Id
         join 
             status s
         on 
-            s.status_Id = b.borrowedStatus_Id;
+            s.status_Id = b.borrowedStatus_Id
+        LEFT JOIN   
+            books_has_book_ratings br 
+        ON 
+            b.book_Id = br.book_to_be_rated_Id
+        LEFT JOIN 
+            book_ratings rr 
+        ON 
+            br.rating_Id = rr.rating_Id
+        GROUP BY 
+            IFNULL(r.content, b.book_Id);
         `;
 
     return await pool.query(sql);
@@ -34,22 +45,33 @@ const getById = async (column, value) => {
             b.description as 'Description',
             s.type as Status,
             r.review_Id as Review_Id,
-            r.content as Review
+            r.content as Review,
+            AVG(rr.rating_value) as Rating
         from 
             books b
-        left join 
+        LEFT OUTER JOIN
             reviews r
-        on 
+        ON 
             b.book_Id = r.book_Id
         join 
             status s
         on 
             s.status_Id = b.borrowedStatus_Id
+        LEFT JOIN   
+            books_has_book_ratings br 
+        ON 
+            b.book_Id = br.book_to_be_rated_Id
+        LEFT JOIN 
+            book_ratings rr 
+        ON 
+            br.rating_Id = rr.rating_Id
         WHERE 
-            b.book_Id = ${value};
+            b.book_Id = ?
+        GROUP BY 
+            IFNULL(r.content, b.book_Id);
         `;
 
-    return await pool.query(sql);
+    return await pool.query(sql, [value]);
 
 };
 
@@ -76,22 +98,34 @@ const searchBy = async (column, value) => {
             b.description as 'Description',
             s.type as Status,
             r.review_Id as Review_Id,
-            r.content as Review
+            r.content as Review,
+            AVG(rr.rating_value) as Rating
         from 
             books b
-        left join 
+        LEFT OUTER JOIN
             reviews r
-        on 
+        ON 
             b.book_Id = r.book_Id
         join 
             status s
         on 
-            status_Id = b.borrowedStatus_Id
+            s.status_Id = b.borrowedStatus_Id
+        LEFT JOIN   
+            books_has_book_ratings br 
+        ON 
+            b.book_Id = br.book_to_be_rated_Id
+        LEFT JOIN 
+            book_ratings rr 
+        ON 
+            br.rating_Id = rr.rating_Id
         WHERE 
-            ${column} 
-        LIKE 
-            '%${value}%';
+            ${column}
+        LIKE
+            '%${value}%'
+        GROUP BY 
+            IFNULL(r.content, b.book_Id);
         `;
+
 
     return await pool.query(sql);
 
@@ -127,7 +161,7 @@ const updateBookStatusToFree = async (book_id) => {
     return await pool.query(sql, [4, book_id]);
 };
 
-const getBookBorrowerId = async (book_id) =>{
+const getBookBorrowerId = async (book_id) => {
     const sql = `
         SELECT
             b.borrower_Id AS Borrower
@@ -137,7 +171,7 @@ const getBookBorrowerId = async (book_id) =>{
             b.book_Id = ?;
         `;
 
-    return await pool.query(sql,[book_id]);
+    return await pool.query(sql, [book_id]);
 };
 
 const saveBookIdToUserHistory = async (id) => {
