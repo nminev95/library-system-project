@@ -120,10 +120,23 @@ const updateBookStatusToFree = async (book_id) => {
     const sql = `
         UPDATE books SET
           borrowedStatus_Id = ?,
-          borrower_Id = ?
+          borrower_Id = 0
         WHERE book_Id = ?
     `;
-    return await pool.query(sql, [3, 0, book_id]);
+    return await pool.query(sql, [4, book_id]);
+};
+
+const getBookBorrowerId = async (book_id) =>{
+    const sql = `
+        SELECT
+            b.borrower_Id AS Borrower
+        from 
+            books b
+        WHERE 
+            b.book_Id = ?;
+        `;
+
+    return await pool.query(sql,[book_id]);
 };
 
 const saveBookIdToUserHistory = async (id) => {
@@ -167,6 +180,7 @@ export default {
     getById,
     searchBy,
     pushReview,
+    getBookBorrowerId,
     updateBookStatusToBorrowed,
     updateBookStatusToFree,
     saveBookIdToUserHistory,

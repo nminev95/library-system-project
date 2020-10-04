@@ -67,51 +67,65 @@ booksController
                     res.status(200).send(reviews);
                 }
             };
+    })
+    //borrow a book
+    .put('/:id',
+        authMiddleware,
+        roleMiddleware('user'),
+        async (req, res) => {
+            const id = req.params.id;
+            const user_Id = req.user.id;
+
+            
+            const bookInfo = await booksService.getBookById(booksData)(+id);
+            const destrBookInfo = (Object.values(bookInfo).flat());
+            const bookStatus = (destrBookInfo[1].Status);
+
+            const { error } = await booksService.borrowABook(booksData)(user_Id, +id);
+
+
+            if (bookStatus === 'unlisted' || bookStatus === 'borrowed') {
+                return res.status(400).send({ message: 'The book is not available' });
+            }
+
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'The books is unavailable!!' });
+            } else {
+                res.status(200).send({message: 'The book is added successfully!'});
+            }
         })
-//borrow a book
-.put('/:id', 
-authMiddleware,
-roleMiddleware('user'),
-async (req, res) => {
-    const id = req.params.id;
-    const user_Id = req.user.id;
+    //return a book 
 
-    const book = await booksService.getBookById(+id);
-    console.log(book);
-    if (!book) {
-        return null;
-    }
-    if (book.Status === 1 || book.Status === 2) {
-        return res.status(400).send({ message: 'The book is not available' });
-    }
-    const updatedBook = await booksService.borrowABook(user_Id, +id);
+    .delete('/:id',
+        authMiddleware,
+        roleMiddleware('user'),
+        async (req, res) => {
+            const id = req.params.id;
+            const user_Id = req.user.id;
 
-    if (!updatedBook) {
-        res.status(404).send({ message: 'Book not found!' });
-    } else {
-        res.status(200).send(updatedBook);
-    }
-});
-//return a book 
-// .put('/:id', async (req, res) => {
-//     const id = req.params.id;
+            const bookInfo = await booksService.getBookById(booksData)(+id);
+            const destrBookInfo = (Object.values(bookInfo).flat());
+            const bookStatus = (destrBookInfo[1].Status);
 
-//     const book = await booksService.getBookById(+id);
-//     console.log(book);
+            const borrowerInfo = await booksService.getBorrowerId(booksData)(+id);
+            const destrBorrowerInfo = (Object.values(borrowerInfo).flat());
+            const borrowerId = (destrBorrowerInfo[1].Borrower);
+           
 
-//     if (!book) {
-//         return null;
-//     }
-//     if (book.Status === 1 && book.Borrower === +id) {
-//         const updatedBook = await booksService.returnABook(+id);
+            if (bookStatus === 5 || borrowerId !== user_Id) {
+                return res.status(400).send({ message: 'The book has been borrowed by another user!' });
+            }
 
-//         if (!updatedBook) {
-//             res.status(404).send({ message: 'Book not found!' });
-//         } else {
-//             res.status(200).send(updatedBook);
-//         }
-//     }
-// });
+            if (bookStatus === 'borrowed' && borrowerId === user_Id) {
+                const { error, returnedBook } = await booksService.returnABook(booksData)(+id);
+
+                if (error === serviceErrors.RECORD_NOT_FOUND) {
+                    res.status(404).send({ message: 'The books is unavailable!!' });
+                } else {
+                    res.status(200).send(returnedBook);
+                }
+            }
+        });
 
 
 export default booksController;
