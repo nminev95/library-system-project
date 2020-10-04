@@ -114,7 +114,7 @@ const borrowABook = booksData => {
             };
         }
 
-        return { error: null, book: borrowedBook };
+        return { error: null, borrowedBook: borrowedBook };
     };
 };
 
@@ -125,11 +125,11 @@ const returnedBook = await booksData.updateBookStatusToFree(+bookId);
         if (!returnedBook) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
-                borrowedBook: null,
+                returnedBook: null,
             };
         }
 
-        return { error: null, book: returnedBook };
+        return { error: null, returnedBook: returnedBook };
     };
 };
 
@@ -142,9 +142,4 @@ export default {
     returnABook,
     getBookReviews,
     createReview,
-<<<<<<< HEAD
-    borrowABook,
-    // returnABook,
-=======
->>>>>>> cce02cf7c9994004a83aece7f4f8302b1424fe22
 };

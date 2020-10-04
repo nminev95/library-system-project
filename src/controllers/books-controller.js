@@ -70,18 +70,7 @@ booksController
                 res.status(200).send(reviews);
             }
 
-<<<<<<< HEAD
         })
-    //borrow a book
-    .put('/:id',
-=======
-                if (error === serviceErrors.RECORD_NOT_FOUND) {
-                    res.status(404).send({ message: 'Book not found or doesn\'t have reviews yet!' });
-                } else {
-                    res.status(200).send(reviews);
-                }
-            };
-    })
     //borrow a book
     .put('/:id',
         authMiddleware,
@@ -94,11 +83,11 @@ booksController
             const bookInfo = await booksService.getBookById(booksData)(+id);
             const destrBookInfo = (Object.values(bookInfo).flat());
             const bookStatus = (destrBookInfo[1].Status);
-
+              console.log(bookStatus);
             const { error } = await booksService.borrowABook(booksData)(user_Id, +id);
 
 
-            if (bookStatus === 'unlisted' || bookStatus === 'borrowed') {
+            if (bookStatus === 'Unlisted' || bookStatus === 'Borrowed') {
                 return res.status(400).send({ message: 'The book is not available' });
             }
 
@@ -110,76 +99,36 @@ booksController
         })
     //return a book 
 
-    .delete('/:id',
->>>>>>> cce02cf7c9994004a83aece7f4f8302b1424fe22
+    .post('/:id',
         authMiddleware,
         roleMiddleware('user'),
         async (req, res) => {
             const id = req.params.id;
             const user_Id = req.user.id;
 
-<<<<<<< HEAD
-            const book = await booksService.getBookById(+id);
-            console.log(book);
-            if (!book) {
-                return null;
-            }
-            if (book.Status === 1 || book.Status === 2) {
-                return res.status(400).send({ message: 'The book is not available' });
-            }
-            const updatedBook = await booksService.borrowABook(user_Id, +id);
-
-            if (!updatedBook) {
-                res.status(404).send({ message: 'Book not found!' });
-            } else {
-                res.status(200).send(updatedBook);
-            }
-        });
-//return a book 
-// .put('/:id', async (req, res) => {
-//     const id = req.params.id;
-
-//     const book = await booksService.getBookById(+id);
-//     console.log(book);
-
-//     if (!book) {
-//         return null;
-//     }
-//     if (book.Status === 1 && book.Borrower === +id) {
-//         const updatedBook = await booksService.returnABook(+id);
-
-//         if (!updatedBook) {
-//             res.status(404).send({ message: 'Book not found!' });
-//         } else {
-//             res.status(200).send(updatedBook);
-//         }
-//     }
-// });
-=======
             const bookInfo = await booksService.getBookById(booksData)(+id);
             const destrBookInfo = (Object.values(bookInfo).flat());
             const bookStatus = (destrBookInfo[1].Status);
 
             const borrowerInfo = await booksService.getBorrowerId(booksData)(+id);
             const destrBorrowerInfo = (Object.values(borrowerInfo).flat());
-            const borrowerId = (destrBorrowerInfo[1].Borrower);
-           
+            const borrowerId = Number((destrBorrowerInfo[1].Borrower));
+          
 
-            if (bookStatus === 5 || borrowerId !== user_Id) {
+            if (bookStatus === 'Borrowed' && borrowerId !== user_Id) {
                 return res.status(400).send({ message: 'The book has been borrowed by another user!' });
             }
 
-            if (bookStatus === 'borrowed' && borrowerId === user_Id) {
-                const { error, returnedBook } = await booksService.returnABook(booksData)(+id);
+            if (bookStatus === 'Borrowed' && borrowerId === user_Id) {
+                const { error } = await booksService.returnABook(booksData)(+id);
 
                 if (error === serviceErrors.RECORD_NOT_FOUND) {
                     res.status(404).send({ message: 'The books is unavailable!!' });
                 } else {
-                    res.status(200).send(returnedBook);
+                    res.status(200).send('You have returned the book successfully!');
                 }
             }
         });
->>>>>>> cce02cf7c9994004a83aece7f4f8302b1424fe22
 
 
 export default booksController;
