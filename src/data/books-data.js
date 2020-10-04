@@ -140,14 +140,16 @@ const getBookBorrowerId = async (book_id) =>{
     return await pool.query(sql,[book_id]);
 };
 
-const saveBookIdToUserHistory = async (id) => {
-    const sql = `
-       INSERT INTO
-          user_history (book_id)
-       VALUES 
-        (?)`;
 
-    return await pool.query(sql[id]);
+
+const sendBookIdToUserHistory = async (userId, bookId) => {
+    const sql = `
+        INSERT INTO 
+            users_history (user_Id, book_Id)
+        VALUES 
+            (?,?)`; 
+
+    return await pool.query(sql, [userId, bookId]);
 };
 
 const updateReview = async (content, id) => {
@@ -191,7 +193,7 @@ export default {
     getBookBorrowerId,
     updateBookStatusToBorrowed,
     updateBookStatusToFree,
-    saveBookIdToUserHistory,
+    sendBookIdToUserHistory,
     updateReview,
     deleteReview,
     getReadHistory,

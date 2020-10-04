@@ -1,5 +1,4 @@
 import serviceErrors from './service-errors.js';
-import booksData from '../data/books-data.js';
 
 const getAllBooks = booksData => {
     return async (queryType, filter) => {
@@ -31,7 +30,7 @@ const getBookById = booksData => {
 const getBorrowerId = booksData => {
     return async (id) => {
         const borrowerId = await booksData.getBookBorrowerId(+id);
-   
+
         if (!borrowerId) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
@@ -120,7 +119,7 @@ const borrowABook = booksData => {
 
 const returnABook = booksData => {
     return async (bookId) => {
-const returnedBook = await booksData.updateBookStatusToFree(+bookId);
+        const returnedBook = await booksData.updateBookStatusToFree(+bookId);
 
         if (!returnedBook) {
             return {
@@ -133,13 +132,27 @@ const returnedBook = await booksData.updateBookStatusToFree(+bookId);
     };
 };
 
+const sendInfoToUserHistory = booksData => {
+    return async (userID, bookID) => {
+        const sentData = await booksData.sendBookIdToUserHistory(userID, bookID);
 
-export default {
-    getAllBooks,
-    getBookById,
-    getBorrowerId,
-    borrowABook,
-    returnABook,
-    getBookReviews,
-    createReview,
+        if(!sentData) {
+            return {
+                error: serviceErrors.OPERATION_NOT_PERMITTED,
+                sentData: null,
+            };
+        }
+        return { error: null, sentData: sentData };
+    };
 };
+
+    export default {
+        getAllBooks,
+        getBookById,
+        getBorrowerId,
+        borrowABook,
+        returnABook,
+        getBookReviews,
+        createReview,
+        sendInfoToUserHistory,
+    };
