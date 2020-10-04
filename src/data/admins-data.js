@@ -93,6 +93,18 @@ const updateBookInfo = async (column, value, id) => {
     return await pool.query(sql);
 };
 
+const removeBook = async (id) => {
+    const sql = `
+    DELETE 
+    FROM
+        books
+    WHERE 
+        book_Id = ?
+    `;
+
+    return await pool.query(sql, [id]);
+};
+
 export default {
     getAll,
     getBy,
@@ -102,4 +114,5 @@ export default {
     findBook,
     getBook,
     updateBookInfo,
+    removeBook,
 };

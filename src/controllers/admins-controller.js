@@ -57,21 +57,34 @@ adminsController
                 res.status(201).send(book);
             }
         })
-        .put('/books/:id',
-            authMiddleware,
-            roleMiddleware('admin'),
-            async (req, res) => {
-                const { id } = req.params;
-                const bookInfo = req.body;
-                const { error, book } = await adminsService.updateBook(adminsData)(bookInfo, +id);
+    .put('/books/:id',
+        authMiddleware,
+        roleMiddleware('admin'),
+        async (req, res) => {
+            const { id } = req.params;
+            const bookInfo = req.body;
+            const { error, book } = await adminsService.updateBook(adminsData)(bookInfo, +id);
 
-                if (error === serviceErrors.RECORD_NOT_FOUND) {
-                    res.status(409).send({ message: 'Book not found!' });
-                } else {
-                    res.status(201).send(book);
-                }
-            });
-        
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(409).send({ message: 'Book not found!' });
+            } else {
+                res.status(201).send(book);
+            }
+        })
+    .delete('/books/:id',
+        authMiddleware,
+        roleMiddleware('admin'),
+        async (req, res) => {
+            const { id } = req.params;
+            const { error, book } = await adminsService.deleteBook(adminsData)(+id);
+
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(409).send({ message: 'Book not found!' });
+            } else {
+                res.status(201).send(book);
+            }
+        });
+
 
 
 export default adminsController;

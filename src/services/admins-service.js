@@ -77,6 +77,22 @@ const updateBook = adminsData => {
     };
 };
 
+const deleteBook = adminsData => {
+    return async (id) => {
+        const foundBook = await adminsData.getBook(id);
+
+        if (foundBook.length === 0) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                book: null,
+            };
+        }
+        const _ = await adminsData.removeBook(id);
+
+        return { error: null, book: { message: 'Book was successfully deleted!' } };
+    };
+};
+
 const iterateOverBody = (body, id) => {
     for (const update in body) {
         adminsData.updateBookInfo(update, body[update], id);
@@ -90,4 +106,5 @@ export default {
     deleteUser,
     createBook,
     updateBook,
+    deleteBook,
 };
