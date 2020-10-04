@@ -124,7 +124,7 @@ const borrowABook = booksData => {
             };
         }
 
-        return { error: null, book: borrowedBook };
+        return { error: null, borrowedBook: borrowedBook };
     };
 };
 
@@ -135,21 +135,35 @@ const returnABook = booksData => {
         if (!returnedBook) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
-                borrowedBook: null,
+                returnedBook: null,
             };
         }
 
-        return { error: null, book: returnedBook };
+        return { error: null, returnedBook: returnedBook };
     };
 };
 
+const sendInfoToUserHistory = booksData => {
+    return async (userID, bookID) => {
+        const sentData = await booksData.sendBookIdToUserHistory(userID, bookID);
 
-export default {
-    getAllBooks,
-    getBookById,
-    getBorrowerId,
-    borrowABook,
-    returnABook,
-    getBookReviews,
-    createReview,
+        if(!sentData) {
+            return {
+                error: serviceErrors.OPERATION_NOT_PERMITTED,
+                sentData: null,
+            };
+        }
+        return { error: null, sentData: sentData };
+    };
 };
+
+    export default {
+        getAllBooks,
+        getBookById,
+        getBorrowerId,
+        borrowABook,
+        returnABook,
+        getBookReviews,
+        createReview,
+        sendInfoToUserHistory,
+    };

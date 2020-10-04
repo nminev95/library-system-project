@@ -148,17 +148,17 @@ const updateBookStatusToBorrowed = async (user_id, book_id) => {
           borrower_Id = ?
         WHERE book_Id = ?
     `;
-    return await pool.query(sql, [5, user_id, book_id]);
+    return await pool.query(sql, [4, user_id, book_id]);
 };
 
 const updateBookStatusToFree = async (book_id) => {
     const sql = `
         UPDATE books SET
-          borrowedStatus_Id = ?,
-          borrower_Id = 0
+          borrowedStatus_Id = '6',
+          borrower_Id = '0'
         WHERE book_Id = ?
     `;
-    return await pool.query(sql, [4, book_id]);
+    return await pool.query(sql, [ book_id]);
 };
 
 const getBookBorrowerId = async (book_id) => {
@@ -174,14 +174,16 @@ const getBookBorrowerId = async (book_id) => {
     return await pool.query(sql, [book_id]);
 };
 
-const saveBookIdToUserHistory = async (id) => {
-    const sql = `
-       INSERT INTO
-          user_history (book_id)
-       VALUES 
-        (?)`;
 
-    return await pool.query(sql[id]);
+
+const sendBookIdToUserHistory = async (userId, bookId) => {
+    const sql = `
+        INSERT INTO 
+            users_history (user_Id, book_Id)
+        VALUES 
+            (?,?)`; 
+
+    return await pool.query(sql, [userId, bookId]);
 };
 
 const updateReview = async (content, id) => {
@@ -208,10 +210,13 @@ const deleteReview = async (id) => {
 
 const getReadHistory = async (id) => {
     const sql = `
-    SELECT user_Id, username, user_history FROM users WHERE user_Id = 8
+    SELECT 
+    user_Id, username, user_history 
+    FROM users 
+    WHERE user_Id = ?
     `;
 
-    return await pool.query(sql);
+    return await pool.query(sql, [id]);
 };
 export default {
     getAll,
@@ -222,7 +227,7 @@ export default {
     getBookBorrowerId,
     updateBookStatusToBorrowed,
     updateBookStatusToFree,
-    saveBookIdToUserHistory,
+    sendBookIdToUserHistory,
     updateReview,
     deleteReview,
     getReadHistory,

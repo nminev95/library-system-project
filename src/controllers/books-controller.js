@@ -81,11 +81,11 @@ booksController
             const bookInfo = await booksService.getBookById(booksData)(+id);
             const destrBookInfo = (Object.values(bookInfo).flat());
             const bookStatus = (destrBookInfo[1].Status);
-
+              console.log(bookStatus);
             const { error } = await booksService.borrowABook(booksData)(user_Id, +id);
 
 
-            if (bookStatus === 'unlisted' || bookStatus === 'borrowed') {
+            if (bookStatus === 'Unlisted' || bookStatus === 'Borrowed') {
                 return res.status(400).send({ message: 'The book is not available' });
             }
 
@@ -95,8 +95,9 @@ booksController
                 res.status(200).send({message: 'The book is added successfully!'});
             }
         })
+    
     //return a book 
-    .delete('/:id',
+    .post('/:id',
         authMiddleware,
         roleMiddleware('user'),
         async (req, res) => {
@@ -106,23 +107,26 @@ booksController
             const bookInfo = await booksService.getBookById(booksData)(+id);
             const destrBookInfo = (Object.values(bookInfo).flat());
             const bookStatus = (destrBookInfo[1].Status);
+         console.log(bookStatus);
 
             const borrowerInfo = await booksService.getBorrowerId(booksData)(+id);
             const destrBorrowerInfo = (Object.values(borrowerInfo).flat());
-            const borrowerId = (destrBorrowerInfo[1].Borrower);
-           
+            const borrowerId = Number((destrBorrowerInfo[1].Borrower));
+          console.log(borrowerId);
 
-            if (bookStatus === 5 || borrowerId !== user_Id) {
+            if (bookStatus === 'Borrowed' && borrowerId !== user_Id) {
                 return res.status(400).send({ message: 'The book has been borrowed by another user!' });
             }
 
-            if (bookStatus === 'borrowed' && borrowerId === user_Id) {
-                const { error, returnedBook } = await booksService.returnABook(booksData)(+id);
+            if (bookStatus === 'Borrowed' && borrowerId === user_Id) {
+                const { error } = await booksService.returnABook(booksData)(+id);
+                // eslint-disable-next-line no-unused-vars
+                const sendDataToHistory = await booksService.sendInfoToUserHistory(booksData)(user_Id, +id);
 
                 if (error === serviceErrors.RECORD_NOT_FOUND) {
-                    res.status(404).send({ message: 'The books is unavailable!!' });
+                    res.status(404).send({ message: 'Book returning denied!!' });
                 } else {
-                    res.status(200).send(returnedBook);
+                    res.status(200).send('You have returned the book successfully!');
                 }
             }
         });
