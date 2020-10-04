@@ -28,6 +28,21 @@ const getBookById = booksData => {
     };
 };
 
+const getBorrowerId = booksData => {
+    return async (id) => {
+        const borrowerId = await booksData.getBookBorrowerId(+id);
+   
+        if (!borrowerId) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                book: null,
+            };
+        }
+
+        return { error: null, borrowerId: borrowerId };
+    };
+};
+
 const getBookReviews = booksData => {
     return async (id) => {
         const reviews = await booksData.getReviews(id);
@@ -87,20 +102,49 @@ const mapReviews = (data) => {
 };
 
 
-const borrowABook = async (bookID, userID) => {
-    return await booksData.updateBookStatusToBorrowed(bookID, userID);
 
+const borrowABook = booksData => {
+    return async (bookID, userID) => {
+        const borrowedBook = await booksData.updateBookStatusToBorrowed(bookID, userID);
+
+        if (!borrowedBook) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                borrowedBook: null,
+            };
+        }
+
+        return { error: null, book: borrowedBook };
+    };
 };
 
-// const returnABook = async (id) => {
-//     return await booksData.updateBookStatusToFree(id);
-// };
+const returnABook = booksData => {
+    return async (bookId) => {
+const returnedBook = await booksData.updateBookStatusToFree(+bookId);
+
+        if (!returnedBook) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                borrowedBook: null,
+            };
+        }
+
+        return { error: null, book: returnedBook };
+    };
+};
+
 
 export default {
     getAllBooks,
     getBookById,
+    getBorrowerId,
+    borrowABook,
+    returnABook,
     getBookReviews,
     createReview,
+<<<<<<< HEAD
     borrowABook,
     // returnABook,
+=======
+>>>>>>> cce02cf7c9994004a83aece7f4f8302b1424fe22
 };
