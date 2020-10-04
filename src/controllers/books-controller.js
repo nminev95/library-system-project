@@ -70,6 +70,24 @@ booksController
                 res.status(200).send(reviews);
             }
         })
+    .put('/:id/reviews/:id',
+        authMiddleware,
+        roleMiddleware('user'),
+        async (req, res) => {
+            const newReview = (Object.values(req.body)).toString();
+            const { id } = req.params;
+            const userId = req.user.id;
+
+            const { error, review } = await booksService.updateReview(booksData)(newReview, +id, +userId);
+
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'Book/review not found!' });
+            } 
+            if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
+                res.status(404).send({ message: 'Users can update only their own reviews!' });
+            }
+            res.status(200).send(review);
+        })
     //borrow a book
     .put('/:id',
         authMiddleware,
@@ -81,7 +99,7 @@ booksController
             const bookInfo = await booksService.getBookById(booksData)(+id);
             const destrBookInfo = (Object.values(bookInfo).flat());
             const bookStatus = (destrBookInfo[1].Status);
-              console.log(bookStatus);
+            console.log(bookStatus);
             const { error } = await booksService.borrowABook(booksData)(user_Id, +id);
 
 
@@ -92,10 +110,10 @@ booksController
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'The books is unavailable!!' });
             } else {
-                res.status(200).send({message: 'The book is added successfully!'});
+                res.status(200).send({ message: 'The book is added successfully!' });
             }
         })
-    
+
     //return a book 
     .post('/:id',
         authMiddleware,
@@ -107,12 +125,12 @@ booksController
             const bookInfo = await booksService.getBookById(booksData)(+id);
             const destrBookInfo = (Object.values(bookInfo).flat());
             const bookStatus = (destrBookInfo[1].Status);
-         console.log(bookStatus);
+            console.log(bookStatus);
 
             const borrowerInfo = await booksService.getBorrowerId(booksData)(+id);
             const destrBorrowerInfo = (Object.values(borrowerInfo).flat());
             const borrowerId = Number((destrBorrowerInfo[1].Borrower));
-          console.log(borrowerId);
+            console.log(borrowerId);
 
             if (bookStatus === 'Borrowed' && borrowerId !== user_Id) {
                 return res.status(400).send({ message: 'The book has been borrowed by another user!' });

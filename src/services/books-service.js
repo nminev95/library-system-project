@@ -147,7 +147,7 @@ const sendInfoToUserHistory = booksData => {
     return async (userID, bookID) => {
         const sentData = await booksData.sendBookIdToUserHistory(userID, bookID);
 
-        if(!sentData) {
+        if (!sentData) {
             return {
                 error: serviceErrors.OPERATION_NOT_PERMITTED,
                 sentData: null,
@@ -157,13 +157,39 @@ const sendInfoToUserHistory = booksData => {
     };
 };
 
-    export default {
-        getAllBooks,
-        getBookById,
-        getBorrowerId,
-        borrowABook,
-        returnABook,
-        getBookReviews,
-        createReview,
-        sendInfoToUserHistory,
+const updateReview = booksData => {
+    return async (newReview, reviewId, userId) => {
+        const foundReview = await booksData.getReview(reviewId);
+        const authorId = foundReview[0].user_Id;
+        
+        if (foundReview.length === 0) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                review: null,
+            };
+        }
+
+        if (authorId !== userId) {
+            return {
+                error: serviceErrors.OPERATION_NOT_PERMITTED,
+                review: null,
+            };
+        }
+
+        const _ = await booksData.updateReview(newReview, reviewId);
+
+        return { error: null, review: { message: 'Review was successfully updated!' } };
     };
+};
+
+export default {
+    getAllBooks,
+    getBookById,
+    getBorrowerId,
+    borrowABook,
+    returnABook,
+    getBookReviews,
+    createReview,
+    sendInfoToUserHistory,
+    updateReview,
+};

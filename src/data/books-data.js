@@ -185,17 +185,6 @@ const sendBookIdToUserHistory = async (userId, bookId) => {
     return await pool.query(sql, [userId, bookId]);
 };
 
-const updateReview = async (content, id) => {
-    const sql = `
-        UPDATE reviews SET
-            content = ? 
-        WHERE 
-            review_Id = ?
-        `;
-
-    return await pool.query(sql, [content, id]);
-};
-
 const deleteReview = async (id) => {
     const sql = `
         UPDATE reviews SET
@@ -217,6 +206,32 @@ const getReadHistory = async (id) => {
 
     return await pool.query(sql, [id]);
 };
+
+const getReview = async (reviewId) => {
+    const sql = `
+    SELECT 
+        * 
+    FROM 
+        reviews 
+    WHERE 
+        review_Id = ?
+    `;
+
+    return await pool.query(sql, [reviewId]);
+};
+
+
+const updateReview = async (content, id) => {
+    const sql = `
+        UPDATE reviews SET
+            content = ? 
+        WHERE 
+            review_Id = ?
+        `;
+
+    return await pool.query(sql, [content, id]);
+};
+
 export default {
     getAll,
     getReviews,
@@ -227,7 +242,8 @@ export default {
     updateBookStatusToBorrowed,
     updateBookStatusToFree,
     sendBookIdToUserHistory,
-    updateReview,
     deleteReview,
     getReadHistory,
+    getReview,
+    updateReview,
 };
