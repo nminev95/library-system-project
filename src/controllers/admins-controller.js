@@ -94,14 +94,32 @@ adminsController
             const bookId = result[0];
             const reviewId = result[1];
 
-            const { error, book } = await adminsService.deleteReview(adminsData)(+bookId, +reviewId);
+            const { error, review } = await adminsService.deleteReview(adminsData)(+bookId, +reviewId);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(409).send({ message: 'Book/review not found!' });
             } else {
-                res.status(201).send(book);
+                res.status(201).send(review);
+            }
+        })
+    .put('/books/:id/reviews/:id',
+        authMiddleware,
+        roleMiddleware('admin'),
+        async (req, res) => {
+            const newReview = (Object.values(req.body)).toString();            
+            const result = req.originalUrl.match(/[0-9]+/g);
+            const bookId = result[0];
+            const reviewId = result[1];
+
+            const { error, review } = await adminsService.updateReview(adminsData)(+bookId, +reviewId, newReview);
+
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(409).send({ message: 'Book/review not found!' });
+            } else {
+                res.status(201).send(review);
             }
         });
+
 
 
 

@@ -36,7 +36,7 @@ const deleteUser = adminsData => {
             };
         }
 
-       
+
         const _ = await adminsData.remove(userToDelete);
 
         return { error: null, user: userToDelete };
@@ -70,7 +70,7 @@ const updateBook = adminsData => {
                 book: null,
             };
         }
-        
+
         const _ = await iterateOverBody(updateInfo, id);
 
         return { error: null, book: { message: 'Book info was successfully updated!' } };
@@ -100,13 +100,30 @@ const deleteReview = adminsData => {
         if (foundReview.length === 0) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
-                book: null,
+                review: null,
             };
         }
 
         const _ = await adminsData.removeReview(bookId, reviewId);
 
-        return { error: null, book: { message: 'Review was successfully deleted!' } };
+        return { error: null, review: { message: 'Review was successfully deleted!' } };
+    };
+};
+
+const updateReview = adminsData => {
+    return async (bookId, reviewId, newReview) => {
+        const foundReview = await adminsData.checkBookForReview(bookId, reviewId);
+
+        if (foundReview.length === 0) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                review: null,
+            };
+        }
+
+        const _ = await adminsData.changeReview(newReview, reviewId);
+
+        return { error: null, review: { message: 'Review was successfully updated!' } };
     };
 };
 
@@ -125,4 +142,5 @@ export default {
     updateBook,
     deleteBook,
     deleteReview,
+    updateReview,
 };
