@@ -54,44 +54,47 @@ booksController
         })
     //post a review
     // eslint-disable-next-line no-unused-vars
-    .post('/:id/reviews', async (req, res) => {
+    .post('/:id/reviews',
         authMiddleware,
-            roleMiddleware('user'),
-            async (req, res) => {
-                const { id } = req.params;
-                const { error, reviews } = await booksService.getBookReviews(booksData)(+id);
+        roleMiddleware('user'),
+        async (req, res) => {
+            const { id } = req.params;
+            const review = req.body;
+            const userId = req.user.id;
 
-                if (error === serviceErrors.RECORD_NOT_FOUND) {
-                    res.status(404).send({ message: 'Book not found or doesn\'t have reviews yet!' });
-                } else {
-                    res.status(200).send(reviews);
-                }
-            };
+            const { error, reviews } = await booksService.createReview(booksData)(review, +id, +userId);
+
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'Book not found or doesn\'t have reviews yet!' });
+            } else {
+                res.status(200).send(reviews);
+            }
+
         })
-//borrow a book
-.put('/:id', 
-authMiddleware,
-roleMiddleware('user'),
-async (req, res) => {
-    const id = req.params.id;
-    const user_Id = req.user.id;
+    //borrow a book
+    .put('/:id',
+        authMiddleware,
+        roleMiddleware('user'),
+        async (req, res) => {
+            const id = req.params.id;
+            const user_Id = req.user.id;
 
-    const book = await booksService.getBookById(+id);
-    console.log(book);
-    if (!book) {
-        return null;
-    }
-    if (book.Status === 1 || book.Status === 2) {
-        return res.status(400).send({ message: 'The book is not available' });
-    }
-    const updatedBook = await booksService.borrowABook(user_Id, +id);
+            const book = await booksService.getBookById(+id);
+            console.log(book);
+            if (!book) {
+                return null;
+            }
+            if (book.Status === 1 || book.Status === 2) {
+                return res.status(400).send({ message: 'The book is not available' });
+            }
+            const updatedBook = await booksService.borrowABook(user_Id, +id);
 
-    if (!updatedBook) {
-        res.status(404).send({ message: 'Book not found!' });
-    } else {
-        res.status(200).send(updatedBook);
-    }
-});
+            if (!updatedBook) {
+                res.status(404).send({ message: 'Book not found!' });
+            } else {
+                res.status(200).send(updatedBook);
+            }
+        });
 //return a book 
 // .put('/:id', async (req, res) => {
 //     const id = req.params.id;

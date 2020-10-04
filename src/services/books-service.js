@@ -39,12 +39,26 @@ const getBookReviews = booksData => {
             };
         }
 
-        return { error: null, reviews: reviews};
+        return { error: null, reviews: reviews };
     };
 };
 
-const createReview = async (content, id) => {
-    return await booksData.pushReview(content, id);
+const createReview = booksData => {
+    return async (review, id, userId) => {
+        const history = await booksData.getReadHistory(userId);
+
+        console.log(history[0]);
+        // const reviews = await booksData.pushReview(id);
+
+        if (review.length === 0) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                reviews: null,
+            };
+        }
+
+        return { error: null, reviews: { message: 'Review was added successfully!' } };
+    };
 };
 
 const mapReviews = (data) => {
@@ -62,7 +76,7 @@ const mapReviews = (data) => {
             review: Review,
         };
         if (reviewObject.id) {
-        map.get(id).Reviews.push(reviewObject);
+            map.get(id).Reviews.push(reviewObject);
         } else {
             map.set(id, {
                 id, Title, Author, Description, Status, Reviews: 'No reviews for this book yet.',
@@ -87,6 +101,6 @@ export default {
     getBookById,
     getBookReviews,
     createReview,
-   borrowABook,
-   // returnABook,
+    borrowABook,
+    // returnABook,
 };
