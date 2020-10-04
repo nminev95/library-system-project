@@ -1,3 +1,4 @@
+import booksData from '../data/books-data.js';
 import serviceErrors from './service-errors.js';
 
 const getAllBooks = booksData => {
@@ -160,8 +161,8 @@ const sendInfoToUserHistory = booksData => {
 const updateReview = booksData => {
     return async (newReview, reviewId, userId) => {
         const foundReview = await booksData.getReview(reviewId);
-        const authorId = foundReview[0].user_Id;
-        
+        const authorId = +(foundReview[0].user_Id);
+
         if (foundReview.length === 0) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
@@ -182,6 +183,31 @@ const updateReview = booksData => {
     };
 };
 
+const deleteReview = booksData => {
+    return async (bookId, reviewId, userId) => {
+        const foundReview = await booksData.getReview(reviewId);
+        const authorId = +(foundReview[0].user_Id);
+
+        if (foundReview.length === 0) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                review: null,
+            };
+        }
+
+        if (authorId !== userId) {
+            return {
+                error: serviceErrors.OPERATION_NOT_PERMITTED,
+                review: null,
+            };
+        }
+
+        const _ = await booksData.removeReview(bookId, reviewId);
+
+        return { error: null, review: { message: 'Review was successfully deleted!' } };
+    };
+};
+
 export default {
     getAllBooks,
     getBookById,
@@ -192,4 +218,5 @@ export default {
     createReview,
     sendInfoToUserHistory,
     updateReview,
+    deleteReview,
 };

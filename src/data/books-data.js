@@ -232,6 +232,20 @@ const updateReview = async (content, id) => {
     return await pool.query(sql, [content, id]);
 };
 
+const removeReview = async (bookId, reviewId) => {
+    const sql = `
+    DELETE 
+    FROM
+        reviews
+    WHERE 
+        book_Id = ?
+    AND 
+        review_Id = ?
+    `;
+
+    return await pool.query(sql, [bookId, reviewId]);
+};
+
 export default {
     getAll,
     getReviews,
@@ -246,4 +260,5 @@ export default {
     getReadHistory,
     getReview,
     updateReview,
+    removeReview,
 };

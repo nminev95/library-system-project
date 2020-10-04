@@ -81,12 +81,32 @@ booksController
             const { error, review } = await booksService.updateReview(booksData)(newReview, +id, +userId);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
-                res.status(404).send({ message: 'Book/review not found!' });
-            } 
+                return res.status(404).send({ message: 'Book/review not found!' });
+            }
             if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
-                res.status(404).send({ message: 'Users can update only their own reviews!' });
+                return res.status(404).send({ message: 'Users can update only their own reviews!' });
             }
             res.status(200).send(review);
+        })
+    .delete('/:id/reviews/:id',
+        authMiddleware,
+        roleMiddleware('user'),
+        async (req, res) => {
+            const result = req.originalUrl.match(/[0-9]+/g);
+            const bookId = result[0];
+            const reviewId = result[1];
+            const userId = req.user.id;
+
+            const { error, review } = await booksService.deleteReview(booksData)(+bookId, +reviewId, +userId);
+
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                return res.status(409).send({ message: 'Book/review not found!' });
+            }
+            if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
+                return res.status(404).send({ message: 'Users can delete only their own reviews!' });
+            }
+            res.status(201).send(review);
+            
         })
     //borrow a book
     .put('/:id',

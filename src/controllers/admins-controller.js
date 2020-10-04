@@ -88,9 +88,7 @@ adminsController
         authMiddleware,
         roleMiddleware('admin'),
         async (req, res) => {
-            const regex = /[0-9]+/g;
-            const paramsInfo = req.originalUrl;
-            const result = paramsInfo.match(regex);
+            const result = req.originalUrl.match(/[0-9]+/g);
             const bookId = result[0];
             const reviewId = result[1];
 

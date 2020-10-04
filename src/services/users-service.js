@@ -66,7 +66,6 @@ const updateUser = usersData => {
     };
 };
 
-
 const getLoggedUserId = (request) => {
     const requestAuthArray = request.headers.authorization.split(' ');
     const decoded = jwt.verify(requestAuthArray[1], PRIVATE_KEY);
