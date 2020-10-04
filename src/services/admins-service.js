@@ -127,6 +127,23 @@ const updateReview = adminsData => {
     };
 };
 
+const createReview = adminsData => {
+    return async (bookId, userId, newReview) => {
+        const foundBook = await adminsData.getBook(bookId);
+
+        if (foundBook.length === 0) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                book: null,
+            };
+        }
+
+        const _ = await adminsData.insertReview(newReview, bookId, userId);
+
+        return { error: null, review: { message: 'Review was successfully published!' } };
+    };
+};
+
 const iterateOverBody = (body, id) => {
     for (const update in body) {
         adminsData.updateBookInfo(update, body[update], id);
@@ -143,4 +160,5 @@ export default {
     deleteBook,
     deleteReview,
     updateReview,
+    createReview,
 };

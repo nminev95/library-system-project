@@ -147,6 +147,18 @@ const changeReview = async (content, reviewId) => {
     return await pool.query(sql, [content, reviewId]);
 };
 
+const insertReview = async (content, bookId, user_Id) => {
+    const sql = `
+        INSERT INTO
+            reviews 
+            (content, book_Id, user_Id)
+        VALUES 
+            (?, ?, ?)
+    `;
+
+    return await pool.query(sql, [content, bookId, user_Id]);
+};
+
 export default {
     getAll,
     getBy,
@@ -160,4 +172,5 @@ export default {
     checkBookForReview,
     removeReview,
     changeReview,
+    insertReview,
 };

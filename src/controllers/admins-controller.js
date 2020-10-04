@@ -106,7 +106,7 @@ adminsController
         authMiddleware,
         roleMiddleware('admin'),
         async (req, res) => {
-            const newReview = (Object.values(req.body)).toString();            
+            const newReview = (Object.values(req.body)).toString();
             const result = req.originalUrl.match(/[0-9]+/g);
             const bookId = result[0];
             const reviewId = result[1];
@@ -118,7 +118,23 @@ adminsController
             } else {
                 res.status(201).send(review);
             }
+        })
+    .post('/books/:id/reviews',
+        authMiddleware,
+        roleMiddleware('admin'),
+        async (req, res) => {
+            const newReview = (Object.values(req.body)).toString();
+            const bookId = req.params.id;
+            const userId = req.user.id;
+            const { error, review } = await adminsService.createReview(adminsData)(+bookId, +userId, newReview);
+
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(409).send({ message: 'Book not found!' });
+            } else {
+                res.status(201).send(review);
+            }
         });
+
 
 
 
