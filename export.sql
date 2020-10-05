@@ -86,7 +86,6 @@ CREATE TABLE `books` (
   `description` varchar(45) NOT NULL,
   `borrowedStatus_Id` int(11) NOT NULL,
   `borrower_Id` varchar(45) DEFAULT NULL,
-  `rating` int(11) DEFAULT 0,
   PRIMARY KEY (`book_Id`),
   KEY `fk_books_borrowed_status1_idx` (`borrowedStatus_Id`),
   CONSTRAINT `fk_books_borrowed_status1` FOREIGN KEY (`borrowedStatus_Id`) REFERENCES `status` (`status_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -99,7 +98,7 @@ CREATE TABLE `books` (
 
 LOCK TABLES `books` WRITE;
 /*!40000 ALTER TABLE `books` DISABLE KEYS */;
-INSERT INTO `books` VALUES (4,'HELLO','Pesho','Peshos book.',4,NULL,0),(5,'Gosho Goshov','maikatiIIII','A book about maikati.',6,NULL,0),(8,'book test1','admin','hahahaha',6,NULL,0),(10,'book test2','admina','hahahaha',6,NULL,0),(11,'book test552','admina','hahahaha',6,NULL,0),(12,'asdsadas','hahahaha','neeeeee',6,NULL,0),(13,'ddddddd','ddddddda','ddddddddddddddddddddddddddd',6,NULL,0);
+INSERT INTO `books` VALUES (4,'HELLO','Pesho','Peshos book.',6,'0'),(5,'Gosho Goshov','maikatiIIII','A book about maikati.',5,'8'),(8,'book test1','admin','hahahaha',5,'8'),(10,'book test2','admina','hahahaha',5,'8'),(11,'book test552','admina','hahahaha',6,'0'),(12,'asdsadas','hahahaha','neeeeee',6,'0'),(13,'ddddddd','ddddddda','ddddddddddddddddddddddddddd',6,NULL);
 /*!40000 ALTER TABLE `books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,6 +112,7 @@ DROP TABLE IF EXISTS `books_has_book_ratings`;
 CREATE TABLE `books_has_book_ratings` (
   `book_to_be_rated_Id` int(11) NOT NULL,
   `rating_Id` int(11) NOT NULL,
+  `user_Id` int(11) NOT NULL,
   KEY `fk_books_has_book_ratings_book_ratings1_idx` (`rating_Id`),
   KEY `fk_books_has_book_ratings_books1_idx` (`book_to_be_rated_Id`),
   CONSTRAINT `fk_books_has_book_ratings_book_ratings1` FOREIGN KEY (`rating_Id`) REFERENCES `book_ratings` (`rating_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -126,7 +126,7 @@ CREATE TABLE `books_has_book_ratings` (
 
 LOCK TABLES `books_has_book_ratings` WRITE;
 /*!40000 ALTER TABLE `books_has_book_ratings` DISABLE KEYS */;
-INSERT INTO `books_has_book_ratings` VALUES (4,5),(4,1),(4,3),(4,1),(12,5),(12,5);
+INSERT INTO `books_has_book_ratings` VALUES (4,5,0),(4,1,0),(4,3,0),(4,1,0),(12,5,0),(12,5,0);
 /*!40000 ALTER TABLE `books_has_book_ratings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,13 +143,10 @@ CREATE TABLE `reviews` (
   `isDeleted` tinyint(4) NOT NULL DEFAULT 0,
   `book_Id` int(11) NOT NULL,
   `user_Id` int(11) NOT NULL,
-  `vote_Id` int(11) DEFAULT NULL,
   PRIMARY KEY (`review_Id`),
   KEY `fk_reviews_books1_idx` (`book_Id`),
   KEY `fk_reviews_users1_idx` (`user_Id`),
-  KEY `fk_reviews_reviews_votes1_idx` (`vote_Id`),
   CONSTRAINT `fk_reviews_books1` FOREIGN KEY (`book_Id`) REFERENCES `books` (`book_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_reviews_reviews_votes1` FOREIGN KEY (`vote_Id`) REFERENCES `reviews_votes` (`vote_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_reviews_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -160,8 +157,35 @@ CREATE TABLE `reviews` (
 
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
-INSERT INTO `reviews` VALUES (3,'Very nice book.',0,4,8,NULL),(4,'Stupid book.',0,4,8,NULL);
+INSERT INTO `reviews` VALUES (3,'Very nice book.',0,4,8),(4,'Stupid book.',0,4,8);
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reviews_have_votes`
+--
+
+DROP TABLE IF EXISTS `reviews_have_votes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reviews_have_votes` (
+  `review_Id` int(11) NOT NULL,
+  `vote_Id` int(11) NOT NULL,
+  `user_Id` int(11) NOT NULL,
+  KEY `fk_reviews_votes_has_reviews_reviews1_idx` (`review_Id`),
+  KEY `fk_reviews_votes_has_reviews_reviews_votes1_idx` (`vote_Id`),
+  CONSTRAINT `fk_reviews_votes_has_reviews_reviews1` FOREIGN KEY (`review_Id`) REFERENCES `reviews` (`review_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_reviews_votes_has_reviews_reviews_votes1` FOREIGN KEY (`vote_Id`) REFERENCES `reviews_votes` (`vote_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reviews_have_votes`
+--
+
+LOCK TABLES `reviews_have_votes` WRITE;
+/*!40000 ALTER TABLE `reviews_have_votes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reviews_have_votes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -250,7 +274,6 @@ CREATE TABLE `users` (
   `isDeleted` tinyint(4) NOT NULL DEFAULT 0,
   `banStatus_Id` int(11) DEFAULT NULL,
   `role_id` int(11) NOT NULL DEFAULT 1,
-  `user_history` int(11) DEFAULT NULL,
   PRIMARY KEY (`user_Id`),
   KEY `fk_users_ban_status_idx` (`banStatus_Id`),
   KEY `fk_users_roles1_idx` (`role_id`),
@@ -265,7 +288,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (8,'nikiiiii','$2b$10$sYpROqQtJgYshtOrH0ybDOF/qSYpG1Jat96Kf/JLUkIVhkbREJR7C','niki123@gmail.com',0,NULL,3,4),(9,'mariq','$2b$10$a9s.n0Nn.8BqImlTFc8PLuI1HSW7AnEXuF7YKCN78DatmMGOJCxXC','mariq123@gmail.com',0,NULL,4,NULL);
+INSERT INTO `users` VALUES (8,'nikiiiii','$2b$10$sYpROqQtJgYshtOrH0ybDOF/qSYpG1Jat96Kf/JLUkIVhkbREJR7C','niki123@gmail.com',0,NULL,3),(9,'mariq','$2b$10$a9s.n0Nn.8BqImlTFc8PLuI1HSW7AnEXuF7YKCN78DatmMGOJCxXC','mariq123@gmail.com',0,NULL,4);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -292,6 +315,7 @@ CREATE TABLE `users_history` (
 
 LOCK TABLES `users_history` WRITE;
 /*!40000 ALTER TABLE `users_history` DISABLE KEYS */;
+INSERT INTO `users_history` VALUES (8,11),(8,4);
 /*!40000 ALTER TABLE `users_history` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -304,4 +328,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-04 14:58:36
+-- Dump completed on 2020-10-05 16:25:55

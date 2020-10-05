@@ -9,6 +9,7 @@ import usersController from './controllers/users-controller.js';
 import booksController from './controllers/books-controller.js';
 import authController from './controllers/auth-controller.js';
 import adminsController from './controllers/admins-controller.js';
+import reviewsController from './controllers/reviews-controller.js';
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use('/books', booksController);
 app.use('/users', usersController);
 app.use('/auth', authController);
 app.use('/admin', adminsController);
+app.use('/reviews', reviewsController);
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {

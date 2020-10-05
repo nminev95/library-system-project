@@ -23,7 +23,7 @@ const create = async (username, password,email, role) => {
     `; 
 
     const result = await pool.query(sql, [username, password, email, role]);
-    console.log(result);
+    
 
     return {
         id: result.insertId,

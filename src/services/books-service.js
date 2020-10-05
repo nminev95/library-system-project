@@ -1,4 +1,4 @@
-import booksData from '../data/books-data.js';
+/* eslint-disable no-unused-vars */
 import serviceErrors from './service-errors.js';
 
 const getAllBooks = booksData => {
