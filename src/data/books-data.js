@@ -246,14 +246,43 @@ const removeReview = async (bookId, reviewId) => {
     return await pool.query(sql, [bookId, reviewId]);
 };
 
-const insertRating = async (bookId, ratingId) => {
+const insertRating = async (bookId, ratingId, userId) => {
     const sql = `
     INSERT INTO
-        books_has_book_ratings (book_to_be_rated_Id, rating_Id)
+        books_has_book_ratings (book_to_be_rated_Id, rating_Id, user_Id)
     VALUES
-        (?, ?)`;
+        (?, ?, ?)`;
 
-    return await pool.query(sql, [bookId, ratingId]);
+    return await pool.query(sql, [bookId, ratingId, userId]);
+};
+
+const updateRating = async (ratingId, bookId, userId) => {
+    const sql = `
+    UPDATE 
+    books_has_book_ratings
+    SET 
+    rating_Id = ?
+    WHERE 
+    book_to_be_rated_Id = ?
+    AND 
+    user_Id = ?
+    `;
+
+    return await pool.query(sql, [ratingId, bookId, userId]);
+};
+
+const getUserRatingsForBook = async (bookId, userId) => {
+    const sql = `
+    SELECT * 
+    FROM 
+        books_has_book_ratings
+    WHERE 
+        book_to_be_rated_Id = ?
+    AND 
+        user_Id = ?
+    `;
+
+    return await pool.query(sql, [bookId, userId]);
 };
 
 export default {
@@ -272,4 +301,6 @@ export default {
     updateReview,
     removeReview,
     insertRating,
+    updateRating,
+    getUserRatingsForBook,
 };

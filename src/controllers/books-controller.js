@@ -112,10 +112,11 @@ booksController
     authMiddleware,
         roleMiddleware('user'),
         async (req, res) => {
-            const { id } = req.params;
+            const bookId = req.params.id;
             const rating = (Object.values(req.body)).toString();
+            const userId = req.user.id;
 
-            const { error, review } = await booksService.rateBook(booksData)(+id, +rating);
+            const { error, review } = await booksService.rateBook(booksData)(+bookId, +userId, +rating);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 return res.status(409).send({ message: 'Book not found!' });

@@ -209,7 +209,7 @@ const deleteReview = booksData => {
 };
 
 const rateBook = booksData => {
-    return async (bookId, rating) => {
+    return async (bookId, userId, rating) => {
         const book = await booksData.getById('book_Id', bookId);
 
         if (book.length === 0) {
@@ -219,9 +219,20 @@ const rateBook = booksData => {
             };
         }
 
-        const _ = await booksData.insertRating(bookId, rating);
+        const existingRating = await booksData.getUserRatingsForBook(bookId, userId);
 
-        return { error: null, review: { message: 'You have successfully rated the book!' } };
+        if (existingRating.length === 0) {
+            const _ = await booksData.insertRating(bookId, rating, userId);
+            return { error: null, review: { message: 'You have successfully rated the book!' } };
+        } else {
+            const currentRating = +(existingRating[0].rating_Id);
+            if (currentRating === rating) {
+                return { error: null, review: { message: `You have already rated this book with ${currentRating}! You can update your rating if you have changed your mind!` } };
+            }
+            const _ = await booksData.updateRating(rating, bookId, userId);
+            return { error: null, review: { message: 'You have successfully updated your rate for this book!' } };
+        }
+        
     };
 };
 
