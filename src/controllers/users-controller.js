@@ -12,14 +12,14 @@ usersController
         createValidator(createUserSchema),
         async (req, res) => {
             const createData = req.body;
-            
+
             const { error, user } = await usersService.createUser(usersData)(createData);
             if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(409).send({ message: 'Name not available' });
             } else {
                 res.status(201).send(user);
             }
-    })
+        })
     .put('/:id',
         createValidator(updateUserSchema),
         authMiddleware,
@@ -33,7 +33,7 @@ usersController
                 res.status(400).send({ message: 'Users can only change their own usernames!' });
                 return;
             }
-            
+
             const { error, user } = await usersService.updateUser(usersData)(+id, updateData);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
@@ -43,6 +43,6 @@ usersController
             } else {
                 res.status(200).send(user);
             }
-    });
+        });
 
 export default usersController;

@@ -132,6 +132,15 @@ adminsController
                 res.status(201).send(review);
             }
         });
+        // .put('/users/:id/banstatus',
+        // authMiddleware,
+        // roleMiddleware('admin'),
+        // asyn (req, res) => {
+        //     const userId = req.user.id;
+        //     const banInfo = req.body;
+            
+        // }
+        // );
 
 
 
