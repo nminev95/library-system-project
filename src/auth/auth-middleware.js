@@ -24,7 +24,7 @@ const roleMiddleware = roleName => {
             const set = new Set(parsedDataArray);
 
             if (set.has(token)) {
-                return res.status(400).send({ message: 'You must be logged in to see this content!'});
+                return res.status(400).send({ message: 'You must be logged in to see this content!' });
             }
 
             next();
@@ -44,6 +44,9 @@ const blacklistTokenMiddleware = () => {
         const parsedDataArray = Array.from(JSON.parse(rawData));
         const set = new Set(parsedDataArray);
 
+        if (set.size === 100) {
+            set.clear();
+        }
         if (!set.has(token)) {
             set.add(token);
         }
