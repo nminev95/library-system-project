@@ -13,10 +13,10 @@ booksController
         roleMiddleware('user'),
         async (req, res) => {
             const query = Object.keys(req.query).join('');
-            const value = Object.values(req.query).join('');  
+            const value = Object.values(req.query).join('');
 
             const { error, books } = await booksService.getAllBooks(booksData)(query, value);
-      
+
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'No books found!' });
             } else {
@@ -34,6 +34,8 @@ booksController
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'Book not found!' });
+            } else if (error === serviceErrors.NOT_A_NUMBER) {
+                res.status(404).send({ message: 'Id must be a valid positive integer!' });
             } else {
                 res.status(200).send(book);
             }
@@ -63,12 +65,16 @@ booksController
             const review = req.body;
             const userId = req.user.id;
 
-            const { error, reviews } = await booksService.createReview(booksData)(review, +id, +userId);
+            const { error } = await booksService.createReview(booksData)(review.content, +id, +userId);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
-                res.status(404).send({ message: 'Book not found or doesn\'t have reviews yet!' });
+                res.status(404).send({ message: 'Book not found!' });
+            } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
+                res.status(400).send({ message: 'You can only review books you have read!' });
+            } else if (error === serviceErrors.DUPLICATE_RECORD) {
+                res.status(400).send({ message: 'You may review each book only once!' });
             } else {
-                res.status(200).send(reviews);
+                res.status(200).send({ message: 'Review successfully added!' });
             }
         })
     .put('/:id/reviews/:id',
@@ -76,7 +82,7 @@ booksController
         roleMiddleware('user'),
         validateBanStatusMiddleware(),
         async (req, res) => {
-            const newReview = (Object.values(req.body)).toString();
+            const newReview = req.body.content;
             const { id } = req.params;
             const userId = req.user.id;
 
@@ -84,23 +90,23 @@ booksController
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 return res.status(404).send({ message: 'Book/review not found!' });
-            }
-            if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
+            } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
                 return res.status(404).send({ message: 'Users can update only their own reviews!' });
+            } else if (error === serviceErrors.DUPLICATE_RECORD) {
+                return res.status(400).send({ message: 'Your new review should be different from the old one!' });
+            } else {
+                res.status(200).send(review);
             }
-            res.status(200).send(review);
         })
     .delete('/:id/reviews/:id',
         authMiddleware,
         roleMiddleware('user'),
         validateBanStatusMiddleware(),
         async (req, res) => {
-            const result = req.originalUrl.match(/[0-9]+/g);
-            const bookId = result[0];
-            const reviewId = result[1];
+            const url = req.originalUrl;
             const userId = req.user.id;
 
-            const { error, review } = await booksService.deleteReview(booksData)(+bookId, +reviewId, +userId);
+            const { error, review } = await booksService.deleteReview(booksData)(url, +userId);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 return res.status(409).send({ message: 'Book/review not found!' });
@@ -117,16 +123,20 @@ booksController
         validateBanStatusMiddleware(),
         async (req, res) => {
             const bookId = req.params.id;
-            const rating = (Object.values(req.body)).toString();
+            const rating = req.body.rating;
             const userId = req.user.id;
 
-            const { error, review } = await booksService.rateBook(booksData)(+bookId, +userId, +rating);
+            const { error } = await booksService.rateBook(booksData)(+bookId, +userId, +rating);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
-                return res.status(409).send({ message: 'Book not found!' });
+                res.status(409).send({ message: 'Book not found!' });
+            } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
+                res.status(404).send({ message: 'Rating should be a valid integer in range [1-5]!' });
+            } else if (error === serviceErrors.DUPLICATE_RECORD) {
+                res.status(400).send({ message: 'You have already rated this book! You can update your rating if you have changed your mind!' });
+            } else {
+                res.status(201).send({ message: 'You have successfully rated the book!' });
             }
-
-            res.status(201).send(review);
 
         })
     //borrow a book
@@ -138,21 +148,14 @@ booksController
             const id = req.params.id;
             const user_Id = req.user.id;
 
-            const bookInfo = await booksService.getBookById(booksData)(+id);
-            const destrBookInfo = (Object.values(bookInfo).flat());
-            const bookStatus = (destrBookInfo[1].Status);
-
-            const { error } = await booksService.borrowABook(booksData)(user_Id, +id);
-
-
-            if (bookStatus === 'Unlisted' || bookStatus === 'Borrowed') {
-                return res.status(400).send({ message: 'The book is not available' });
-            }
+            const { error } = await booksService.borrowABook(booksData)(+id, +user_Id);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
-                res.status(404).send({ message: 'The books is unavailable!!' });
+                res.status(404).send({ message: 'Book not found!' });
+            } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
+                res.status(404).send({ message: 'The book is already borrowed or unavailable!' });
             } else {
-                res.status(200).send({ message: 'The book is added successfully!' });
+                res.status(200).send({ message: 'You have borrowed the book successfully!' });
             }
         })
 
@@ -165,30 +168,14 @@ booksController
             const id = req.params.id;
             const user_Id = req.user.id;
 
-            const bookInfo = await booksService.getBookById(booksData)(+id);
-            const destrBookInfo = (Object.values(bookInfo).flat());
-            const bookStatus = (destrBookInfo[1].Status);
+            const { error } = await booksService.returnABook(booksData)(+id, +user_Id);
 
-
-            const borrowerInfo = await booksService.getBorrowerId(booksData)(+id);
-            const destrBorrowerInfo = (Object.values(borrowerInfo).flat());
-            const borrowerId = Number((destrBorrowerInfo[1].Borrower));
-            console.log(borrowerId);
-
-            if (bookStatus === 'Borrowed' && borrowerId !== user_Id) {
-                return res.status(400).send({ message: 'The book has been borrowed by another user!' });
-            }
-
-            if (bookStatus === 'Borrowed' && borrowerId === user_Id) {
-                const { error } = await booksService.returnABook(booksData)(+id);
-                // eslint-disable-next-line no-unused-vars
-                const sendDataToHistory = await booksService.sendInfoToUserHistory(booksData)(user_Id, +id);
-
-                if (error === serviceErrors.RECORD_NOT_FOUND) {
-                    res.status(404).send({ message: 'Book returning denied!!' });
-                } else {
-                    res.status(200).send('You have returned the book successfully!');
-                }
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'Book not found!' });
+            } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
+                res.status(400).send({ message: 'Book was either borrowed by another user or is not borrowed at all!!' });
+            } else {
+                res.status(200).send({ message: 'You have returned the book successfully!' });
             }
         });
 

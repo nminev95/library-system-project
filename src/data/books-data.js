@@ -36,7 +36,7 @@ const getAll = async () => {
     return await pool.query(sql);
 };
 
-const getById = async (column, value) => {
+const getById = async (value) => {
     const sql = `
         SELECT
             b.book_Id AS id,
@@ -130,14 +130,14 @@ const searchBy = async (column, value) => {
 
 };
 
-const pushReview = async (content, id) => {
+const pushReview = async (content, id, userId) => {
     const sql = `
         INSERT INTO
             reviews(content, isDeleted, book_Id, user_Id) 
         VALUES
-            (?, '0', ?, 1)`;
+            (?, '0', ?, ?)`;
 
-    return await pool.query(sql, [content, id]);
+    return await pool.query(sql, [content, id, userId]);
 };
 
 const updateBookStatusToBorrowed = async (user_id, book_id) => {
@@ -199,8 +199,8 @@ const deleteReview = async (id) => {
 const getReadHistory = async (id) => {
     const sql = `
     SELECT 
-    user_Id, username, user_history 
-    FROM users 
+    *
+    FROM users_history
     WHERE user_Id = ?
     `;
 
@@ -285,6 +285,21 @@ const getUserRatingsForBook = async (bookId, userId) => {
     return await pool.query(sql, [bookId, userId]);
 };
 
+const getUserReviews = async (userId, bookId) => {
+    const sql = `
+    SELECT * 
+    FROM
+        reviews WHERE user_Id = ? AND book_Id = ?`;
+
+    return await pool.query(sql, [userId, bookId]);
+};
+
+const getReviewByContent = async (content) => {
+    const sql = 'SELECT * FROM reviews WHERE content LIKE ?';
+
+    return await pool.query(sql, [content]);
+};
+
 export default {
     getAll,
     getReviews,
@@ -303,4 +318,6 @@ export default {
     insertRating,
     updateRating,
     getUserRatingsForBook,
+    getUserReviews,
+    getReviewByContent,
 };
