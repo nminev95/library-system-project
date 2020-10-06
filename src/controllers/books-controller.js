@@ -3,6 +3,7 @@ import booksData from '../data/books-data.js';
 import booksService from '../services/books-service.js';
 import serviceErrors from '../services/service-errors.js';
 import { authMiddleware, roleMiddleware } from '../auth/auth-middleware.js';
+import { validateBanStatusMiddleware } from '../validations/index_2.js';
 const booksController = express.Router();
 
 booksController
@@ -10,8 +11,8 @@ booksController
     .get('/',
         authMiddleware,
         roleMiddleware('user'),
+        validateBanStatusMiddleware(),
         async (req, res) => {
-            console.log(req.user);
             const query = Object.keys(req.query).join('');
             const value = Object.values(req.query).join('');
 
