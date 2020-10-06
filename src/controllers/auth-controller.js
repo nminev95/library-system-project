@@ -3,7 +3,7 @@ import createToken from './../auth/create-token.js';
 import usersService from '../services/users-service.js';
 import usersData from '../data/users-data.js';
 import serviceErrors from '../services/service-errors.js';
-
+import { authMiddleware, roleMiddleware, blacklistTokenMiddleware } from '../auth/auth-middleware.js';
 const authController = express.Router();
 
 authController
@@ -22,18 +22,20 @@ authController
                 role: user.role,
             };
             const token = createToken(payload);
-        
+
             res.status(200).send({
                 token: token,
             });
         }
-        
+
     })
-    .post('/signout', async (req, res) => {
-        req.logout();
-        console.log(req.user);
-        //res.status(200).send({message:'Successfull logout'});
-        res.redirect('/signin');
-      });
+    .post('/signout',
+        authMiddleware,
+        roleMiddleware('user'), 
+        blacklistTokenMiddleware(),
+        async (req, res) => {
+            req.logout();
+            res.status(200).send({message:'Successfull logout!'});  
+        });
 
 export default authController;
