@@ -11,18 +11,16 @@ booksController
         authMiddleware,
         roleMiddleware('user'),
         async (req, res) => {
-            console.log(req.user);
             const query = Object.keys(req.query).join('');
-            const value = Object.values(req.query).join('');
+            const value = Object.values(req.query).join('');  
 
-            if (!req.query.author) {
-                const books = await booksService.getAllBooks(booksData)(query, value);
-                res.status(200).json(books);
+            const { error, books } = await booksService.getAllBooks(booksData)(query, value);
+      
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'No books found!' });
+            } else {
+                res.status(200).send(books);
             }
-            // if (!req.query.title) {
-            //     const books = await booksService.getAllBooks(booksData)(query, value);
-            //     res.status(200).json(books);
-            // }
         })
     //get a book by id
     .get('/:id',
@@ -106,10 +104,10 @@ booksController
                 return res.status(404).send({ message: 'Users can delete only their own reviews!' });
             }
             res.status(201).send(review);
-            
+
         })
-    .put('/:id/rate', 
-    authMiddleware,
+    .put('/:id/rate',
+        authMiddleware,
         roleMiddleware('user'),
         async (req, res) => {
             const bookId = req.params.id;
@@ -121,9 +119,9 @@ booksController
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 return res.status(409).send({ message: 'Book not found!' });
             }
-            
+
             res.status(201).send(review);
-            
+
         })
     //borrow a book
     .put('/:id',
@@ -136,7 +134,7 @@ booksController
             const bookInfo = await booksService.getBookById(booksData)(+id);
             const destrBookInfo = (Object.values(bookInfo).flat());
             const bookStatus = (destrBookInfo[1].Status);
-            console.log(bookStatus);
+
             const { error } = await booksService.borrowABook(booksData)(user_Id, +id);
 
 
@@ -162,7 +160,7 @@ booksController
             const bookInfo = await booksService.getBookById(booksData)(+id);
             const destrBookInfo = (Object.values(bookInfo).flat());
             const bookStatus = (destrBookInfo[1].Status);
-            console.log(bookStatus);
+
 
             const borrowerInfo = await booksService.getBorrowerId(booksData)(+id);
             const destrBorrowerInfo = (Object.values(borrowerInfo).flat());

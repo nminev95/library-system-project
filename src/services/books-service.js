@@ -2,16 +2,34 @@
 import serviceErrors from './service-errors.js';
 
 const getAllBooks = booksData => {
-    return async (queryType, filter) => {
+    return async (queryType, value) => {
 
-        if (filter) {
-            const books = await booksData.searchBy(queryType, filter);
-            return mapReviewsAndRating(books);
+        if (queryType && value) {
+            const books = await booksData.searchBy(queryType, value);
+
+            if (books.length === 0) {
+                return {
+                    error: serviceErrors.RECORD_NOT_FOUND,
+                    books: null,
+                };
+            }
+
+            return { error: null, books: mapReviewsAndRating(books) };
+
+        } else {
+            const books = await booksData.getAll();
+
+            if (books.length === 0) {
+                return {
+                    error: serviceErrors.RECORD_NOT_FOUND,
+                    books: null,
+                };
+            }
+            return { error: null, books: mapReviewsAndRating(books) };
         }
-        const books = await booksData.getAll();
-        return mapReviewsAndRating(books);
     };
 };
+
 
 const getBookById = booksData => {
     return async (id) => {
@@ -232,7 +250,7 @@ const rateBook = booksData => {
             const _ = await booksData.updateRating(rating, bookId, userId);
             return { error: null, review: { message: 'You have successfully updated your rate for this book!' } };
         }
-        
+
     };
 };
 
