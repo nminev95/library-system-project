@@ -3,7 +3,7 @@ import { authMiddleware, roleMiddleware } from '../auth/auth-middleware.js';
 import serviceErrors from '../services/service-errors.js';
 import adminsService from '../services/admins-service.js';
 import adminsData from '../data/admins-data.js';
-
+import { createValidator, banUserSchema } from '../validations/index_2.js';
 
 const adminsController = express.Router();
 
@@ -131,19 +131,22 @@ adminsController
             } else {
                 res.status(201).send(review);
             }
+        })
+    .post('/users/:id/banstatus',
+        authMiddleware,
+        roleMiddleware('admin'),
+        createValidator(banUserSchema),
+        async (req, res) => {
+            const userId = req.params.id;
+            const { description, expirationDate } = req.body;
+
+            const { error, ban } = await adminsService.banUser(adminsData)(description, expirationDate, userId);
+            if (error === serviceErrors.DUPLICATE_RECORD) {
+                res.status(409).send({ message: 'The user has already been banned!' });
+            } else {
+                res.status(201).send(ban);
+            }
         });
-        // .put('/users/:id/banstatus',
-        // authMiddleware,
-        // roleMiddleware('admin'),
-        // asyn (req, res) => {
-        //     const userId = req.user.id;
-        //     const banInfo = req.body;
-            
-        // }
-        // );
-
-
-
 
 
 export default adminsController;

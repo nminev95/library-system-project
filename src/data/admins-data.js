@@ -248,6 +248,28 @@ const insertReview = async (content, bookId, user_Id) => {
     return await pool.query(sql, [content, bookId, user_Id]);
 };
 
+const sendBannedUserData = async (description, expirationDate, userId) => {
+    const sql = `
+        INSERT INTO
+            ban_status 
+            (description, expirationDate, user_Id)
+        VALUES 
+            (?, ?, ?)
+    `;
+
+    return await pool.query(sql, [description, expirationDate, userId]);
+};
+
+const getBanStatus = async (id) => {
+    const sql = `
+    SELECT * FROM ban_status WHERE user_Id = ?;
+    `;
+
+    const ban = await pool.query(sql, [id]);
+    return ban[0];
+};
+
+
 export default {
     getAll,
     getBy,
@@ -262,4 +284,6 @@ export default {
     removeReview,
     changeReview,
     insertReview,
+    sendBannedUserData,
+    getBanStatus,
 };

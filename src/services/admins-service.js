@@ -150,6 +150,25 @@ const iterateOverBody = (body, id) => {
     }
 };
 
+const banUser = adminsData => {
+    return async (description, expirationDate, userId) => {
+
+        const getIfBanExist = await adminsData.getBanStatus(+userId);
+
+        if (getIfBanExist) {
+            return {
+                error: serviceErrors.DUPLICATE_RECORD,
+                ban: null,
+            };
+
+        }
+        const sendBanData = await adminsData.sendBannedUserData(description, expirationDate, +userId);
+
+        return { error: null, ban: { message: 'The user is banned!' } };
+
+    };
+};
+
 
 export default {
     getAllUsers,
@@ -161,4 +180,5 @@ export default {
     deleteReview,
     updateReview,
     createReview,
+    banUser,
 };

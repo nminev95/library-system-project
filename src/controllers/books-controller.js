@@ -11,7 +11,6 @@ booksController
     .get('/',
         authMiddleware,
         roleMiddleware('user'),
-        validateBanStatusMiddleware(),
         async (req, res) => {
             const query = Object.keys(req.query).join('');
             const value = Object.values(req.query).join('');  
@@ -28,6 +27,7 @@ booksController
     .get('/:id',
         authMiddleware,
         roleMiddleware('user'),
+        validateBanStatusMiddleware(),
         async (req, res) => {
             const { id } = req.params;
             const { error, book } = await booksService.getBookById(booksData)(+id);
@@ -57,6 +57,7 @@ booksController
     .post('/:id/reviews',
         authMiddleware,
         roleMiddleware('user'),
+        validateBanStatusMiddleware(),
         async (req, res) => {
             const { id } = req.params;
             const review = req.body;
@@ -73,6 +74,7 @@ booksController
     .put('/:id/reviews/:id',
         authMiddleware,
         roleMiddleware('user'),
+        validateBanStatusMiddleware(),
         async (req, res) => {
             const newReview = (Object.values(req.body)).toString();
             const { id } = req.params;
@@ -91,6 +93,7 @@ booksController
     .delete('/:id/reviews/:id',
         authMiddleware,
         roleMiddleware('user'),
+        validateBanStatusMiddleware(),
         async (req, res) => {
             const result = req.originalUrl.match(/[0-9]+/g);
             const bookId = result[0];
@@ -111,6 +114,7 @@ booksController
     .put('/:id/rate',
         authMiddleware,
         roleMiddleware('user'),
+        validateBanStatusMiddleware(),
         async (req, res) => {
             const bookId = req.params.id;
             const rating = (Object.values(req.body)).toString();
@@ -129,6 +133,7 @@ booksController
     .put('/:id',
         authMiddleware,
         roleMiddleware('user'),
+        validateBanStatusMiddleware(),
         async (req, res) => {
             const id = req.params.id;
             const user_Id = req.user.id;
@@ -155,6 +160,7 @@ booksController
     .post('/:id',
         authMiddleware,
         roleMiddleware('user'),
+        validateBanStatusMiddleware(),
         async (req, res) => {
             const id = req.params.id;
             const user_Id = req.user.id;
