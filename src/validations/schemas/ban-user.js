@@ -4,7 +4,7 @@ export const banUserSchema = {
             return 'Description is required';
         }
         
-        if (typeof value !== 'string' || value.length < 3 || value.length > 100) {
+        if (typeof value !== 'string' || value.trim().length < 3 || value.trim().length > 100) {
             return 'Description should be a string in range [3..100]';
         }
 

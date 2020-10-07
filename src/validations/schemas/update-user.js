@@ -4,7 +4,7 @@ export const updateUserSchema = {
             return null;
         }
         
-        if (typeof value !== 'string' || value.length < 3 || value.length > 25) {
+        if (typeof value !== 'string' || value.trim().length < 3 || value.trim().length > 25) {
             return 'Name should be a string in range [3..25]';
         }
 

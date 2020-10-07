@@ -3,7 +3,7 @@ import booksData from '../data/books-data.js';
 import booksService from '../services/books-service.js';
 import serviceErrors from '../services/service-errors.js';
 import { authMiddleware, roleMiddleware } from '../auth/auth-middleware.js';
-import { validateBanStatusMiddleware } from '../validations/index_2.js';
+import { validateBanStatusMiddleware, createValidator, createReviewSchema } from '../validations/index_2.js';
 const booksController = express.Router();
 
 booksController
@@ -58,12 +58,13 @@ booksController
         authMiddleware,
         roleMiddleware('user'),
         validateBanStatusMiddleware(),
+        createValidator(createReviewSchema),
         async (req, res) => {
             const { id } = req.params;
-            const review = req.body;
+            const {content} = req.body;
             const userId = req.user.id;
 
-            const { error, reviews } = await booksService.createReview(booksData)(review, +id, +userId);
+            const { error, reviews } = await booksService.createReview(booksData)(content, +id, +userId);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'Book not found or doesn\'t have reviews yet!' });

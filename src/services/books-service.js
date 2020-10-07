@@ -77,13 +77,12 @@ const getBookReviews = booksData => {
 };
 
 const createReview = booksData => {
-    return async (review, id, userId) => {
+    return async (content, id, userId) => {
         const history = await booksData.getReadHistory(userId);
 
-        console.log(history[0]);
-        // const reviews = await booksData.pushReview(id);
+        const reviews = await booksData.pushReview(content, id, userId);
 
-        if (review.length === 0) {
+        if (content.length === 0) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
                 reviews: null,
