@@ -7,4 +7,6 @@ export default {
     OPERATION_NOT_PERMITTED: 3,
     /** username/password mismatch */
     INVALID_SIGNIN: 4,
+    /** Input is not a number */
+    NOT_A_NUMBER: 5,
 };

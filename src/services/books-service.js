@@ -33,7 +33,13 @@ const getAllBooks = booksData => {
 
 const getBookById = booksData => {
     return async (id) => {
-        const book = await booksData.getById('user_Id', id);
+        if (isNaN(id) || id < 0) {
+            return {
+                error: serviceErrors.NOT_A_NUMBER,
+                book: null,
+            };
+        }
+        const book = await booksData.getById(id);
 
         if (book.length === 0) {
             return {
@@ -78,18 +84,35 @@ const getBookReviews = booksData => {
 
 const createReview = booksData => {
     return async (content, id, userId) => {
-        const history = await booksData.getReadHistory(userId);
 
-        const reviews = await booksData.pushReview(content, id, userId);
+        const book = await booksData.getById(+id);
 
-        if (content.length === 0) {
+        if (book.length === 0) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
+                book: null,
+            };
+        }
+
+        const history = await booksData.getReadHistory(userId);
+
+        if (!(history.some(el => (+(el.book_Id) === id)))) {
+            return {
+                error: serviceErrors.OPERATION_NOT_PERMITTED,
                 reviews: null,
             };
         }
 
-        return { error: null, reviews: { message: 'Review was added successfully!' } };
+        const bookUserReviews = await booksData.getUserReviews(userId, id);
+
+        if (bookUserReviews.length !== 0) {
+            return {
+                error: serviceErrors.DUPLICATE_RECORD,
+                book: null,
+            };
+        }
+        const reviews = await booksData.pushReview(content, id, userId);
+        return { error: null, reviews: reviews };
     };
 };
 
@@ -133,52 +156,62 @@ const mapReviewsAndRating = (data) => {
 
 const borrowABook = booksData => {
     return async (bookID, userID) => {
-        const borrowedBook = await booksData.updateBookStatusToBorrowed(bookID, userID);
 
-        if (!borrowedBook) {
+        const book = await booksData.getById(+bookID);
+
+        if (book.length === 0) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
                 borrowedBook: null,
             };
         }
+        const bookStatus = (book[0].Status);
+
+        if (bookStatus === 'Unlisted' || bookStatus === 'Borrowed') {
+            return {
+                error: serviceErrors.OPERATION_NOT_PERMITTED,
+                borrowedBook: null,
+            };
+        }
+
+        const borrowedBook = await booksData.updateBookStatusToBorrowed(userID, bookID);
 
         return { error: null, borrowedBook: borrowedBook };
     };
 };
 
 const returnABook = booksData => {
-    return async (bookId) => {
-        const returnedBook = await booksData.updateBookStatusToFree(+bookId);
+    return async (bookId, userId) => {
 
-        if (!returnedBook) {
+        const bookInfo = await booksData.getById(+bookId);
+
+        if (bookInfo.length === 0) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
-                returnedBook: null,
+                borrowedBook: null,
             };
         }
 
-        return { error: null, returnedBook: returnedBook };
-    };
-};
+        const bookStatus = bookInfo[0].Status;
+        const borrowerInfo = await booksData.getBookBorrowerId(+bookId);
+        const borrowerId = +(borrowerInfo[0].Borrower);
 
-const sendInfoToUserHistory = booksData => {
-    return async (userID, bookID) => {
-        const sentData = await booksData.sendBookIdToUserHistory(userID, bookID);
-
-        if (!sentData) {
+        if (bookStatus === 'Unlisted' || bookStatus === 'Free' || borrowerId !== userId) {
             return {
                 error: serviceErrors.OPERATION_NOT_PERMITTED,
-                sentData: null,
+                borrowedBook: null,
             };
         }
-        return { error: null, sentData: sentData };
+
+        const sendDataToHistory = await booksData.sendBookIdToUserHistory(userId, bookId);
+        const returnedBook = await booksData.updateBookStatusToFree(+bookId);
+        return { error: null, returnedBook: returnedBook };
     };
 };
 
 const updateReview = booksData => {
     return async (newReview, reviewId, userId) => {
         const foundReview = await booksData.getReview(reviewId);
-        const authorId = +(foundReview[0].user_Id);
 
         if (foundReview.length === 0) {
             return {
@@ -186,6 +219,8 @@ const updateReview = booksData => {
                 review: null,
             };
         }
+
+        const authorId = +(foundReview[0].user_Id);
 
         if (authorId !== userId) {
             return {
@@ -194,6 +229,14 @@ const updateReview = booksData => {
             };
         }
 
+        const content = await booksData.getReviewByContent(newReview);
+
+        if (content.length !== 0) {
+            return {
+                error: serviceErrors.DUPLICATE_RECORD,
+                review: null,
+            };
+        }
         const _ = await booksData.updateReview(newReview, reviewId);
 
         return { error: null, review: { message: 'Review was successfully updated!' } };
@@ -201,9 +244,12 @@ const updateReview = booksData => {
 };
 
 const deleteReview = booksData => {
-    return async (bookId, reviewId, userId) => {
+    return async (url, userId) => {
+
+        const result = url.match(/[0-9]+/g);
+        const bookId = result[0];
+        const reviewId = result[1];
         const foundReview = await booksData.getReview(reviewId);
-        const authorId = +(foundReview[0].user_Id);
 
         if (foundReview.length === 0) {
             return {
@@ -211,6 +257,8 @@ const deleteReview = booksData => {
                 review: null,
             };
         }
+
+        const authorId = +(foundReview[0].user_Id);
 
         if (authorId !== userId) {
             return {
@@ -227,12 +275,19 @@ const deleteReview = booksData => {
 
 const rateBook = booksData => {
     return async (bookId, userId, rating) => {
-        const book = await booksData.getById('book_Id', bookId);
+        const book = await booksData.getById(bookId);
 
         if (book.length === 0) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
-                book: null,
+                rate: null,
+            };
+        }
+
+        if (rating < 1 || rating > 5) {
+            return {
+                error: serviceErrors.OPERATION_NOT_PERMITTED,
+                rate: null,
             };
         }
 
@@ -240,14 +295,20 @@ const rateBook = booksData => {
 
         if (existingRating.length === 0) {
             const _ = await booksData.insertRating(bookId, rating, userId);
-            return { error: null, review: { message: 'You have successfully rated the book!' } };
+            return { 
+                error: null, 
+                rate: _, 
+            };
         } else {
             const currentRating = +(existingRating[0].rating_Id);
             if (currentRating === rating) {
-                return { error: null, review: { message: `You have already rated this book with ${currentRating}! You can update your rating if you have changed your mind!` } };
+                return { 
+                    error: serviceErrors.DUPLICATE_RECORD, 
+                    rate: null,
+                };
             }
             const _ = await booksData.updateRating(rating, bookId, userId);
-            return { error: null, review: { message: 'You have successfully updated your rate for this book!' } };
+            return { error: null, rate: { message: 'You have successfully updated your rate for this book!' } };
         }
 
     };
@@ -261,7 +322,6 @@ export default {
     returnABook,
     getBookReviews,
     createReview,
-    sendInfoToUserHistory,
     updateReview,
     deleteReview,
     rateBook,
