@@ -161,7 +161,7 @@ const searchBy = async (column, value) => {
 * @param {string} content - Review content.
 * @param {number} id - The unique book number.
 * @param {number} user id - The unique user number.
-* @returns {Promise<object>}
+* @returns {Promise<object>} Promise.
 */
 const pushReview = async (content, id, userId) => {
     const sql = `
@@ -178,7 +178,7 @@ const pushReview = async (content, id, userId) => {
 * @async
 * @param {number}  id - The uniique user number. 
 * @param {number}  id - The unique book number.
-* @returns {Promise<object>}
+* @returns {Promise<object>} Promise.
 */
 const updateBookStatusToBorrowed = async (user_id, book_id) => {
     const sql = `
