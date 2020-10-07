@@ -138,7 +138,6 @@ const getBook = async (id) => {
 */
 const updateBookInfo = async (bookInfo) => {
     const { book_Id, title, author, description } = bookInfo;
-    console.log(bookInfo)
     const sql = `
     UPDATE books 
     SET 

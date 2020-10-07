@@ -1,9 +1,16 @@
+/* eslint-disable no-unused-vars */
 import pool from '../data/pool.js';
 
 export const createValidator = schema => {
     return (req, res, next) => {
         const body = req.body;
+        const bodyKeys = Object.keys(body);
         const validations = Object.keys(schema);
+
+
+        if (bodyKeys.length > validations.length) {
+            res.status(400).send({ message: 'You have entered more properties than needed!' });
+        }
 
         const fails = validations
             .map(v => schema[v](body[v]))

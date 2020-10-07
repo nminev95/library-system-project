@@ -3,7 +3,7 @@ import { authMiddleware, roleMiddleware } from '../auth/auth-middleware.js';
 import serviceErrors from '../services/service-errors.js';
 import adminsService from '../services/admins-service.js';
 import adminsData from '../data/admins-data.js';
-import { createValidator, banUserSchema, createBookSchema } from '../validations/index_2.js';
+import { createValidator, banUserSchema, createBookSchema,  updateBookSchema} from '../validations/index_2.js';
 
 const adminsController = express.Router();
 
@@ -61,6 +61,7 @@ adminsController
     .put('/books/:id',
         authMiddleware,
         roleMiddleware('admin'),
+        createValidator(updateBookSchema),
         async (req, res) => {
             const { id } = req.params;
             const bookInfo = req.body;
