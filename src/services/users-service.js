@@ -7,7 +7,6 @@ import { PRIVATE_KEY, DEFAULT_USER_ROLE } from './../config.js';
 const signInUser = usersData => {
     return async (username, password) => {
         const user = await usersData.getWithRole(username);
-        console.log(user)
         if (!user || !(await bcrypt.compare(password, user.password))) {
             return {
                 error: serviceErrors.INVALID_SIGNIN,

@@ -20,7 +20,7 @@ const insertBook = async (title, author, description, status) => {
 };
 
 /** 
-* Gets all books from the database. 
+* Gets all users from the database. 
 * @async
 * @returns {Promise<object>} Promise with data from the database.
 */
@@ -271,6 +271,14 @@ const insertReview = async (content, bookId, user_Id) => {
     return await pool.query(sql, [content, bookId, user_Id]);
 };
 
+/** 
+* Creates a record for a banned user in the database.
+* @async
+* @param {string} description - A short description of a ban reasons.
+* @param {number} expiration date - The date of ban expiration.
+* @param {number} id - The unique number of banned user.
+* @returns {Promise<object>} Promise.
+**/
 const sendBannedUserData = async (description, expirationDate, userId) => {
     const sql = `
         INSERT INTO
@@ -282,7 +290,12 @@ const sendBannedUserData = async (description, expirationDate, userId) => {
 
     return await pool.query(sql, [description, expirationDate, userId]);
 };
-
+/** 
+* Gets user ban status info from the database. 
+* @async
+* @param {number} id - The unique number of the banned user.
+* @returns {Promise<object>} Promise with the banned user data if found in the database.
+*/
 const getBanStatus = async (id) => {
     const sql = `
     SELECT * FROM ban_status WHERE user_Id = ?;
