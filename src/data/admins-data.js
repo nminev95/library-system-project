@@ -8,15 +8,15 @@ import pool from './pool.js';
 * @param {string} description - a short description of the book
 * @returns {Promise<object>}
 */
-const insertBook = async (title, author, description) => {
+const insertBook = async (title, author, description, status) => {
     const sql = `
         INSERT INTO
-            books (title, author, description)
+            books (title, author, description, borrowedStatus_Id)
         VALUES 
-            (?, ?, ?)
+            (?, ?, ?, ?)
         `;
 
-    return await pool.query(sql, [title, author, description]);
+    return await pool.query(sql, [title, author, description, status]);
 };
 
 /** 

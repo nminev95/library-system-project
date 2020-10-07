@@ -3,7 +3,7 @@ import { authMiddleware, roleMiddleware } from '../auth/auth-middleware.js';
 import serviceErrors from '../services/service-errors.js';
 import adminsService from '../services/admins-service.js';
 import adminsData from '../data/admins-data.js';
-import { createValidator, banUserSchema } from '../validations/index_2.js';
+import { createValidator, banUserSchema, createBookSchema } from '../validations/index_2.js';
 
 const adminsController = express.Router();
 
@@ -47,9 +47,10 @@ adminsController
     .post('/books',
         authMiddleware,
         roleMiddleware('admin'),
+        createValidator(createBookSchema),
         async (req, res) => {
-            const bookInfo = req.body;
-            const { error, book } = await adminsService.createBook(adminsData)(bookInfo);
+            const {title, description, author, status} = req.body;
+            const { error, book } = await adminsService.createBook(adminsData)(title, description, author, status);
 
             if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(409).send({ message: 'Book is already in library!' });

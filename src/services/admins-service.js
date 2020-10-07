@@ -44,8 +44,8 @@ const deleteUser = adminsData => {
 };
 
 const createBook = adminsData => {
-    return async (bookInfo) => {
-        const foundBook = await adminsData.findBook(bookInfo.title, bookInfo.author);
+    return async (title, description, author, status) => {
+        const foundBook = await adminsData.findBook(title, author);
 
         if (foundBook.length !== 0) {
             return {
@@ -54,7 +54,7 @@ const createBook = adminsData => {
             };
         }
 
-        const _ = await adminsData.insertBook(bookInfo.title, bookInfo.author, bookInfo.description);
+        const _ = await adminsData.insertBook(title, author, description, status);
 
         return { error: null, book: { message: 'Book was successfully added to library!' } };
     };
