@@ -30,6 +30,7 @@ const getUserById = adminsData => {
 const deleteUser = adminsData => {
     return async (id) => {
         const userToDelete = await adminsData.getBy('user_Id', id);
+
         if (!userToDelete) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
@@ -38,7 +39,7 @@ const deleteUser = adminsData => {
         }
 
 
-        const _ = await adminsData.remove(userToDelete);
+        const _ = await adminsData.remove(id);
 
         return { error: null, user: userToDelete };
     };
@@ -148,7 +149,22 @@ const createReview = adminsData => {
 };
 
 const banUser = adminsData => {
-    return async (description, expirationDate, userId) => {
+    return async (description, expirationDate, userId, adminId) => {
+
+        const user = await adminsData.getBy('user_Id', userId);
+        
+        if (!user) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                ban: null,
+            };
+        }
+        if (userId === adminId) {
+            return {
+                error: serviceErrors.OPERATION_NOT_PERMITTED,
+                ban: null,
+            };
+        }
 
         const getIfBanExist = await adminsData.getBanStatus(+userId);
 

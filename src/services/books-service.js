@@ -21,6 +21,7 @@ const getAllBooks = booksData => {
             const books = await booksData.getAll();
             const res = await mapReviewsAndRating(books);
             
+            
             if (books.length === 0) {
                 return {
                     error: serviceErrors.RECORD_NOT_FOUND,
@@ -49,8 +50,9 @@ const getBookById = booksData => {
                 book: null,
             };
         }
-
-        return { error: null, book: mapReviewsAndRating(book) };
+        const res = await mapReviewsAndRating(book);
+        
+        return { error: null, book: [...res] };
     };
 };
 
@@ -130,7 +132,7 @@ const mapReviewsAndRating = async (data) => {
         const { id, Title, Author, Description, Status, Review_Id, Review, Rating } = book;
         const likes = await booksData.getReviewLikes(Review_Id);
         const dislikes = await booksData.getReviewDislikes(Review_Id);
-        
+
         if (!map.get(id)) {
             map.set(id, {
                 id, Title, Author, Description, Status, Reviews: [], Rating,

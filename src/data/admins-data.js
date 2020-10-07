@@ -79,8 +79,19 @@ const findBook = async (title, author) => {
 */
 const getBy = async (column, value) => {
     const sql = `
-        SELECT user_Id, username
-        FROM users
+        SELECT  
+            u.user_Id AS Id, 
+            u.username AS Username, 
+            u.email AS Email, 
+            u.user_points AS Points, 
+            l.type AS Level,
+            (SELECT DATE_FORMAT(u.register_date, "%M %d %Y")) AS Joined
+        FROM 
+            users u
+        JOIN    
+            user_levels l
+        ON 
+            u.user_level = l.user_level_id
         WHERE ${column} = ?
     `;
 
@@ -101,7 +112,7 @@ const remove = async (user) => {
         WHERE user_Id = ?
     `;
 
-    return await pool.query(sql, [user.user_Id]);
+    return await pool.query(sql, [user]);
 };
 
 /** 

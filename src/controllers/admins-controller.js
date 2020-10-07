@@ -3,7 +3,7 @@ import { authMiddleware, roleMiddleware } from '../auth/auth-middleware.js';
 import serviceErrors from '../services/service-errors.js';
 import adminsService from '../services/admins-service.js';
 import adminsData from '../data/admins-data.js';
-import { createValidator, banUserSchema, createBookSchema,  updateBookSchema} from '../validations/index_2.js';
+import { createValidator, banUserSchema, createBookSchema, updateBookSchema } from '../validations/index_2.js';
 
 const adminsController = express.Router();
 
@@ -17,7 +17,7 @@ adminsController
 
             res.status(200).send(users);
         })
-    .get('/:id',
+    .get('/users/:id',
         authMiddleware,
         roleMiddleware('admin'),
         async (req, res) => {
@@ -31,11 +31,12 @@ adminsController
                 res.status(200).send(user);
             }
         })
-    .delete('/:id',
+    .delete('/users/:id',
         authMiddleware,
         roleMiddleware('admin'),
         async (req, res) => {
             const { id } = req.params;
+
             const { error, user } = await adminsService.deleteUser(adminsData)(+id);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
@@ -49,7 +50,7 @@ adminsController
         roleMiddleware('admin'),
         createValidator(createBookSchema),
         async (req, res) => {
-            const {title, description, author, status} = req.body;
+            const { title, description, author, status } = req.body;
             const { error, book } = await adminsService.createBook(adminsData)(title, description, author, status);
 
             if (error === serviceErrors.DUPLICATE_RECORD) {
@@ -70,7 +71,7 @@ adminsController
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(409).send({ message: 'Book not found!' });
             } else {
-                res.status(201).send({message: 'You have updated the chosen book!'});
+                res.status(201).send({ message: 'You have updated the chosen book!' });
             }
         })
     .delete('/books/:id',
@@ -141,10 +142,15 @@ adminsController
         async (req, res) => {
             const userId = req.params.id;
             const { description, expirationDate } = req.body;
+            const adminId = req.user.id;
 
-            const { error, ban } = await adminsService.banUser(adminsData)(description, expirationDate, userId);
+            const { error, ban } = await adminsService.banUser(adminsData)(description, expirationDate, +userId, +adminId);
             if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(409).send({ message: 'The user has already been banned!' });
+            } else if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(409).send({ message: 'The user does not exist!' });
+            } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
+                res.status(409).send({ message: 'You cannot ban yourself!' });
             } else {
                 res.status(201).send(ban);
             }

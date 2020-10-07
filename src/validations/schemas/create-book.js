@@ -4,8 +4,8 @@ export const createBookSchema = {
             return 'Title is required';
         }
 
-        if (typeof value !== 'string' || value.trim().length < 0 || value.trim().length > 25) {
-            return 'Title should be a string in range [0..25]';
+        if (typeof value !== 'string' || value.trim().length < 6 || value.trim().length > 25) {
+            return 'Title should be a string in range [6..25]';
         }
 
         return null;
@@ -15,8 +15,8 @@ export const createBookSchema = {
             return 'Author is required';
         }
 
-        if (typeof value !== 'string' || value.trim().length < 0 || value.trim().length > 25) {
-            return 'Author should be a string in range [0..25]';
+        if (typeof value !== 'string' || value.trim().length < 6 || value.trim().length > 25) {
+            return 'Author should be a string in range [6..25]';
         }
 
         return null;
@@ -26,8 +26,8 @@ export const createBookSchema = {
             return 'Description is required';
         }
 
-        if (typeof value !== 'string' || value.trim().length < 3 || value.trim().length > 45) {
-            return 'Description should be a string in range [3..45]';
+        if (typeof value !== 'string' || value.trim().length < 15 || value.trim().length > 45) {
+            return 'Description should be a string in range [15..45]';
         }
 
         return null;

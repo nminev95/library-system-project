@@ -14,9 +14,11 @@ const LOG_FILE_PATH = join(__dirname, './token-blacklist.json');
 
 const authMiddleware = passport.authenticate('jwt', { session: false });
 
-const roleMiddleware = roleName => {
+const roleMiddleware = roleNameArray => {
     return (req, res, next) => {
-        if (req.user && req.user.role === roleName) {
+        const role = roleNameArray.find(role => req.user && req.user.role === role);
+
+        if (role) {
             const auth = (req.headers.authorization).split(' ');
             const token = auth[1];
             const rawData = fs.readFileSync(LOG_FILE_PATH);
@@ -31,7 +33,7 @@ const roleMiddleware = roleName => {
         } else {
             res.status(403).send({
                 message: 'Resource is forbidden.',
-            });
+            }); 
         }
     };
 };
