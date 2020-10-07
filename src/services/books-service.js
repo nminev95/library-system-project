@@ -1,3 +1,4 @@
+import booksData from '../data/books-data.js';
 /* eslint-disable no-unused-vars */
 import serviceErrors from './service-errors.js';
 
@@ -18,14 +19,15 @@ const getAllBooks = booksData => {
 
         } else {
             const books = await booksData.getAll();
-
+            const res = await mapReviewsAndRating(books);
+            
             if (books.length === 0) {
                 return {
                     error: serviceErrors.RECORD_NOT_FOUND,
                     books: null,
                 };
             }
-            return { error: null, books: mapReviewsAndRating(books) };
+            return { error: null, books: [...res] };
         }
     };
 };
@@ -121,12 +123,13 @@ const createReview = booksData => {
     };
 };
 
-const mapReviewsAndRating = (data) => {
+const mapReviewsAndRating = async (data) => {
     const map = new Map();
 
     for (const book of data) {
         const { id, Title, Author, Description, Status, Review_Id, Review, Rating } = book;
-
+        const likes = await booksData.getReviewLikes(Review_Id);
+        const dislikes = await booksData.getReviewDislikes(Review_Id);
         if (!map.get(id)) {
             map.set(id, {
                 id, Title, Author, Description, Status, Reviews: [], Rating,
@@ -135,8 +138,10 @@ const mapReviewsAndRating = (data) => {
         const reviewObject = {
             id: Review_Id,
             review: Review,
+            likes: likes,
+            dislikes: dislikes,
         };
-
+    
         if (reviewObject.id) {
             map.get(id).Reviews.push(reviewObject);
             if (map.get(id).Rating === null) {
@@ -156,7 +161,8 @@ const mapReviewsAndRating = (data) => {
             }
         }
     }
-    return [...map.values()];
+    
+    return map.values();
 };
 
 const borrowABook = booksData => {

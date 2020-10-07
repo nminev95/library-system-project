@@ -2,7 +2,7 @@ import pool from './pool.js';
 
 const getAll = async () => {
     const sql = `
-        SELECT
+    SELECT
             b.book_Id AS id,
             b.title AS Title, 
             b.author AS Author, 
@@ -30,7 +30,7 @@ const getAll = async () => {
         ON 
             br.rating_Id = rr.rating_Id
         GROUP BY 
-            IFNULL(r.content, b.book_Id);
+            IFNULL(r.review_Id, b.description);
         `;
 
     return await pool.query(sql);
@@ -72,6 +72,18 @@ const getById = async (value) => {
         `;
 
     return await pool.query(sql, [value]);
+};
+
+const getReviewVotes = async (reviewId) => {
+    const sql = `select r.review_Id, r.content, v.type_of_vote 
+    from reviews r
+    join reviews_have_votes rv
+    on r.review_Id = rv.review_Id
+    join reviews_votes v
+    ON rv.vote_Id = v.vote_Id
+    WHERE r.review_Id = ?`;
+
+    return await pool.query(sql, [reviewId]);
 };
 
 const getReviews = async (value) => {
@@ -331,6 +343,25 @@ const decreaseLevel = async (value, userId) => {
     return await pool.query(sql, [value, userId]);
 };
 
+const getReviewLikes = async (reviewId) => {
+    const sql = `select COUNT(*) AS Likes 
+    from reviews_have_votes WHERE review_id = ? AND vote_Id = 1`;
+
+    const res = await pool.query(sql, [reviewId]);
+    
+    return res[0].Likes;
+};
+
+const getReviewDislikes = async (reviewId) => {
+    const sql = `select COUNT(*) AS Dislikes
+    from reviews_have_votes WHERE review_id = ? AND vote_Id = 2`;
+
+    const res = await pool.query(sql, [reviewId]);
+
+    return res[0].Dislikes;
+};
+
+
 
 export default {
     getAll,
@@ -357,4 +388,7 @@ export default {
     changeLevel,
     removePoints,
     decreaseLevel,
+    getReviewVotes,
+    getReviewLikes,
+    getReviewDislikes,
 };
