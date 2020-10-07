@@ -27,9 +27,18 @@ const insertBook = async (title, author, description, status) => {
 const getAll = async () => {
     const sql = `
         SELECT 
-            user_Id, username 
+            u.user_Id AS Id, 
+            u.username AS Username, 
+            u.email AS Email, 
+            u.user_points AS Points, 
+            l.type AS Level,
+            (SELECT DATE_FORMAT(u.register_date, "%M %d %Y")) AS Joined
         FROM 
-            users
+            users u
+        JOIN    
+            user_levels l
+        ON 
+            u.user_level = l.user_level_id
     `;
 
     return await pool.query(sql);
@@ -104,8 +113,19 @@ const remove = async (user) => {
 */
 const searchBy = async (column, value) => {
     const sql = `
-        SELECT user_Id, username 
-        FROM users
+        SELECT 
+            u.user_Id AS Id, 
+            u.username AS Username, 
+            u.email AS Email, 
+            u.user_points AS Points, 
+            l.type AS Level,
+            (SELECT DATE_FORMAT(u.register_date, "%M %d %Y")) AS Joined
+        FROM 
+            users u
+        JOIN    
+            user_levels l
+        ON 
+            u.user_level = l.user_level_id
         WHERE ${column} LIKE '%${value}%' 
     `;
 

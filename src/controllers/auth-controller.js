@@ -31,7 +31,6 @@ authController
     })
     .post('/signout',
         authMiddleware,
-        roleMiddleware('user'), 
         blacklistTokenMiddleware(),
         async (req, res) => {
             req.logout();
