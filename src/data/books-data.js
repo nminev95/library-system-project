@@ -7,7 +7,7 @@ import pool from './pool.js';
 */
 const getAll = async () => {
     const sql = `
-        SELECT
+    SELECT
             b.book_Id AS id,
             b.title AS Title, 
             b.author AS Author, 
@@ -35,7 +35,7 @@ const getAll = async () => {
         ON 
             br.rating_Id = rr.rating_Id
         GROUP BY 
-            IFNULL(r.content, b.book_Id);
+            IFNULL(r.review_Id, b.description);
         `;
 
     return await pool.query(sql);
@@ -47,7 +47,7 @@ const getAll = async () => {
 * @param {number} id - The book's id in the database to search by.
 * @returns {Promise<object>} Promise with the book's data if found in the database.
 */
-const getById = async (id) => {
+const getById = async (value) => {
     const sql = `
         SELECT
             b.book_Id AS id,
@@ -82,7 +82,19 @@ const getById = async (id) => {
             IFNULL(r.content, b.book_Id);
         `;
 
-    return await pool.query(sql, [id]);
+    return await pool.query(sql, [value]);
+};
+
+const getReviewVotes = async (reviewId) => {
+    const sql = `select r.review_Id, r.content, v.type_of_vote 
+    from reviews r
+    join reviews_have_votes rv
+    on r.review_Id = rv.review_Id
+    join reviews_votes v
+    ON rv.vote_Id = v.vote_Id
+    WHERE r.review_Id = ?`;
+
+    return await pool.query(sql, [reviewId]);
 };
 
 /** 
@@ -91,7 +103,7 @@ const getById = async (id) => {
 * @param {number} id - The book's id in the database to search by.
 * @returns {Promise<object>} Promise with the book's reviews data if found in the database.
 */
-const getReviews = async (id) => {
+const getReviews = async (value) => {
     const sql = `
         SELECT 
             review_Id as review_id, 
@@ -102,7 +114,7 @@ const getReviews = async (id) => {
             book_Id = ?;
         `;
 
-    return await pool.query(sql, [id]);
+    return await pool.query(sql, [value]);
 };
 
 /** 
@@ -112,7 +124,6 @@ const getReviews = async (id) => {
 * @param {any} value - The value to search for in the column.
 * @returns {Promise<object>} Promise with the book data if found in the database.
 */
-
 const searchBy = async (column, value) => {
     const sql = `
         SELECT
@@ -161,7 +172,7 @@ const searchBy = async (column, value) => {
 * @param {string} content - Review content.
 * @param {number} id - The unique book number.
 * @param {number} user id - The unique user number.
-* @returns {Promise<object>} Promise.
+* @returns {Promise<object>}
 */
 const pushReview = async (content, id, userId) => {
     const sql = `
@@ -178,7 +189,7 @@ const pushReview = async (content, id, userId) => {
 * @async
 * @param {number}  id - The uniique user number. 
 * @param {number}  id - The unique book number.
-* @returns {Promise<object>} Promise.
+* @returns {Promise<object>}
 */
 const updateBookStatusToBorrowed = async (user_id, book_id) => {
     const sql = `
@@ -189,7 +200,6 @@ const updateBookStatusToBorrowed = async (user_id, book_id) => {
     `;
     return await pool.query(sql, [4, user_id, book_id]);
 };
-
 
 /** 
 * Updates the book status to "Free" when an user returns it.  
@@ -214,7 +224,6 @@ const updateBookStatusToFree = async (book_id) => {
 * @param {number} id - The unique book number in the database to search by.
 * @returns {Promise<object>} Promise with the user data if found in the database.
 */
-
 const getBookBorrowerId = async (book_id) => {
     const sql = `
         SELECT
@@ -235,7 +244,6 @@ const getBookBorrowerId = async (book_id) => {
 * @param {number} id - The book unique number.
 * @returns {Promise<object>}
 */
-
 const sendBookIdToUserHistory = async (userId, bookId) => {
     const sql = `
         INSERT INTO 
@@ -316,6 +324,7 @@ const updateReview = async (content, id) => {
 
     return await pool.query(sql, [content, id]);
 };
+
 /** 
 * Removes a review  for a certain book from the database. 
 * @async
@@ -336,7 +345,6 @@ const removeReview = async (bookId, reviewId) => {
 
     return await pool.query(sql, [bookId, reviewId]);
 };
-
 
 /** 
 * Creates a new rating record for a certain book  in the database. 
@@ -459,6 +467,23 @@ const decreaseLevel = async (value, userId) => {
     return await pool.query(sql, [value, userId]);
 };
 
+const getReviewLikes = async (reviewId) => {
+    const sql = `select COUNT(*) AS Likes 
+    from reviews_have_votes WHERE review_id = ? AND vote_Id = 1`;
+
+    const res = await pool.query(sql, [reviewId]);
+    
+    return res[0].Likes;
+};
+
+const getReviewDislikes = async (reviewId) => {
+    const sql = `select COUNT(*) AS Dislikes
+    from reviews_have_votes WHERE review_id = ? AND vote_Id = 2`;
+
+    const res = await pool.query(sql, [reviewId]);
+
+    return res[0].Dislikes;
+};
 
 export default {
     getAll,
@@ -485,4 +510,7 @@ export default {
     changeLevel,
     removePoints,
     decreaseLevel,
+    getReviewVotes,
+    getReviewLikes,
+    getReviewDislikes,
 };
