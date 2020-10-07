@@ -64,12 +64,12 @@ adminsController
         async (req, res) => {
             const { id } = req.params;
             const bookInfo = req.body;
-            const { error, book } = await adminsService.updateBook(adminsData)(bookInfo, +id);
+            const { error, updatedBook } = await adminsService.updateBook(adminsData)(bookInfo, +id);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(409).send({ message: 'Book not found!' });
             } else {
-                res.status(201).send(book);
+                res.status(201).send(updatedBook);
             }
         })
     .delete('/books/:id',

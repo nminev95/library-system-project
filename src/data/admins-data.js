@@ -136,15 +136,19 @@ const getBook = async (id) => {
 * @param {number} id - The book id to search for.
 * @returns {Promise<object>} Promise with the book data if found in the database.
 */
-const updateBookInfo = async (column, value, id) => {
+const updateBookInfo = async (bookInfo) => {
+    const { book_Id, title, author, description } = bookInfo;
+    console.log(bookInfo)
     const sql = `
     UPDATE books 
     SET 
-        ${column} = '${value}'
+        title = ?,
+        author = ?,
+        description = ?
     WHERE
-        book_Id = ${id};
+        book_Id = ?;
     `;
-    return await pool.query(sql);
+    return await pool.query(sql, [title, author, description, book_Id]);
 };
 
 /** 

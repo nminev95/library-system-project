@@ -67,13 +67,14 @@ const updateBook = adminsData => {
         if (foundBook.length === 0) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
-                book: null,
+                updatedBook: null,
             };
         }
+        
+        const updatedBook = { ...foundBook[0], ...updateInfo};
+        const _ = adminsData.updateBookInfo(updatedBook);
 
-        const _ = await iterateOverBody(updateInfo, id);
-
-        return { error: null, book: { message: 'Book info was successfully updated!' } };
+        return { error: null, updatedBook: updatedBook };
     };
 };
 
@@ -142,12 +143,6 @@ const createReview = adminsData => {
 
         return { error: null, review: { message: 'Review was successfully published!' } };
     };
-};
-
-const iterateOverBody = (body, id) => {
-    for (const update in body) {
-        adminsData.updateBookInfo(update, body[update], id);
-    }
 };
 
 const banUser = adminsData => {
