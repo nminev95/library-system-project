@@ -3,7 +3,7 @@ import booksData from '../data/books-data.js';
 import booksService from '../services/books-service.js';
 import serviceErrors from '../services/service-errors.js';
 import { authMiddleware, roleMiddleware } from '../auth/auth-middleware.js';
-import { validateBanStatusMiddleware, createValidator, createReviewSchema } from '../validations/index_2.js';
+import { validateBanStatusMiddleware, createValidator, createReviewSchema, updateReviewSchema} from '../validations/index_2.js';
 const booksController = express.Router();
 
 booksController
@@ -82,12 +82,14 @@ booksController
         authMiddleware,
         roleMiddleware('user'),
         validateBanStatusMiddleware(),
+        createValidator(updateReviewSchema),
         async (req, res) => {
-            const newReview = req.body.content;
+            const {content} = req.body;
             const { id } = req.params;
             const userId = req.user.id;
+           
 
-            const { error, review } = await booksService.updateReview(booksData)(newReview, +id, +userId);
+            const { error, review } = await booksService.updateReview(booksData)(content, +id, +userId);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 return res.status(404).send({ message: 'Book/review not found!' });

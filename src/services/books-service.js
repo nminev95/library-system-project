@@ -210,7 +210,7 @@ const returnABook = booksData => {
 };
 
 const updateReview = booksData => {
-    return async (newReview, reviewId, userId) => {
+    return async (content, reviewId, userId) => {
         const foundReview = await booksData.getReview(reviewId);
 
         if (foundReview.length === 0) {
@@ -229,15 +229,15 @@ const updateReview = booksData => {
             };
         }
 
-        const content = await booksData.getReviewByContent(newReview);
+        const oldContent = await booksData.getReviewByContent(content);
 
-        if (content.length !== 0) {
+        if (oldContent.length !== 0) {
             return {
                 error: serviceErrors.DUPLICATE_RECORD,
                 review: null,
             };
         }
-        const _ = await booksData.updateReview(newReview, reviewId);
+        const _ = await booksData.updateReview(content, reviewId);
 
         return { error: null, review: { message: 'Review was successfully updated!' } };
     };
