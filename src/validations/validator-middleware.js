@@ -47,7 +47,7 @@ export const validateBanStatusMiddleware = () => {
 };
 
 const getExpDate = async (id) => {
-    const sql = 'SELECT DATEDIFF((SELECT expirationDate FROM ban_status WHERE user_Id = 8), (SELECT NOW())) as dateDiff';
+    const sql = 'SELECT DATEDIFF((SELECT expirationDate FROM ban_status WHERE user_Id = ?), (SELECT NOW())) as dateDiff';
 
     const res = await pool.query(sql, [id]);
 
@@ -68,3 +68,5 @@ const deleteBan = async (banStatusId) => {
 
     return await pool.query(sql, [banStatusId]);
 };
+
+export default getExpDate;

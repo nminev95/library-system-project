@@ -112,6 +112,11 @@ const createReview = booksData => {
             };
         }
         const reviews = await booksData.pushReview(content, id, userId);
+        const addPoint = await booksData.addPoint(userId);
+        const pointsInfo = await booksData.getPoints(userId);
+        if (pointsInfo[0].user_points % 10 === 0 && pointsInfo[0].user_points <= 50) {
+            const update = await booksData.changeLevel(userId);
+        }
         return { error: null, reviews: reviews };
     };
 };
@@ -205,6 +210,13 @@ const returnABook = booksData => {
 
         const sendDataToHistory = await booksData.sendBookIdToUserHistory(userId, bookId);
         const returnedBook = await booksData.updateBookStatusToFree(+bookId);
+
+        const addPoint = await booksData.addPoint(userId);
+        const pointsInfo = await booksData.getPoints(userId);
+        if (pointsInfo[0].user_points % 10 === 0 && pointsInfo[0].user_points <= 50) {
+            const update = await booksData.changeLevel(userId);
+        }
+
         return { error: null, returnedBook: returnedBook };
     };
 };
@@ -295,15 +307,15 @@ const rateBook = booksData => {
 
         if (existingRating.length === 0) {
             const _ = await booksData.insertRating(bookId, rating, userId);
-            return { 
-                error: null, 
-                rate: _, 
+            return {
+                error: null,
+                rate: _,
             };
         } else {
             const currentRating = +(existingRating[0].rating_Id);
             if (currentRating === rating) {
-                return { 
-                    error: serviceErrors.DUPLICATE_RECORD, 
+                return {
+                    error: serviceErrors.DUPLICATE_RECORD,
                     rate: null,
                 };
             }

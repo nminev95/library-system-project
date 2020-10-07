@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import adminsData from '../data/admins-data.js';
 import serviceErrors from './service-errors.js';
-
+import getExpDate from '../validations/validator-middleware.js';
+import booksData from '../data/books-data.js';
 
 const getAllUsers = adminsData => {
     return async (filter) => {
@@ -155,12 +156,19 @@ const banUser = adminsData => {
                 error: serviceErrors.DUPLICATE_RECORD,
                 ban: null,
             };
-
         }
         const sendBanData = await adminsData.sendBannedUserData(description, expirationDate, +userId);
+        
+        const test = await getExpDate(+userId);
+        const points = Math.round(test.dateDiff / 10);
+        const removePoints = await booksData.removePoints(userId, +points);
+        const currentPoints = await booksData.getPoints(userId);
+        if (currentPoints[0].user_points <= 50) {
+            const currentLevel = Math.ceil(currentPoints[0].user_points / 10);
+            const update = await booksData.decreaseLevel(currentLevel, userId);
+        }
 
         return { error: null, ban: { message: 'The user is banned!' } };
-
     };
 };
 
