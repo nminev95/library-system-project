@@ -130,6 +130,7 @@ const mapReviewsAndRating = async (data) => {
         const { id, Title, Author, Description, Status, Review_Id, Review, Rating } = book;
         const likes = await booksData.getReviewLikes(Review_Id);
         const dislikes = await booksData.getReviewDislikes(Review_Id);
+        
         if (!map.get(id)) {
             map.set(id, {
                 id, Title, Author, Description, Status, Reviews: [], Rating,
