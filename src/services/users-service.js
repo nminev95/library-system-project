@@ -4,6 +4,15 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { PRIVATE_KEY, DEFAULT_USER_ROLE } from './../config.js';
 
+/**
+* Signing in the user.
+* @param module user data SQL queries module.
+* @callback 
+* @async
+* @param {string} username - The unique username.
+* @param {string} password - User password.
+* @return {Promise<object>}
+*/
 const signInUser = usersData => {
     return async (username, password) => {
         const user = await usersData.getWithRole(username);
@@ -20,6 +29,18 @@ const signInUser = usersData => {
         };
     };
 };
+
+
+/**
+* Creates a new user into the system. 
+* @param module users data SQL queries module.
+* @callback 
+* @async
+* @param {string} username - The unique username.
+* @param {string} password - User password.
+* @param {string} email - User's email.
+* @return {Promise<object>}
+*/
 
 const createUser = usersData => {
     return async (userCreate) => {
@@ -41,6 +62,16 @@ const createUser = usersData => {
     };
 };
 
+/**
+* Updates an existing  user's information.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {number} queryType - The unique user number to be updated.
+* @param {object} queryType - The information to be updated. 
+* @param {number} value - The unique user number trying to update some infomraton.
+* @return {Promise<object>}
+*/
 const updateUser = usersData => {
     return async (id, userUpdate, loggedUser) => {
         const user = await usersData.getWithRole(userUpdate.username);
@@ -67,14 +98,30 @@ const updateUser = usersData => {
     };
 };
 
+/**
+* Gets all users information.
+* @param module users data SQL queries module.
+* @callback 
+* @async
+* @param {string} filter - The username to search by.
+* @return {Promise<object>}
+*/
 const getAllUsers = usersData => {
-    return async (filter) => {
-        return filter
-            ? await usersData.searchBy('username', filter)
+    return async (username) => {
+        return username
+            ? await usersData.searchBy('username', username)
             : await usersData.getAll();
     };
 };
-
+ 
+/**
+* Gets user information found by unique user number.
+* @param module users data SQL queries module.
+* @callback 
+* @async
+* @param {number} id - The unique user number.
+* @return {Promise<object>}
+*/
 const getUserById = usersData => {
     return async (id) => {
         const user = await usersData.searchBy('user_Id', id);
@@ -90,6 +137,14 @@ const getUserById = usersData => {
     };
 };
 
+/**
+* Deletes user found by unique user number. 
+* @param module users data SQL queries module.
+* @callback 
+* @async
+* @param {number} id - The unique user number.
+* @return {Promise<object>}
+*/
 const deleteUser = usersData => {
     return async (id) => {
         const userToDelete = await usersData.searchBy('user_Id', id);
@@ -108,6 +163,17 @@ const deleteUser = usersData => {
     };
 };
 
+/**
+* Forbids some user's requests. 
+* @param module users data SQL queries module.
+* @callback 
+* @async
+* @param {string} description - Reasons to ban a certain user.
+* @param {number} date - The ban term.
+* @param {number} id - The unique user number.
+* @param {number} id - The unique admin number.
+* @return {Promise<object>}
+*/
 const banUser = (usersData) => {
     return async (description, expirationDate, userId, adminId) => {
 
@@ -140,6 +206,14 @@ const banUser = (usersData) => {
     };
 };
 
+/**
+* Removes user ban records. 
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {object} user information -  All the available user information.
+* @return {Promise<object>}
+*/
 const removeBan = (usersData) => {
     return async (userInfo) => {
         const userId = userInfo.id;
