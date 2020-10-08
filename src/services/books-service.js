@@ -10,12 +10,14 @@ import serviceErrors from './service-errors.js';
 * @param {string} value - search term.
 */
 const getAllBooks = booksData => {
-    return async (query) => {
+    return async (query, page) => {
         if (Object.keys(query).length !== 0) {
+
             const title = query.title || null;
             const author = query.author || null;
+            const genre = query.genre || null;
 
-            const books = await booksData.searchQuery(title, author);
+            const books = await booksData.searchQuery(title, author, genre);
             const res = await mapReviewsAndRating(books);
 
             if (books.length === 0) {
@@ -24,21 +26,29 @@ const getAllBooks = booksData => {
                     books: null,
                 };
             }
-
             return { error: null, books: [...res] };
-
         } else {
-            const books = await booksData.getAll();
-            const res = await mapReviewsAndRating(books);
+            if (page) {
+                const books = await booksData.getPageResult((page - 1) * 5);
 
-
-            if (books.length === 0) {
-                return {
-                    error: serviceErrors.RECORD_NOT_FOUND,
-                    books: null,
-                };
+                if (books.length === 0) {
+                    return {
+                        error: serviceErrors.RECORD_NOT_FOUND,
+                        books: null,
+                    };
+                }
+                
+                return { error: null, books: books };
+            } else {
+                const books = await booksData.getAllBasicInfo();
+                if (books.length === 0) {
+                    return {
+                        error: serviceErrors.RECORD_NOT_FOUND,
+                        books: null,
+                    };
+                }
+                return { error: null, books: books };
             }
-            return { error: null, books: [...res] };
         }
     };
 };
@@ -437,13 +447,13 @@ const mapReviewsAndRating = async (data) => {
     const map = new Map();
 
     for (const book of data) {
-        const { id, Title, Author, Description, Status, Review_Id, Review, Rating } = book;
+        const { id, Title, Author, Description, Genre, Year, Status, Review_Id, Review, Rating } = book;
         const likes = await booksData.getReviewLikes(Review_Id);
         const dislikes = await booksData.getReviewDislikes(Review_Id);
 
         if (!map.get(id)) {
             map.set(id, {
-                id, Title, Author, Description, Status, Reviews: [], Rating,
+                id, Title, Author, Description, Genre, Year, Status, Reviews: [], Rating,
             });
         }
         const reviewObject = {
@@ -458,16 +468,16 @@ const mapReviewsAndRating = async (data) => {
             if (map.get(id).Rating === null) {
                 const Reviews = map.get(id).Reviews;
                 map.set(id, {
-                    id, Title, Author, Description, Status, Reviews, Rating: 'Be the first person to rate this book!',
+                    id, Title, Author, Description, Genre, Year, Status, Reviews, Rating: 'Be the first person to rate this book!',
                 });
             }
         } else {
             map.set(id, {
-                id, Title, Author, Description, Status, Reviews: 'No reviews for this book yet!', Rating,
+                id, Title, Author, Description, Genre, Year, Status, Reviews: 'No reviews for this book yet!', Rating,
             });
             if (map.get(id).Rating === null) {
                 map.set(id, {
-                    id, Title, Author, Description, Status, Reviews: 'No reviews for this book yet.', Rating: 'Be the first person to rate this book!',
+                    id, Title, Author, Description, Genre, Year, Status, Reviews: 'No reviews for this book yet.', Rating: 'Be the first person to rate this book!',
                 });
             }
         }

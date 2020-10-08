@@ -35,10 +35,43 @@ const getAll = async () => {
         ON 
             br.rating_Id = rr.rating_Id
         GROUP BY 
-            IFNULL(r.review_Id, b.description);
+            IFNULL(r.review_Id, b.description)
+        LIMIT 2;
         `;
 
     return await pool.query(sql);
+};
+
+const getAllBasicInfo = async () => {
+    const sql = `
+    SELECT
+            b.book_Id AS id,
+            b.title AS Title, 
+            b.author AS Author, 
+            b.description as 'Description',
+            b.genre as Genre,
+            b.year as Year,
+            s.type as Status,
+            AVG(rr.rating_value) as Rating
+        from 
+            books b
+        join 
+            status s
+        on 
+            s.status_Id = b.borrowedStatus_Id
+        LEFT JOIN   
+            books_has_book_ratings br 
+        ON 
+            b.book_Id = br.book_to_be_rated_Id
+        LEFT JOIN 
+            book_ratings rr 
+        ON 
+            br.rating_Id = rr.rating_Id
+        GROUP BY 
+            IFNULL(b.book_Id, b.description)
+        `;
+
+        return await pool.query(sql);
 };
 
 /** 
@@ -54,6 +87,8 @@ const getById = async (value) => {
             b.title AS Title, 
             b.author AS Author, 
             b.description as 'Description',
+            b.genre as Genre,
+            b.year as Year,
             s.type as Status,
             r.review_Id as Review_Id,
             r.content as Review,
@@ -83,6 +118,40 @@ const getById = async (value) => {
         `;
 
     return await pool.query(sql, [value]);
+};
+
+const getPageResult = async (offset) => {
+    const sql = `
+            SELECT
+            b.book_Id AS id,
+            b.title AS Title, 
+            b.author AS Author, 
+            b.description as 'Description',
+            b.genre as Genre,
+            b.year as Year,
+            s.type as Status,
+            AVG(rr.rating_value) as Rating
+        from 
+            books b
+        join 
+            status s
+        on 
+            s.status_Id = b.borrowedStatus_Id
+        LEFT JOIN   
+            books_has_book_ratings br 
+        ON 
+            b.book_Id = br.book_to_be_rated_Id
+        LEFT JOIN 
+            book_ratings rr 
+        ON 
+            br.rating_Id = rr.rating_Id
+        GROUP BY 
+            IFNULL(b.book_Id, b.description)
+        LIMIT 5
+        OFFSET ${offset}
+        `;
+
+    return await pool.query(sql, [offset]);
 };
 
 /** 
@@ -179,6 +248,8 @@ const searchQuery = async (title, author, genre) => {
             b.title AS Title, 
             b.author AS Author, 
             b.description as 'Description',
+            b.genre as Genre,
+            b.year as Year,
             s.type as Status,
             r.review_Id as Review_Id,
             r.content as Review,
@@ -201,14 +272,17 @@ const searchQuery = async (title, author, genre) => {
             book_ratings rr 
         ON 
             br.rating_Id = rr.rating_Id
-        WHERE (? IS NULL OR title LIKE ?)
-        AND (? IS NULL OR author LIKE ?)
-        
+        WHERE 
+            (? IS NULL OR title LIKE ?)
+        AND 
+            (? IS NULL OR author LIKE ?)
+        AND 
+            (? IS NULL OR genre LIKE ?)
         GROUP BY 
             IFNULL(r.review_Id, b.description);
         `;
 
-    return await pool.query(sql, [title, title, author, author]);
+    return await pool.query(sql, [title, title, author, author, genre, genre]);
 };
 /** 
 * Creates a new book review in the database. 
@@ -691,4 +765,6 @@ export default {
     updateVote,
     getUserVoteForBook,
     searchQuery,
+    getAllBasicInfo,
+    getPageResult,
 };
