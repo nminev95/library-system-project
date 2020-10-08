@@ -39,7 +39,7 @@ CREATE TABLE `ban_status` (
   PRIMARY KEY (`idban_status`),
   KEY `fk_ban_status_users1_idx` (`user_Id`),
   CONSTRAINT `fk_ban_status_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +48,6 @@ CREATE TABLE `ban_status` (
 
 LOCK TABLES `ban_status` WRITE;
 /*!40000 ALTER TABLE `ban_status` DISABLE KEYS */;
-INSERT INTO `ban_status` VALUES (19,1,'mqqqdddddddddddddddddddddddddddddddddddqariq','1995-12-22',8);
 /*!40000 ALTER TABLE `ban_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,12 +87,14 @@ CREATE TABLE `books` (
   `title` varchar(45) NOT NULL,
   `author` varchar(45) NOT NULL,
   `description` varchar(45) NOT NULL,
+  `genre` varchar(45) DEFAULT NULL,
+  `year` int(11) DEFAULT NULL,
   `borrowedStatus_Id` int(11) NOT NULL,
   `borrower_Id` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`book_Id`),
   KEY `fk_books_borrowed_status1_idx` (`borrowedStatus_Id`),
   CONSTRAINT `fk_books_borrowed_status1` FOREIGN KEY (`borrowedStatus_Id`) REFERENCES `status` (`status_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +103,7 @@ CREATE TABLE `books` (
 
 LOCK TABLES `books` WRITE;
 /*!40000 ALTER TABLE `books` DISABLE KEYS */;
-INSERT INTO `books` VALUES (4,'HELLO','Pesho','Peshos book.',6,'0'),(5,'Gosho Goshov','maikatiIIII','A book about maikati.',6,'0'),(8,'updateeeee','Hehehehe','hahahaha',5,'0'),(10,'book test2','admina','hahahaha',4,'9'),(11,'book test552','admina','hahahaha',4,'8'),(12,'asdsadas','hahahaha','neeeeee',6,'0'),(13,'ddddddd','ddddddda','ddddddddddddddddddddddddddd',6,'0'),(14,'na','azzzz','lud summm',6,NULL);
+INSERT INTO `books` VALUES (4,'HELLO','Pesho','Peshos book.','horror',1995,6,'0'),(5,'Gosho Goshov','maikatiIIII','A book about maikati.',NULL,NULL,6,'0'),(8,'updateeeee','Hehehehe','hahahaha',NULL,NULL,5,'0'),(10,'book test2','admina','hahahahadddddd',NULL,NULL,4,'9'),(11,'book test552','admina','hahahahafgdgdf',NULL,NULL,4,'8'),(12,'asdsadas','hahahaha','neeeeee',NULL,NULL,6,'0'),(13,'ddddddd','ddddddda','ddddddddddddddddddddddddddd',NULL,NULL,6,'0'),(14,'na','azzzz','lud summm',NULL,NULL,6,NULL);
 /*!40000 ALTER TABLE `books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,7 +131,7 @@ CREATE TABLE `books_has_book_ratings` (
 
 LOCK TABLES `books_has_book_ratings` WRITE;
 /*!40000 ALTER TABLE `books_has_book_ratings` DISABLE KEYS */;
-INSERT INTO `books_has_book_ratings` VALUES (4,5,0),(4,1,0),(4,3,0),(4,1,0),(12,5,0),(12,5,0),(10,5,10),(4,5,10),(11,4,10);
+INSERT INTO `books_has_book_ratings` VALUES (4,5,0),(4,1,0),(4,3,0),(4,1,0),(12,5,0),(12,5,0),(10,5,10),(4,5,10),(11,4,10),(4,5,8),(12,5,8);
 /*!40000 ALTER TABLE `books_has_book_ratings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,7 +153,7 @@ CREATE TABLE `reviews` (
   KEY `fk_reviews_users1_idx` (`user_Id`),
   CONSTRAINT `fk_reviews_books1` FOREIGN KEY (`book_Id`) REFERENCES `books` (`book_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_reviews_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,7 +162,7 @@ CREATE TABLE `reviews` (
 
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
-INSERT INTO `reviews` VALUES (3,'Very nice book.',0,4,8),(4,'Stupid book.',0,4,8);
+INSERT INTO `reviews` VALUES (3,'Very Very nice book',0,4,9),(4,'qko qkooooooooo',0,4,9),(15,'jajajaj',0,4,9),(16,'hhhhhhhh',0,4,9);
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,6 +190,7 @@ CREATE TABLE `reviews_have_votes` (
 
 LOCK TABLES `reviews_have_votes` WRITE;
 /*!40000 ALTER TABLE `reviews_have_votes` DISABLE KEYS */;
+INSERT INTO `reviews_have_votes` VALUES (4,2,8),(15,1,8),(16,1,8);
 /*!40000 ALTER TABLE `reviews_have_votes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -310,7 +312,7 @@ CREATE TABLE `users` (
   KEY `fk_users_user_levels1_idx` (`user_level`),
   CONSTRAINT `fk_users_roles1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_user_levels1` FOREIGN KEY (`user_level`) REFERENCES `user_levels` (`user_level_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -319,7 +321,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (8,'nikiiiii','$2b$10$sYpROqQtJgYshtOrH0ybDOF/qSYpG1Jat96Kf/JLUkIVhkbREJR7C','niki123@gmail.com',0,3,915,1,NULL),(9,'mariq','$2b$10$a9s.n0Nn.8BqImlTFc8PLuI1HSW7AnEXuF7YKCN78DatmMGOJCxXC','mariq123@gmail.com',0,4,925,2,NULL);
+INSERT INTO `users` VALUES (8,'nikiiiii','$2b$10$sYpROqQtJgYshtOrH0ybDOF/qSYpG1Jat96Kf/JLUkIVhkbREJR7C','niki123@gmail.com',0,3,11,2,NULL),(9,'mariq','$2b$10$a9s.n0Nn.8BqImlTFc8PLuI1HSW7AnEXuF7YKCN78DatmMGOJCxXC','mariq123@gmail.com',0,4,22,3,NULL),(11,'test_sum145','$2b$10$uoP/Lo8Xgtgm/zA4Dpa1oOJQQV93FuLehtYEhuuBI/uMTPpFsLjV6','testemail@gmail.com',0,3,0,1,'2020-10-08');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -346,6 +348,7 @@ CREATE TABLE `users_history` (
 
 LOCK TABLES `users_history` WRITE;
 /*!40000 ALTER TABLE `users_history` DISABLE KEYS */;
+INSERT INTO `users_history` VALUES (8,4),(8,4),(8,4);
 /*!40000 ALTER TABLE `users_history` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -358,4 +361,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-07 23:55:23
+-- Dump completed on 2020-10-08 23:42:56
