@@ -4,8 +4,8 @@ export const updateBookSchema = {
             return null;
         }
 
-        if (typeof value !== 'string' || value.trim().length < 0 || value.trim().length > 45) {
-            return 'Title should be a string in range [0..45]';
+        if (typeof value !== 'string' || value.trim().length < 6 || value.trim().length > 45) {
+            return 'Title should be a string in range [6..45]';
         }
 
         return null;
@@ -15,8 +15,8 @@ export const updateBookSchema = {
             return null;
         }
 
-        if (typeof value !== 'string' || value.trim().length < 0 || value.trim().length > 45) {
-            return 'Author should be a string in range [0..45]';
+        if (typeof value !== 'string' || value.trim().length < 6 || value.trim().length > 45) {
+            return 'Author should be a string in range [6..45]';
         }
 
         return null;
@@ -26,8 +26,8 @@ export const updateBookSchema = {
             return null;
         }
 
-        if (typeof value !== 'string' || value.trim().length < 3 || value.trim().length > 45) {
-            return 'Description should be a string in range [3..45]';
+        if (typeof value !== 'string' || value.trim().length < 15 || value.trim().length > 45) {
+            return 'Description should be a string in range [15..45]';
         }
 
         return null;

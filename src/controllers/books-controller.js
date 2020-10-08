@@ -10,7 +10,7 @@ booksController
     //get all books
     .get('/',
         authMiddleware,
-        roleMiddleware('user'),
+        roleMiddleware(['admin', 'user']),
         async (req, res) => {
             const query = Object.keys(req.query).join('');
             const value = Object.values(req.query).join('');
@@ -26,7 +26,7 @@ booksController
     //get a book by id
     .get('/:id',
         authMiddleware,
-        roleMiddleware('user'),
+        roleMiddleware(['admin', 'user']),
         validateBanStatusMiddleware(),
         async (req, res) => {
             const { id } = req.params;
@@ -43,7 +43,7 @@ booksController
     //get all the reviews of a book 
     .get('/:id/reviews',
         authMiddleware,
-        roleMiddleware('user'),
+        roleMiddleware(['admin', 'user']),
         async (req, res) => {
             const { id } = req.params;
             const { error, reviews } = await booksService.getBookReviews(booksData)(+id);
@@ -122,7 +122,7 @@ booksController
         })
     .put('/:id/rate',
         authMiddleware,
-        roleMiddleware('user'),
+        roleMiddleware(['admin', 'user']),
         validateBanStatusMiddleware(),
         async (req, res) => {
             const bookId = req.params.id;
@@ -145,7 +145,7 @@ booksController
     //borrow a book
     .put('/:id',
         authMiddleware,
-        roleMiddleware('user'),
+        roleMiddleware(['admin', 'user']),
         validateBanStatusMiddleware(),
         async (req, res) => {
             const id = req.params.id;
@@ -165,7 +165,7 @@ booksController
     //return a book 
     .post('/:id',
         authMiddleware,
-        roleMiddleware('user'),
+        roleMiddleware(['admin', 'user']),
         validateBanStatusMiddleware(),
         async (req, res) => {
             const id = req.params.id;

@@ -3,7 +3,7 @@ import createToken from './../auth/create-token.js';
 import usersService from '../services/users-service.js';
 import usersData from '../data/users-data.js';
 import serviceErrors from '../services/service-errors.js';
-import { authMiddleware, roleMiddleware, blacklistTokenMiddleware } from '../auth/auth-middleware.js';
+import { authMiddleware, blacklistTokenMiddleware } from '../auth/auth-middleware.js';
 const authController = express.Router();
 
 authController

@@ -38,8 +38,8 @@ CREATE TABLE `ban_status` (
   `user_Id` int(11) NOT NULL,
   PRIMARY KEY (`idban_status`),
   KEY `fk_ban_status_users1_idx` (`user_Id`),
-  CONSTRAINT `fk_ban_status_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_ban_status_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +48,7 @@ CREATE TABLE `ban_status` (
 
 LOCK TABLES `ban_status` WRITE;
 /*!40000 ALTER TABLE `ban_status` DISABLE KEYS */;
-INSERT INTO `ban_status` VALUES (15,1,'hacker','2021-10-07',10);
+INSERT INTO `ban_status` VALUES (19,1,'mqqqdddddddddddddddddddddddddddddddddddqariq','1995-12-22',8);
 /*!40000 ALTER TABLE `ban_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,7 +93,7 @@ CREATE TABLE `books` (
   PRIMARY KEY (`book_Id`),
   KEY `fk_books_borrowed_status1_idx` (`borrowedStatus_Id`),
   CONSTRAINT `fk_books_borrowed_status1` FOREIGN KEY (`borrowedStatus_Id`) REFERENCES `status` (`status_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +102,7 @@ CREATE TABLE `books` (
 
 LOCK TABLES `books` WRITE;
 /*!40000 ALTER TABLE `books` DISABLE KEYS */;
-INSERT INTO `books` VALUES (4,'HELLO','Pesho','Peshos book.',6,'0'),(5,'Gosho Goshov','maikatiIIII','A book about maikati.',6,'0'),(8,'updateeeee','Hehehehe','hahahaha',5,'0'),(10,'book test2','admina','hahahaha',4,'9'),(11,'book test552','admina','hahahaha',4,'8'),(12,'asdsadas','hahahaha','neeeeee',6,'0'),(13,'ddddddd','ddddddda','ddddddddddddddddddddddddddd',6,'0');
+INSERT INTO `books` VALUES (4,'HELLO','Pesho','Peshos book.',6,'0'),(5,'Gosho Goshov','maikatiIIII','A book about maikati.',6,'0'),(8,'updateeeee','Hehehehe','hahahaha',5,'0'),(10,'book test2','admina','hahahaha',4,'9'),(11,'book test552','admina','hahahaha',4,'8'),(12,'asdsadas','hahahaha','neeeeee',6,'0'),(13,'ddddddd','ddddddda','ddddddddddddddddddddddddddd',6,'0'),(14,'na','azzzz','lud summm',6,NULL);
 /*!40000 ALTER TABLE `books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,8 +151,8 @@ CREATE TABLE `reviews` (
   KEY `fk_reviews_books1_idx` (`book_Id`),
   KEY `fk_reviews_users1_idx` (`user_Id`),
   CONSTRAINT `fk_reviews_books1` FOREIGN KEY (`book_Id`) REFERENCES `books` (`book_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_reviews_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_reviews_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,7 +161,7 @@ CREATE TABLE `reviews` (
 
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
-INSERT INTO `reviews` VALUES (3,'Very nice book.',0,4,8),(4,'Stupid book.',0,4,8),(8,'{\"content\":\"ebahti tupata kniga\"}',0,12,10),(10,'mega qkata',0,13,10),(11,'bravo',0,5,10),(12,'bravo',0,8,10);
+INSERT INTO `reviews` VALUES (3,'Very nice book.',0,4,8),(4,'Stupid book.',0,4,8);
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,7 +178,7 @@ CREATE TABLE `reviews_have_votes` (
   `user_Id` int(11) NOT NULL,
   KEY `fk_reviews_votes_has_reviews_reviews1_idx` (`review_Id`),
   KEY `fk_reviews_votes_has_reviews_reviews_votes1_idx` (`vote_Id`),
-  CONSTRAINT `fk_reviews_votes_has_reviews_reviews1` FOREIGN KEY (`review_Id`) REFERENCES `reviews` (`review_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_reviews_votes_has_reviews_reviews1` FOREIGN KEY (`review_Id`) REFERENCES `reviews` (`review_Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `fk_reviews_votes_has_reviews_reviews_votes1` FOREIGN KEY (`vote_Id`) REFERENCES `reviews_votes` (`vote_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -189,7 +189,6 @@ CREATE TABLE `reviews_have_votes` (
 
 LOCK TABLES `reviews_have_votes` WRITE;
 /*!40000 ALTER TABLE `reviews_have_votes` DISABLE KEYS */;
-INSERT INTO `reviews_have_votes` VALUES (10,2,10);
 /*!40000 ALTER TABLE `reviews_have_votes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -305,6 +304,7 @@ CREATE TABLE `users` (
   `role_id` int(11) NOT NULL DEFAULT 1,
   `user_points` int(11) NOT NULL DEFAULT 0,
   `user_level` int(11) NOT NULL DEFAULT 1,
+  `register_date` date DEFAULT NULL,
   PRIMARY KEY (`user_Id`),
   KEY `fk_users_roles1_idx` (`role_id`),
   KEY `fk_users_user_levels1_idx` (`user_level`),
@@ -319,7 +319,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (8,'nikiiiii','$2b$10$sYpROqQtJgYshtOrH0ybDOF/qSYpG1Jat96Kf/JLUkIVhkbREJR7C','niki123@gmail.com',0,3,9,1),(9,'mariq','$2b$10$a9s.n0Nn.8BqImlTFc8PLuI1HSW7AnEXuF7YKCN78DatmMGOJCxXC','mariq123@gmail.com',0,4,19,2),(10,'new_account','$2b$10$GZyMEP.ouyfNgmVNIQwSjO22St9CvPQcCJp4ubetyd/gC/yO.X9tK','user_email@gmail.com',0,3,9,1);
+INSERT INTO `users` VALUES (8,'nikiiiii','$2b$10$sYpROqQtJgYshtOrH0ybDOF/qSYpG1Jat96Kf/JLUkIVhkbREJR7C','niki123@gmail.com',0,3,915,1,NULL),(9,'mariq','$2b$10$a9s.n0Nn.8BqImlTFc8PLuI1HSW7AnEXuF7YKCN78DatmMGOJCxXC','mariq123@gmail.com',0,4,925,2,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -336,7 +336,7 @@ CREATE TABLE `users_history` (
   KEY `fk_users_has_books_books1_idx` (`book_Id`),
   KEY `fk_users_has_books_users1_idx` (`user_Id`),
   CONSTRAINT `fk_users_has_books_books1` FOREIGN KEY (`book_Id`) REFERENCES `books` (`book_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_users_has_books_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_users_has_books_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -346,7 +346,6 @@ CREATE TABLE `users_history` (
 
 LOCK TABLES `users_history` WRITE;
 /*!40000 ALTER TABLE `users_history` DISABLE KEYS */;
-INSERT INTO `users_history` VALUES (10,12),(10,8),(10,13),(10,4),(10,12),(10,5),(10,4),(10,13),(10,13),(10,13),(10,13),(10,13);
 /*!40000 ALTER TABLE `users_history` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -359,4 +358,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-07 16:56:33
+-- Dump completed on 2020-10-07 23:55:23

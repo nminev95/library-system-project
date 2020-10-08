@@ -79,7 +79,7 @@ const getById = async (value) => {
         WHERE 
             b.book_Id = ?
         GROUP BY 
-            IFNULL(r.content, b.book_Id);
+            IFNULL(r.review_Id, b.description);
         `;
 
     return await pool.query(sql, [value]);
@@ -158,7 +158,7 @@ const searchBy = async (column, value) => {
         LIKE
             '%${value}%'
         GROUP BY 
-            IFNULL(r.content, b.book_Id);
+            IFNULL(r.review_Id, b.description);
         `;
 
 

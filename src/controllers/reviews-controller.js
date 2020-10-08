@@ -11,7 +11,7 @@ reviewsController
 
     .put('/:id/vote',
         authMiddleware,
-        roleMiddleware('user'),
+        roleMiddleware(['admin', 'user']),
         validateBanStatusMiddleware(),
         async (req, res) => {
             const reviewId = req.params.id;
