@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 import serviceErrors from './service-errors.js';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { PRIVATE_KEY, DEFAULT_USER_ROLE } from './../config.js';
+import { DEFAULT_USER_ROLE } from './../config.js';
 
 /**
 * Signing in the user.
