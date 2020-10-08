@@ -5,43 +5,6 @@ import pool from './pool.js';
 * @async
 * @returns {Promise<object>} Promise with data from the database.
 */
-const getAll = async () => {
-    const sql = `
-    SELECT
-            b.book_Id AS id,
-            b.title AS Title, 
-            b.author AS Author, 
-            b.description as 'Description',
-            s.type as Status,
-            r.review_Id as Review_Id,
-            r.content as Review,
-            AVG(rr.rating_value) as Rating
-        from 
-            books b
-        LEFT OUTER JOIN
-            reviews r
-        ON 
-            b.book_Id = r.book_Id
-        join 
-            status s
-        on 
-            s.status_Id = b.borrowedStatus_Id
-        LEFT JOIN   
-            books_has_book_ratings br 
-        ON 
-            b.book_Id = br.book_to_be_rated_Id
-        LEFT JOIN 
-            book_ratings rr 
-        ON 
-            br.rating_Id = rr.rating_Id
-        GROUP BY 
-            IFNULL(r.review_Id, b.description)
-        LIMIT 2;
-        `;
-
-    return await pool.query(sql);
-};
-
 const getAllBasicInfo = async () => {
     const sql = `
     SELECT
@@ -92,6 +55,8 @@ const getById = async (value) => {
             s.type as Status,
             r.review_Id as Review_Id,
             r.content as Review,
+            (SELECT username FROM users WHERE r.user_Id = user_Id) as ReviewAuthor,
+            (SELECT COUNT(*) FROM users_history WHERE book_Id = ?) as Times_Borrowed,
             AVG(rr.rating_value) as Rating
         from 
             books b
@@ -117,7 +82,7 @@ const getById = async (value) => {
             IFNULL(r.review_Id, b.description);
         `;
 
-    return await pool.query(sql, [value]);
+    return await pool.query(sql, [value, value]);
 };
 
 const getPageResult = async (offset) => {
@@ -253,6 +218,8 @@ const searchQuery = async (title, author, genre) => {
             s.type as Status,
             r.review_Id as Review_Id,
             r.content as Review,
+            (SELECT username FROM users WHERE r.user_Id = user_Id) as ReviewAuthor,
+            (SELECT COUNT(*) FROM users_history WHERE book_Id = id) as Times_Borrowed,
             AVG(rr.rating_value) as Rating
         from 
             books b
@@ -735,7 +702,6 @@ const getUserVoteForBook = async (reviewId, userId) => {
 };
 
 export default {
-    getAll,
     getReviews,
     getById,
     searchBy,
