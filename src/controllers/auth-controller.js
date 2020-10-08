@@ -20,6 +20,10 @@ authController
                 sub: user.user_Id,
                 username: user.username,
                 role: user.role,
+                banInfo: {
+                    banned: user.isBanned,
+                    banExpiration: user.expirationDate,
+                },
             };
             const token = createToken(payload);
 
@@ -33,7 +37,7 @@ authController
         blacklistTokenMiddleware(),
         async (req, res) => {
             req.logout();
-            res.status(200).send({message:'Successfull logout!'});  
+            res.status(200).send({ message: 'Successfull logout!' });
         });
 
 export default authController;

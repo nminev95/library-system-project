@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import usersData from '../data/users-data.js';
+import usersService from '../services/users-service.js';
 
 export const createValidator = schema => {
     return (req, res, next) => {
@@ -21,29 +22,24 @@ export const createValidator = schema => {
         } else {
             next();
         }
-    }; 
+    };
 };
 
 export const validateBanStatusMiddleware = () => {
     return async (req, res, next) => {
-        const userId = req.user.id;
-        const banStatus = await usersData.getBanStatus(+userId);
+        const isBanned = req.user.banInfo.banned;
+        const expirationDate = req.user.banInfo.banExpiration;
 
-        if (!banStatus) {
+        if (!isBanned) {
             next();
         } else {
-            const banStatusId = banStatus.idban_status;
-            const test = await usersData.getExpDate(+userId);
-
-            if (+(test.dateDiff) > 0) {
+            if (new Date() < new Date(expirationDate))
                 return res.status(400).send({ message: 'Bannat si brat.' });
-            }
-            if (+(test.dateDiff) < 0) {
-                const _ = await usersData.deleteBan(banStatusId);
+            if (new Date() > new Date(expirationDate)) {
+                const _ = await usersService.removeBan(usersData)(req.user);
                 next();
             }
         }
     };
 };
-
 

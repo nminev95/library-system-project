@@ -140,6 +140,15 @@ const banUser = (usersData) => {
     };
 };
 
+const removeBan = (usersData) => {
+    return async (userInfo) => {
+        const userId = userInfo.id;
+
+        const status = await usersData.getBanStatus(userId);
+        const remove = await usersData.deleteBan(status.idban_status);
+    };
+};
+
 export default {
     signInUser,
     createUser,
@@ -148,4 +157,5 @@ export default {
     getUserById,
     deleteUser,
     banUser,
+    removeBan,
 };

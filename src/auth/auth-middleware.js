@@ -38,6 +38,11 @@ const roleMiddleware = roleNameArray => {
     };
 };
 
+// const getTokenMiddleware = () => {
+//     return async (req, res, next) => {
+
+//     }
+// }
 const blacklistTokenMiddleware = () => {
     return async (req, res, next) => {
         const auth = (req.headers.authorization).split(' ');

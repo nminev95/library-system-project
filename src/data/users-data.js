@@ -33,11 +33,13 @@ const getAll = async () => {
 */
 const getWithRole = async (username) => {
     const sql = `
-        SELECT u.user_Id, u.username, u.password, r.type_of_user as role
-        FROM users u
-        JOIN roles r 
-        WHERE u.username = ?
-        AND u.role_id = r.role_id
+    SELECT u.user_Id, u.username, u.password, r.type_of_user as role, b.isBanned, b.expirationDate
+    FROM users u
+    JOIN roles r 
+    ON u.role_id = r.role_id
+    left join ban_status b
+    ON b.user_Id = u.user_Id
+    WHERE u.username = ?
     `;
 
     const result = await pool.query(sql, [username]);
@@ -60,10 +62,10 @@ const create = async (username, password, email, role) => {
             users (username, password, email, role_id, register_date)
         VALUES 
             (?,?,?, (SELECT role_id FROM roles WHERE type_of_user = ?), (SELECT NOW()));
-    `; 
+    `;
 
     const result = await pool.query(sql, [username, password, email, role]);
-    
+
 
     return {
         id: result.insertId,
