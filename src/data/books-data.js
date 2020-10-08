@@ -85,6 +85,12 @@ const getById = async (value) => {
     return await pool.query(sql, [value]);
 };
 
+/** 
+* Gets all review's votes info from the database found by unique review number.
+* @async
+* @param {number} id - The review's id in the database to search by.
+* @returns {Promise<object>} Promise with the review's votes data if found any.
+*/
 const getReviewVotes = async (reviewId) => {
     const sql = `select r.review_Id, r.content, v.type_of_vote 
     from reviews r
@@ -436,6 +442,12 @@ const getReviewByContent = async (content, reviewId) => {
     return await pool.query(sql, [content, reviewId]);
 };
 
+/** 
+* Gets all reviews likes, given by the users in the database.
+* @async
+* @param {number} id - The unique review number.
+* @returns {Promise<object>} Promise with the reviws likes data if found in the database.
+*/
 const getReviewLikes = async (reviewId) => {
     const sql = `select COUNT(*) AS Likes 
     from reviews_have_votes WHERE review_id = ? AND vote_Id = 1`;
@@ -445,6 +457,12 @@ const getReviewLikes = async (reviewId) => {
     return res[0].Likes;
 };
 
+/** 
+* Gets all reviews dislikes, given by the users in the database.
+* @async
+* @param {number} id - The unique review number.
+* @returns {Promise<object>} Promise with the reviws dislikes data if found in the database.
+*/
 const getReviewDislikes = async (reviewId) => {
     const sql = `select COUNT(*) AS Dislikes
     from reviews_have_votes WHERE review_id = ? AND vote_Id = 2`;
