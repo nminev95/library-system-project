@@ -31,7 +31,7 @@ const signInUser = usersData => {
 
 
 /**
-* Creates a new user into the system. 
+* Creates a new user record into the system. 
 * @param module users data SQL queries module.
 * @callback 
 * @async
@@ -137,7 +137,7 @@ const getUserById = usersData => {
 };
 
 /**
-* Deletes user found by unique user number. 
+* Deletes user found by unique user number from the database.
 * @param module users data SQL queries module.
 * @callback 
 * @async
