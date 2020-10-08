@@ -2,11 +2,21 @@ import booksData from '../data/books-data.js';
 /* eslint-disable no-unused-vars */
 import serviceErrors from './service-errors.js';
 
+/**
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {string} queryType - query to search with. 
+* @param {string} value - search term.
+*/
 const getAllBooks = booksData => {
-    return async (queryType, value) => {
+    return async (query) => {
+        if (Object.keys(query).length !== 0) {
+            const title = query.title || null;
+            const author = query.author || null;
 
-        if (queryType && value) {
-            const books = await booksData.searchBy(queryType, value);
+            const books = await booksData.searchQuery(title, author);
+            const res = await mapReviewsAndRating(books);
 
             if (books.length === 0) {
                 return {
@@ -15,7 +25,7 @@ const getAllBooks = booksData => {
                 };
             }
 
-            return { error: null, books: mapReviewsAndRating(books) };
+            return { error: null, books: [...res] };
 
         } else {
             const books = await booksData.getAll();

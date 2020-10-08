@@ -166,6 +166,44 @@ const searchBy = async (column, value) => {
 
 };
 
+const searchQuery = async (title, author, genre) => {
+    const sql = `
+        SELECT
+            b.book_Id AS id,
+            b.title AS Title, 
+            b.author AS Author, 
+            b.description as 'Description',
+            s.type as Status,
+            r.review_Id as Review_Id,
+            r.content as Review,
+            AVG(rr.rating_value) as Rating
+        from 
+            books b
+        LEFT OUTER JOIN
+            reviews r
+        ON 
+            b.book_Id = r.book_Id
+        join 
+            status s
+        on 
+            s.status_Id = b.borrowedStatus_Id
+        LEFT JOIN   
+            books_has_book_ratings br 
+        ON 
+            b.book_Id = br.book_to_be_rated_Id
+        LEFT JOIN 
+            book_ratings rr 
+        ON 
+            br.rating_Id = rr.rating_Id
+        WHERE (? IS NULL OR title LIKE ?)
+        AND (? IS NULL OR author LIKE ?)
+        
+        GROUP BY 
+            IFNULL(r.review_Id, b.description);
+        `;
+
+    return await pool.query(sql, [title, title, author, author]);
+};
 /** 
 * Creates a new book review in the database. 
 * @async
@@ -634,4 +672,5 @@ export default {
     insertVote,
     updateVote,
     getUserVoteForBook,
+    searchQuery,
 };
