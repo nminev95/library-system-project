@@ -178,6 +178,12 @@ const getExpDate = async (id) => {
     return res[0];
 };
 
+/** 
+* Finds and removes a record for a banned user from the database.
+* @async
+* @param {number} id - The unique ban number.
+* @returns {Promise<object>} Promise.
+**/
 const deleteBan = async (banStatusId) => {
     const sql = 'DELETE FROM ban_status WHERE idban_status = ?';
 
