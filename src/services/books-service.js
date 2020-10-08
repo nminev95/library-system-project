@@ -2,6 +2,15 @@ import booksData from '../data/books-data.js';
 /* eslint-disable no-unused-vars */
 import serviceErrors from './service-errors.js';
 
+/**
+* Gets all books information from the database.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {string} query type 
+* @param {any} value - Value to search a book by.
+* @return {Promise<object>}
+*/
 const getAllBooks = booksData => {
     return async (queryType, value) => {
 
@@ -34,6 +43,14 @@ const getAllBooks = booksData => {
 };
 
 
+/**
+* Gets book information found by unique book number in the database.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {number} id - The unique book number.
+* @return {Promise<object>}
+*/
 const getBookById = booksData => {
     return async (id) => {
         if (isNaN(id) || id < 0) {
@@ -56,6 +73,17 @@ const getBookById = booksData => {
     };
 };
 
+/**
+* Creates a new book record in the database.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {string} title - The book title.
+* @param {string} description - A short description of the book content.
+* @param {string} author - The book author.
+* @param {number} id - The status unique number.
+* @return {Promise<object>}
+*/
 const createBook = booksData => {
     return async (title, description, author, status) => {
         const foundBook = await booksData.findBook(title, author);
@@ -73,6 +101,16 @@ const createBook = booksData => {
     };
 };
 
+
+/**
+* Finds and updates a book record in the database.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {object} book information - An object containing all the new information.
+* @param {number} id - The status unique number.
+* @return {Promise<object>}
+*/
 const updateBook = booksData => {
     return async (updateInfo, id) => {
         const foundBook = await booksData.getById(id);
@@ -91,6 +129,14 @@ const updateBook = booksData => {
     };
 };
 
+/**
+* Deletes a book record found in the database.
+* @param module users data SQL queries module.
+* @callback 
+* @async
+* @param {number} id - The unique book number.
+* @return {Promise<object>}
+*/
 const deleteBook = booksData => {
     return async (id) => {
         const foundBook = await booksData.getById(id);
@@ -107,6 +153,15 @@ const deleteBook = booksData => {
     };
 };
 
+
+/**
+* Gets the unique user number, who borrowed a certain book. 
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {number} id - The unique book number.
+* @return {Promise<object>}
+*/
 const getBorrowerId = booksData => {
     return async (id) => {
         const borrowerId = await booksData.getBookBorrowerId(+id);
@@ -122,6 +177,15 @@ const getBorrowerId = booksData => {
     };
 };
 
+
+/**
+* Gets all reviews from the database.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {number} id - The unique review number.
+* @return {Promise<object>}
+*/
 const getBookReviews = booksData => {
     return async (id) => {
         const reviews = await booksData.getReviews(id);
@@ -137,6 +201,18 @@ const getBookReviews = booksData => {
     };
 };
 
+
+/**
+* Creates a new review record in the database.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {number} id - The book unique number to search by.
+* @param {number} id - The user unique number to search by in user history records.
+* @param {string} content - A short opinion about a certain book.
+* @param {string} role - The role of the user.
+* @return {Promise<object>}
+*/
 const createReview = booksData => {
     return async (id, userId, content, role) => {
         if (role === 'user') {
@@ -184,6 +260,16 @@ const createReview = booksData => {
 };
 
 
+/**
+* Updates a book status when an user borrows it in the database.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {number} id - The unique book number.
+* @param {number} id - The unique user number.
+
+* @return {Promise<object>}
+*/
 const borrowABook = booksData => {
     return async (bookID, userID) => {
 
@@ -210,6 +296,16 @@ const borrowABook = booksData => {
     };
 };
 
+/**
+* Updates a book status and send a record to the database when an user returns a book.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {number} id - The unique book number.
+* @param {number} id - The unique user number.
+
+* @return {Promise<object>}
+*/
 const returnABook = booksData => {
     return async (bookId, userId) => {
 
@@ -240,6 +336,18 @@ const returnABook = booksData => {
     };
 };
 
+
+/**
+* Updates an existing review content in the database.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {number} id - The unique review number.
+* @param {string} content - New review content to be saved in the database.
+* @param {number} id - The unique user number.
+* @param {string} role - The user role.
+* @return {Promise<object>}
+*/
 const updateReview = booksData => {
     return async (reviewId, newReview, userId, role) => {
 
@@ -290,6 +398,16 @@ const updateReview = booksData => {
     };
 };
 
+/**
+* Deletes review from the database.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {string} url - The original URL.
+* @param {number} id - The unique user number.
+* @param {string} role - The user role.
+* @return {Promise<object>}
+*/
 const deleteReview = booksData => {
     return async (url, userId, role) => {
         const result = url.match(/[0-9]+/g);
@@ -337,8 +455,16 @@ const deleteReview = booksData => {
 };
 
 
-
-
+/**
+* Creates and sends a new rate record to the database.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {number} id- The unique user number.
+* @param {number} id - The unique user number.
+* @param {number} value - The rate value.
+* @return {Promise<object>}
+*/
 const rateBook = booksData => {
     return async (bookId, userId, rating) => {
         const book = await booksData.getById(bookId);
@@ -389,6 +515,16 @@ const rateBook = booksData => {
     };
 };
 
+/**
+* Sends a review vote to the database.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {number} id- The unique voted review number.
+* @param {number} id - The unique user number.
+* @param {number} value - The rate value.
+* @return {Promise<object>}
+*/
 const voteReview = booksData => {
     return async (reviewId, userId, vote) => {
         const review = await booksData.getReview(reviewId);
@@ -423,6 +559,12 @@ const voteReview = booksData => {
     };
 };
 
+/** 
+* Gets some data and maps it.
+* @async
+* @param {object} object - An object to be mapped.
+* @returns {object} Object
+*/
 const mapReviewsAndRating = async (data) => {
     const map = new Map();
 
