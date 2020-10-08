@@ -1,5 +1,13 @@
 /* eslint-disable no-unused-vars */
-
+/**
+* Removes user scores from user's profile.
+* @param module users data SQL queries module.
+* @param module gamification data SQL queries module.
+* @callback 
+* @async
+* @param {number} id - The unique user number.
+* @return {Promise<object>}
+*/
 const removeUserPoints = (usersData, gamificationData) => {
     return async (userId) => {
         const date = await usersData.getExpDate(+userId);
@@ -13,6 +21,15 @@ const removeUserPoints = (usersData, gamificationData) => {
     };
 };
 
+
+/**
+* Adds scores to user's profile.
+* @param module gamification data SQL queries module.
+* @callback 
+* @async
+* @param {number} id - The unique user number.
+* @return {Promise<object>}
+*/
 const addUserPoints = (gamificationData) => {
     return async (userId) => {
         const addPoint = await gamificationData.addPoint(userId);
