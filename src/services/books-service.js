@@ -33,6 +33,12 @@ const getAllBooks = booksData => {
             if (page) {
                 const books = await booksData.getPageResult((page - 1) * 5);
 
+                books.forEach(b => {
+                    if (b.Rating === null) {
+                        b.Rating = 'Be the first person to rate this book!';
+                    }
+                });
+                
                 if (books.length === 0) {
                     return {
                         error: serviceErrors.RECORD_NOT_FOUND,
@@ -49,6 +55,11 @@ const getAllBooks = booksData => {
                         books: null,
                     };
                 }
+                books.forEach(b => {
+                    if (b.Rating === null) {
+                        b.Rating = 'Be the first person to rate this book!';
+                    }
+                });
                 return { error: null, books: books };
             }
         }
@@ -202,7 +213,7 @@ const getBorrowerId = booksData => {
 const getBookReviews = booksData => {
     return async (id) => {
         const reviews = await booksData.getReviews(id);
-
+        
         if (reviews.length === 0) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
@@ -582,13 +593,13 @@ const mapReviewsAndRating = async (data) => {
     const map = new Map();
 
     for (const book of data) {
-        const { id, Title, Author, Description, Genre, Year, Status, Review_Id, Review, ReviewAuthor, Rating, Times_Borrowed } = book;
+        const { id, Title, Author, Description, Genre, Year, Status, Review_Id, Review, ReviewAuthor, Rating, TimesBorrowed } = book;
         const likes = await booksData.getReviewLikes(Review_Id);
         const dislikes = await booksData.getReviewDislikes(Review_Id);
         
         if (!map.get(id)) {
             map.set(id, {
-                id, Title, Author, Description, Genre, Year, Status, Times_Borrowed, Reviews: [], Rating,
+                id, Title, Author, Description, Genre, Year, Status, TimesBorrowed, Reviews: [], Rating,
             });
         }  
 
@@ -605,16 +616,16 @@ const mapReviewsAndRating = async (data) => {
             if (map.get(id).Rating === null) {
                 const Reviews = map.get(id).Reviews;
                 map.set(id, {
-                    id, Title, Author, Description, Genre, Year, Status, Times_Borrowed, Reviews, Rating: 'Be the first person to rate this book!',
+                    id, Title, Author, Description, Genre, Year, Status, TimesBorrowed, Reviews, Rating: 'Be the first person to rate this book!',
                 });
             }
         } else {
             map.set(id, {
-                id, Title, Author, Description, Genre, Year, Status, Times_Borrowed, Reviews: 'No reviews for this book yet!', Rating,
+                id, Title, Author, Description, Genre, Year, Status, TimesBorrowed, Reviews: 'No reviews for this book yet!', Rating,
             });
             if (map.get(id).Rating === null) {
                 map.set(id, {
-                    id, Title, Author, Description, Genre, Year, Status, Times_Borrowed, Reviews: 'No reviews for this book yet.', Rating: 'Be the first person to rate this book!',
+                    id, Title, Author, Description, Genre, Year, Status, TimesBorrowed, Reviews: 'No reviews for this book yet.', Rating: 'Be the first person to rate this book!',
                 });
             }
         }

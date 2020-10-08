@@ -15,7 +15,7 @@ const getAllBasicInfo = async () => {
             b.genre as Genre,
             b.year as Year,
             s.type as Status,
-            AVG(rr.rating_value) as Rating
+            ROUND(AVG(rr.rating_value), 2) as Rating
         from 
             books b
         join 
@@ -34,7 +34,7 @@ const getAllBasicInfo = async () => {
             IFNULL(b.book_Id, b.description)
         `;
 
-        return await pool.query(sql);
+    return await pool.query(sql);
 };
 
 /** 
@@ -56,8 +56,8 @@ const getById = async (value) => {
             r.review_Id as Review_Id,
             r.content as Review,
             (SELECT username FROM users WHERE r.user_Id = user_Id) as ReviewAuthor,
-            (SELECT COUNT(*) FROM users_history WHERE book_Id = ?) as Times_Borrowed,
-            AVG(rr.rating_value) as Rating
+            (SELECT COUNT(*) FROM users_history WHERE book_Id = ?) as TimesBorrowed,
+            ROUND(AVG(rr.rating_value), 2) as Rating
         from 
             books b
         LEFT OUTER JOIN
@@ -95,7 +95,7 @@ const getPageResult = async (offset) => {
             b.genre as Genre,
             b.year as Year,
             s.type as Status,
-            AVG(rr.rating_value) as Rating
+            ROUND(AVG(rr.rating_value), 2) as Rating
         from 
             books b
         join 
@@ -146,12 +146,23 @@ const getReviewVotes = async (reviewId) => {
 const getReviews = async (value) => {
     const sql = `
         SELECT 
-            review_Id as review_id, 
-            content as Review 
+            r.review_Id as review_id, 
+            r.content as Review,
+            u.username as Author,
+            (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 1) as Likes,
+            (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 2) as Disikes
         from 
-            Reviews 
+            reviews r
+        join 
+            users u
+        on 
+            r.user_Id = u.user_Id
+        join 
+            reviews_have_votes rv
+        ON 
+            rv.review_Id = r.review_Id
         WHERE 
-            book_Id = ?;
+            book_Id = 4
         `;
 
     return await pool.query(sql, [value]);
@@ -174,7 +185,7 @@ const searchBy = async (column, value) => {
             s.type as Status,
             r.review_Id as Review_Id,
             r.content as Review,
-            AVG(rr.rating_value) as Rating
+            ROUND(AVG(rr.rating_value), 2) as Rating
         from 
             books b
         LEFT OUTER JOIN
@@ -219,7 +230,7 @@ const searchQuery = async (title, author, genre) => {
             r.review_Id as Review_Id,
             r.content as Review,
             (SELECT username FROM users WHERE r.user_Id = user_Id) as ReviewAuthor,
-            (SELECT COUNT(*) FROM users_history WHERE book_Id = id) as Times_Borrowed,
+            (SELECT COUNT(*) FROM users_history WHERE book_Id = id) as TimesBorrowed,
             AVG(rr.rating_value) as Rating
         from 
             books b
@@ -532,7 +543,7 @@ const getReviewLikes = async (reviewId) => {
     from reviews_have_votes WHERE review_id = ? AND vote_Id = 1`;
 
     const res = await pool.query(sql, [reviewId]);
-    
+
     return res[0].Likes;
 };
 
@@ -580,7 +591,7 @@ const insertBook = async (title, author, description, status) => {
 */
 const updateBookInfo = async (bookInfo) => {
     const { id, title, author, description, status } = bookInfo;
-    
+
     const sql = `
     UPDATE books 
     SET 
@@ -591,7 +602,7 @@ const updateBookInfo = async (bookInfo) => {
     WHERE
         book_Id = ?;
     `;
-    return await pool.query(sql, [title, author, description, status,  id]);
+    return await pool.query(sql, [title, author, description, status, id]);
 };
 
 /** 
