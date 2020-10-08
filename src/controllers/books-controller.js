@@ -16,13 +16,24 @@ booksController
         authMiddleware,
         roleMiddleware(['admin', 'user']),
         async (req, res) => {
-            const query = Object.keys(req.query).join('');
-            const value = Object.values(req.query).join('');
-
-            const { error, books } = await booksService.getAllBooks(booksData)(query, value);
+            const { error, books } = await booksService.getAllBooks(booksData)(req.query);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'No books found!' });
+            } else {
+                res.status(200).send(books);
+            }
+        })
+    .get('/pages/:id',
+        authMiddleware,
+        roleMiddleware(['admin', 'user']),
+        async (req, res) => {
+            const page = req.params.id;
+           
+            const { error, books } = await booksService.getAllBooks(booksData)(req.query, +page);
+
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'Such page does not exist!' });
             } else {
                 res.status(200).send(books);
             }
@@ -70,7 +81,7 @@ booksController
             const { content } = req.body;
             const userId = req.user.id;
             const role = req.user.role;
-           
+
             const { error } = await booksService.createReview(booksData)(+id, +userId, content, role);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
@@ -115,7 +126,7 @@ booksController
             const url = req.originalUrl;
             const userId = req.user.id;
             const role = req.user.role;
-            
+
             const { error, review } = await booksService.deleteReview(booksData)(url, +userId, role);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
