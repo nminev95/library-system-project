@@ -23,23 +23,20 @@ usersController
     .put('/:id',
         createValidator(updateUserSchema),
         authMiddleware,
-        roleMiddleware('user'),
+        roleMiddleware(['user']),
         async (req, res) => {
             const { id } = req.params;
             const updateData = req.body;
-            const loggedId = usersService.getLoggedUserId(req);
+            const loggedUser = req.user;
 
-            if (+(id) !== +(loggedId)) {
-                res.status(400).send({ message: 'Users can only change their own usernames!' });
-                return;
-            }
-
-            const { error, user } = await usersService.updateUser(usersData)(+id, updateData);
+            const { error, user } = await usersService.updateUser(usersData)(+id, updateData, loggedUser);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'User not found!' });
             } else if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(409).send({ message: 'Name not available' });
+            } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
+                res.status(409).send({ message: 'Users can only change their own usernames!' });
             } else {
                 res.status(200).send(user);
             }

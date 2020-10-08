@@ -430,41 +430,10 @@ const getUserReviews = async (userId, bookId) => {
 * @param {string} content - The review content value to search by. 
 * @returns {Promise<object>} Promise with the review data if found in the database.
 */
-const getReviewByContent = async (content) => {
-    const sql = 'SELECT * FROM reviews WHERE content LIKE ?';
+const getReviewByContent = async (content, reviewId) => {
+    const sql = 'SELECT * FROM reviews WHERE content LIKE ? AND review_Id = ?';
 
-    return await pool.query(sql, [content]);
-};
-
-const getPoints = async (userId) => {
-    const sql = 'SELECT user_points from users WHERE user_Id = ?';
-
-    return await pool.query(sql, [userId]);
-};
-
-const addPoint = async (userId) => {
-    const sql = 'UPDATE users SET user_points = user_points + 1 WHERE user_Id = ?';
-
-    return await pool.query(sql, [userId]);
-};
-
-const removePoints = async (userId, points) => {
-    const sql = `UPDATE users SET user_points = user_points - ${points} WHERE user_Id = ?`;
-
-    return await pool.query(sql, [userId]);
-};
-
-
-const changeLevel = async (userId) => {
-    const sql = 'UPDATE users SET user_level = user_level + 1 WHERE user_Id = ?';
-
-    return await pool.query(sql, [userId]);
-};
-
-const decreaseLevel = async (value, userId) => {
-    const sql = 'UPDATE users SET user_level = ? WHERE user_Id = ?';
-
-    return await pool.query(sql, [value, userId]);
+    return await pool.query(sql, [content, reviewId]);
 };
 
 const getReviewLikes = async (reviewId) => {
@@ -483,6 +452,156 @@ const getReviewDislikes = async (reviewId) => {
     const res = await pool.query(sql, [reviewId]);
 
     return res[0].Dislikes;
+};
+
+/** 
+* Creates a new book in the database. 
+* @async
+* @param {string} title - the title of the book
+* @param {string} author - the author of the book
+* @param {string} description - a short description of the book
+* @returns {Promise<object>}
+*/
+const insertBook = async (title, author, description, status) => {
+    const sql = `
+        INSERT INTO
+            books (title, author, description, borrowedStatus_Id)
+        VALUES 
+            (?, ?, ?, ?)
+        `;
+
+    return await pool.query(sql, [title, author, description, status]);
+};
+
+/** 
+* Finds and updates the params of a book in the database.
+* @async
+* @param {string} column - The column to be updated.
+* @param {string} value - The value to be updated.
+* @param {number} id - The book id to search for.
+* @returns {Promise<object>} Promise with the book data if found in the database.
+*/
+const updateBookInfo = async (bookInfo) => {
+    const { id, title, author, description, status } = bookInfo;
+    
+    const sql = `
+    UPDATE books 
+    SET 
+        title = ?,
+        author = ?,
+        description = ?,
+        borrowedStatus_Id = ?
+    WHERE
+        book_Id = ?;
+    `;
+    return await pool.query(sql, [title, author, description, status,  id]);
+};
+
+/** 
+* Removes a book from the database.
+* @async
+* @param {number} id - The book id to search for.
+* @returns {Promise<object>} Promise.
+*/
+const removeBook = async (id) => {
+    const sql = `
+    DELETE 
+    FROM
+        books
+    WHERE 
+        book_Id = ?
+    `;
+
+    return await pool.query(sql, [id]);
+};
+
+/** 
+* Finds a book in the database. 
+* @async
+* @param {string} title - The title of the searched book.
+* @param {string} author - The author of the searched book.
+* @returns {Promise<object>} Promise with the book data if found in the database.
+*/
+const findBook = async (title, author) => {
+    const sql = `
+        SELECT 
+            * 
+        FROM 
+            books 
+        WHERE 
+            title 
+        LIKE 
+            ? 
+        AND 
+            author 
+        LIKE 
+            ?
+    `;
+
+    return await pool.query(sql, [title, author]);
+};
+
+/** 
+* Creates a new record vote in the database. 
+* @async
+* @param {number} id - The unique review number.
+* @param {number} id - The unique vote number.
+* @param {number} id - The unique user number.
+* @returns {Promise<object>} Promise.
+*/
+const insertVote = async (reviewId, voteId, userId) => {
+    const sql = `
+    INSERT INTO
+        reviews_have_votes (review_Id, vote_Id, user_Id)
+    VALUES
+        (?, ?, ?)`;
+
+    return await pool.query(sql, [reviewId, voteId, userId]);
+};
+
+/** 
+* Finds and updates a record vote in the database. 
+* @async
+* @param {number} id - The unique vote number.
+* @param {number} id - The unique review number.
+* @param {number} id - The unique user number.
+* @returns {Promise<object>} Promise.
+*/
+const updateVote = async (voteId, reviewId, userId) => {
+    const sql = `
+    UPDATE 
+        reviews_have_votes
+    SET 
+        vote_Id = ?
+    WHERE 
+        review_Id = ?
+    AND 
+        user_Id = ?
+    `;
+
+    return await pool.query(sql, [voteId, reviewId, userId]);
+};
+
+/** 
+* Gets a vote record  from the database found by unique review and user number.
+* @async
+* @param {number} id - The unique review number in the database to search by.
+* @param {number} id - The unique user number in the database to search by.
+* @returns {Promise<object>} Promise with the vote data if found in the database.
+*/
+const getUserVoteForBook = async (reviewId, userId) => {
+    const sql = `
+    SELECT 
+        vote_Id 
+    FROM 
+        reviews_have_votes
+    WHERE 
+        review_Id = ?
+    AND 
+        user_Id = ?
+    `;
+
+    return await pool.query(sql, [reviewId, userId]);
 };
 
 export default {
@@ -505,12 +624,14 @@ export default {
     getUserRatingsForBook,
     getUserReviews,
     getReviewByContent,
-    getPoints,
-    addPoint,
-    changeLevel,
-    removePoints,
-    decreaseLevel,
     getReviewVotes,
     getReviewLikes,
     getReviewDislikes,
+    insertBook,
+    findBook,
+    updateBookInfo,
+    removeBook,
+    insertVote,
+    updateVote,
+    getUserVoteForBook,
 };

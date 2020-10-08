@@ -25,7 +25,7 @@ const createUser = usersData => {
     return async (userCreate) => {
         const { username, password, email } = userCreate;
 
-        const existingUser = await usersData.getBy('username', username);
+        const existingUser = await usersData.getWithRole(username);
 
         if (existingUser) {
             return {
@@ -42,8 +42,43 @@ const createUser = usersData => {
 };
 
 const updateUser = usersData => {
-    return async (id, userUpdate) => {
-        const user = await usersData.getBy('user_Id', id);
+    return async (id, userUpdate, loggedUser) => {
+        const user = await usersData.getWithRole(userUpdate.username);
+        
+        if (user) {
+            return {
+                error: serviceErrors.DUPLICATE_RECORD,
+                user: null,
+            };
+        }
+
+        if (+(id) !== +(loggedUser.id)) {
+            return {
+                error: serviceErrors.OPERATION_NOT_PERMITTED,
+                user: null,
+            };
+        }
+
+        const updated = { ...loggedUser, ...userUpdate };
+        
+        const _ = await usersData.update(updated);
+
+        return { error: null, user: updated };
+    };
+};
+
+const getAllUsers = usersData => {
+    return async (filter) => {
+        return filter
+            ? await usersData.searchBy('username', filter)
+            : await usersData.getAll();
+    };
+};
+
+const getUserById = usersData => {
+    return async (id) => {
+        const user = await usersData.searchBy('user_Id', id);
+
         if (!user) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
@@ -51,29 +86,66 @@ const updateUser = usersData => {
             };
         }
 
-        if (userUpdate.username && !!(await usersData.getBy('username', userUpdate.username))) {
+        return { error: null, user: user };
+    };
+};
+
+const deleteUser = usersData => {
+    return async (id) => {
+        const userToDelete = await usersData.searchBy('user_Id', id);
+
+        if (!userToDelete) {
             return {
-                error: serviceErrors.DUPLICATE_RECORD,
+                error: serviceErrors.RECORD_NOT_FOUND,
                 user: null,
             };
         }
 
-        const updated = { ...user, ...userUpdate };
-        const _ = await usersData.update(updated);
 
-        return { error: null, user: updated };
+        const _ = await usersData.removeUser(id);
+
+        return { error: null, user: userToDelete };
     };
 };
 
-const getLoggedUserId = (request) => {
-    const requestAuthArray = request.headers.authorization.split(' ');
-    const decoded = jwt.verify(requestAuthArray[1], PRIVATE_KEY);
-    return decoded.sub;
+const banUser = (usersData) => {
+    return async (description, expirationDate, userId, adminId) => {
+
+        const user = await usersData.searchBy('user_Id', userId);
+        
+        if (!user) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                ban: null,
+            };
+        }
+        if (userId === adminId) {
+            return {
+                error: serviceErrors.OPERATION_NOT_PERMITTED,
+                ban: null,
+            };
+        }
+
+        const getIfBanExist = await usersData.getBanStatus(+userId);
+
+        if (getIfBanExist) {
+            return {
+                error: serviceErrors.DUPLICATE_RECORD,
+                ban: null,
+            };
+        }
+        const sendBanData = await usersData.sendBannedUserData(description, expirationDate, +userId);
+
+        return { error: null, ban: { message: 'The user is banned!' } };
+    };
 };
 
 export default {
     signInUser,
     createUser,
     updateUser,
-    getLoggedUserId,
+    getAllUsers,
+    getUserById,
+    deleteUser,
+    banUser,
 };

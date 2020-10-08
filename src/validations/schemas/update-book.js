@@ -32,4 +32,15 @@ export const updateBookSchema = {
 
         return null;
     },
+    status: value => {
+        if (!value) {
+            return 'Book status is required';
+        }
+
+        if (typeof value !== 'string' || value.trim().length > 1) {
+            return 'Status should be a valid value';
+        }
+
+        return null;
+    },
 };

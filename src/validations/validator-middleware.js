@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import pool from '../data/pool.js';
+import usersData from '../data/users-data.js';
 
 export const createValidator = schema => {
     return (req, res, next) => {
@@ -21,52 +21,29 @@ export const createValidator = schema => {
         } else {
             next();
         }
-    };
+    }; 
 };
 
 export const validateBanStatusMiddleware = () => {
     return async (req, res, next) => {
         const userId = req.user.id;
-        const banStatus = await getBanStatus(+userId);
+        const banStatus = await usersData.getBanStatus(+userId);
 
         if (!banStatus) {
             next();
         } else {
             const banStatusId = banStatus.idban_status;
-            const test = await getExpDate(+userId);
+            const test = await usersData.getExpDate(+userId);
 
             if (+(test.dateDiff) > 0) {
                 return res.status(400).send({ message: 'Bannat si brat.' });
             }
             if (+(test.dateDiff) < 0) {
-                const _ = await deleteBan(banStatusId);
+                const _ = await usersData.deleteBan(banStatusId);
                 next();
             }
         }
     };
 };
 
-const getExpDate = async (id) => {
-    const sql = 'SELECT DATEDIFF((SELECT expirationDate FROM ban_status WHERE user_Id = ?), (SELECT NOW())) as dateDiff';
 
-    const res = await pool.query(sql, [id]);
-
-    return res[0];
-};
-
-const getBanStatus = async (id) => {
-    const sql = `
-    SELECT * FROM ban_status WHERE user_Id = ?;
-    `;
-
-    const ban = await pool.query(sql, [id]);
-    return ban[0];
-};
-
-const deleteBan = async (banStatusId) => {
-    const sql = 'DELETE FROM ban_status WHERE idban_status = ?';
-
-    return await pool.query(sql, [banStatusId]);
-};
-
-export default getExpDate;

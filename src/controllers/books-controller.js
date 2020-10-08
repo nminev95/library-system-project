@@ -1,9 +1,13 @@
+/* eslint-disable no-unused-vars */
 import express from 'express';
 import booksData from '../data/books-data.js';
 import booksService from '../services/books-service.js';
 import serviceErrors from '../services/service-errors.js';
 import { authMiddleware, roleMiddleware } from '../auth/auth-middleware.js';
-import { validateBanStatusMiddleware, createValidator, createReviewSchema, updateReviewSchema} from '../validations/index_2.js';
+import { validateBanStatusMiddleware, createValidator, createReviewSchema, updateReviewSchema } from '../validations/index_2.js';
+import gamificationService from '../services/gamification-service.js';
+import gamificationData from '../data/gamification-data.js';
+
 const booksController = express.Router();
 
 booksController
@@ -58,15 +62,16 @@ booksController
     // eslint-disable-next-line no-unused-vars
     .post('/:id/reviews',
         authMiddleware,
-        roleMiddleware('user'),
+        roleMiddleware(['user']),
         validateBanStatusMiddleware(),
         createValidator(createReviewSchema),
         async (req, res) => {
             const { id } = req.params;
-            const {content} = req.body;
+            const { content } = req.body;
             const userId = req.user.id;
-
-            const { error } = await booksService.createReview(booksData)(content, +id, +userId);
+            const role = req.user.role;
+           
+            const { error } = await booksService.createReview(booksData)(+id, +userId, content, role);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'Book not found!' });
@@ -75,21 +80,22 @@ booksController
             } else if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(400).send({ message: 'You may review each book only once!' });
             } else {
+                const _ = await gamificationService.addUserPoints(gamificationData)(userId);
                 res.status(200).send({ message: 'Review successfully added!' });
             }
         })
     .put('/:id/reviews/:id',
         authMiddleware,
-        roleMiddleware('user'),
+        roleMiddleware(['user']),
         validateBanStatusMiddleware(),
         createValidator(updateReviewSchema),
         async (req, res) => {
-            const {content} = req.body;
+            const { content } = req.body;
             const { id } = req.params;
             const userId = req.user.id;
-           
+            const role = req.user.role;
 
-            const { error, review } = await booksService.updateReview(booksData)(content, +id, +userId);
+            const { error, review } = await booksService.updateReview(booksData)(+id, content, +userId, role);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 return res.status(404).send({ message: 'Book/review not found!' });
@@ -103,13 +109,14 @@ booksController
         })
     .delete('/:id/reviews/:id',
         authMiddleware,
-        roleMiddleware('user'),
+        roleMiddleware(['user']),
         validateBanStatusMiddleware(),
         async (req, res) => {
             const url = req.originalUrl;
             const userId = req.user.id;
-
-            const { error, review } = await booksService.deleteReview(booksData)(url, +userId);
+            const role = req.user.role;
+            
+            const { error, review } = await booksService.deleteReview(booksData)(url, +userId, role);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 return res.status(409).send({ message: 'Book/review not found!' });
@@ -129,18 +136,19 @@ booksController
             const rating = req.body.rating;
             const userId = req.user.id;
 
-            const { error } = await booksService.rateBook(booksData)(+bookId, +userId, +rating);
+            const { error, rate } = await booksService.rateBook(booksData)(+bookId, +userId, +rating);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(409).send({ message: 'Book not found!' });
-            } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
+            } else if (error === serviceErrors.NOT_A_NUMBER) {
                 res.status(404).send({ message: 'Rating should be a valid integer in range [1-5]!' });
+            } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
+                res.status(404).send({ message: 'Users can only rate book they have borrowed and returned!' });
             } else if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(400).send({ message: 'You have already rated this book! You can update your rating if you have changed your mind!' });
             } else {
-                res.status(201).send({ message: 'You have successfully rated the book!' });
+                res.status(201).send(rate);
             }
-
         })
     //borrow a book
     .put('/:id',
@@ -161,7 +169,6 @@ booksController
                 res.status(200).send({ message: 'You have borrowed the book successfully!' });
             }
         })
-
     //return a book 
     .post('/:id',
         authMiddleware,
@@ -178,9 +185,9 @@ booksController
             } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
                 res.status(400).send({ message: 'Book was either borrowed by another user or is not borrowed at all!!' });
             } else {
+                const _ = await gamificationService.addUserPoints(gamificationData)(user_Id);
                 res.status(200).send({ message: 'You have returned the book successfully!' });
             }
         });
-
 
 export default booksController;

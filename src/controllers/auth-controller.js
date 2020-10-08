@@ -27,7 +27,6 @@ authController
                 token: token,
             });
         }
-
     })
     .post('/signout',
         authMiddleware,
