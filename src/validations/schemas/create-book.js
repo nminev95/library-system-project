@@ -32,6 +32,28 @@ export const createBookSchema = {
 
         return null;
     },
+    genre: value => {
+        if (!value) {
+            return 'Book genre is required';
+        }
+
+        if (typeof value !== 'string' || value.trim().length > 15) {
+            return 'Genre should be a valid value';
+        }
+
+        return null;
+    },
+    year: value => {
+        if (!value) {
+            return 'Book year is required';
+        }
+
+        if (typeof value !== 'string' || value.trim().length > 4) {
+            return 'Year should be a valid value';
+        }
+
+        return null;
+    },
     status: value => {
         if (!value) {
             return 'Book status is required';

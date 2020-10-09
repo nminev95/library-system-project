@@ -25,7 +25,9 @@
 
 2. Setup MySQL Database with new Schema.
 
-3. Setup `config.json` file. It needs to be on root level in api folder where is `package.json` and other config files.
+3. Import in a new SQL Query Tab all of the contents of `populate-initial-data.sql`.
+
+4. Setup `config.js` file. It needs to be on root level in api folder where is `package.json` and other config files.
 
    - `config.json` file with your settings:
 
@@ -34,12 +36,12 @@
       host: 'localhost',
       port: '3306',
       user: 'root',
-      password: 'MarVel147',
+      password: 'your-password-goes-here',
       database: 'mydb',
      };
     ```
 
-4. After files are setup open the terminal and run the following command:
+5. After files are setup open the terminal and run the following command:
 
     `npm run start:dev`
   

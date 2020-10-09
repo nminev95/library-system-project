@@ -38,7 +38,7 @@ const getAllBooks = booksData => {
                         b.Rating = 'Be the first person to rate this book!';
                     }
                 });
-                
+
                 if (books.length === 0) {
                     return {
                         error: serviceErrors.RECORD_NOT_FOUND,
@@ -109,7 +109,7 @@ const getBookById = booksData => {
 * @return {Promise<object>}
 */
 const createBook = booksData => {
-    return async (title, description, author, status) => {
+    return async (title, description, author, genre, year, status) => {
         const foundBook = await booksData.findBook(title, author);
 
         if (foundBook.length !== 0) {
@@ -119,7 +119,7 @@ const createBook = booksData => {
             };
         }
 
-        const _ = await booksData.insertBook(title, author, description, status);
+        const _ = await booksData.insertBook(title, author, description, genre, year, status);
 
         return { error: null, book: { message: 'Book was successfully added to library!' } };
     };
@@ -213,7 +213,7 @@ const getBorrowerId = booksData => {
 const getBookReviews = booksData => {
     return async (id) => {
         const reviews = await booksData.getReviews(id);
-        
+        console.log(reviews)
         if (reviews.length === 0) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
@@ -238,7 +238,12 @@ const getBookReviews = booksData => {
 * @return {Promise<object>}
 */
 const createReview = booksData => {
-    return async (id, userId, content, role) => {
+    return async (req) => {
+        const content = req.body.content;
+        const id = req.params.id;
+        const userId = req.user.id;
+        const role = req.user.role;
+
         if (role === 'user') {
             const book = await booksData.getById(+id);
 
@@ -373,7 +378,12 @@ const returnABook = booksData => {
 * @return {Promise<object>}
 */
 const updateReview = booksData => {
-    return async (reviewId, newReview, userId, role) => {
+    return async (req) => {
+        const newReview = req.body.content;
+        const result = req.originalUrl.match(/[0-9]+/g);
+        const reviewId = result[1];
+        const userId = req.body.id;
+        const role = req.body.role;
 
         if (role === 'user') {
             const foundReview = await booksData.getReview(reviewId);
@@ -568,14 +578,14 @@ const voteReview = booksData => {
         } else {
             const currentVote = +(existingVote[0].vote_Id);
             if (currentVote === 1 && vote === 2) {
-                const _ = await booksData.updateVote(2, reviewId, userId);
+                const _ = await booksData.updateVote(vote, reviewId, userId);
                 return { error: null, review: { message: 'Your vote has been updated!' } };
             } else if (currentVote === 1 && vote === 1) {
                 return { error: null, review: { message: 'You have already liked this review!' } };
             } else if (currentVote === 2 && vote === 2) {
                 return { error: null, review: { message: 'You have already disliked this review!' } };
             } else {
-                const _ = await booksData.updateVote(1, reviewId, userId);
+                const _ = await booksData.updateVote(vote, reviewId, userId);
                 return { error: null, review: { message: 'Your vote has been updated!' } };
             }
         }
@@ -596,12 +606,12 @@ const mapReviewsAndRating = async (data) => {
         const { id, Title, Author, Description, Genre, Year, Status, Review_Id, Review, ReviewAuthor, Rating, TimesBorrowed } = book;
         const likes = await booksData.getReviewLikes(Review_Id);
         const dislikes = await booksData.getReviewDislikes(Review_Id);
-        
+
         if (!map.get(id)) {
             map.set(id, {
                 id, Title, Author, Description, Genre, Year, Status, TimesBorrowed, Reviews: [], Rating,
             });
-        }  
+        }
 
         const reviewObject = {
             id: Review_Id,

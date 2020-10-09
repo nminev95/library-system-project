@@ -32,9 +32,31 @@ export const updateBookSchema = {
 
         return null;
     },
+    genre: value => {
+        if (value === undefined) {
+            return null;
+        }
+
+        if (typeof value !== 'string' || value.trim().length > 15) {
+            return 'Genre should be a valid value';
+        }
+
+        return null;
+    },
+    year: value => {
+        if (value === undefined) {
+            return null;
+        }
+
+        if (typeof value !== 'string' || value.trim().length > 4) {
+            return 'Year should be a valid value';
+        }
+
+        return null;
+    },
     status: value => {
-        if (!value) {
-            return 'Book status is required';
+        if (value === undefined) {
+            return null;
         }
 
         if (typeof value !== 'string' || value.trim().length > 1) {

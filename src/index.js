@@ -4,13 +4,11 @@ import bodyParser from 'body-parser';
 import { PORT } from './config.js';
 import passport from 'passport';
 import jwtStrategy from './auth/strategy.js';
-
 import usersController from './controllers/users-controller.js';
 import booksController from './controllers/books-controller.js';
 import authController from './controllers/auth-controller.js';
 import adminsController from './controllers/admins-controller.js';
 import reviewsController from './controllers/reviews-controller.js';
-
 
 const app = express();
 passport.use(jwtStrategy);

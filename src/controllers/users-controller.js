@@ -13,11 +13,11 @@ usersController
         async (req, res) => {
             const createData = req.body;
 
-            const { error, user } = await usersService.createUser(usersData)(createData);
+            const { error } = await usersService.createUser(usersData)(createData);
             if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(409).send({ message: 'Name not available' });
             } else {
-                res.status(201).send(user);
+                res.status(201).send({ message: `Account name ${createData.username} has been created!` });
             }
         })
     .put('/:id',
@@ -38,7 +38,7 @@ usersController
             } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
                 res.status(409).send({ message: 'Users can only change their own usernames!' });
             } else {
-                res.status(200).send(user);
+                res.status(200).send({ message: 'You have successfully updated your account info!' });
             }
         });
 

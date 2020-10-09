@@ -153,16 +153,16 @@ const getReviews = async (value) => {
             (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 2) as Disikes
         from 
             reviews r
-        join 
+        left join 
             users u
         on 
             r.user_Id = u.user_Id
-        join 
+        left join 
             reviews_have_votes rv
         ON 
             rv.review_Id = r.review_Id
         WHERE 
-            book_Id = 4
+            book_Id = ?
         `;
 
     return await pool.query(sql, [value]);
@@ -231,7 +231,7 @@ const searchQuery = async (title, author, genre) => {
             r.content as Review,
             (SELECT username FROM users WHERE r.user_Id = user_Id) as ReviewAuthor,
             (SELECT COUNT(*) FROM users_history WHERE book_Id = id) as TimesBorrowed,
-            AVG(rr.rating_value) as Rating
+            ROUND(AVG(rr.rating_value), 2) as Rating
         from 
             books b
         LEFT OUTER JOIN
@@ -251,16 +251,16 @@ const searchQuery = async (title, author, genre) => {
         ON 
             br.rating_Id = rr.rating_Id
         WHERE 
-            (? IS NULL OR title LIKE ?)
+            (? IS NULL OR title LIKE '%${title}%')
         AND 
-            (? IS NULL OR author LIKE ?)
+            (? IS NULL OR author LIKE '%${author}%')
         AND 
-            (? IS NULL OR genre LIKE ?)
+            (? IS NULL OR genre LIKE '%${genre}%')
         GROUP BY 
             IFNULL(r.review_Id, b.description);
         `;
 
-    return await pool.query(sql, [title, title, author, author, genre, genre]);
+    return await pool.query(sql, [title, author, genre]);
 };
 /** 
 * Creates a new book review in the database. 
@@ -290,11 +290,11 @@ const pushReview = async (content, id, userId) => {
 const updateBookStatusToBorrowed = async (user_id, book_id) => {
     const sql = `
         UPDATE books SET
-          borrowedStatus_Id = ?,
+          borrowedStatus_Id = (SELECT status_Id FROM status WHERE type = 'Borrowed'),
           borrower_Id = ?
         WHERE book_Id = ?
     `;
-    return await pool.query(sql, [4, user_id, book_id]);
+    return await pool.query(sql, [user_id, book_id]);
 };
 
 /** 
@@ -307,7 +307,7 @@ const updateBookStatusToBorrowed = async (user_id, book_id) => {
 const updateBookStatusToFree = async (book_id) => {
     const sql = `
         UPDATE books SET
-          borrowedStatus_Id = '6',
+          borrowedStatus_Id = (SELECT status_Id FROM status WHERE type = 'Free'),
           borrower_Id = '0'
         WHERE book_Id = ?
     `;
@@ -570,15 +570,15 @@ const getReviewDislikes = async (reviewId) => {
 * @param {string} description - a short description of the book
 * @returns {Promise<object>}
 */
-const insertBook = async (title, author, description, status) => {
+const insertBook = async (title, author, description, genre, year, status) => {
     const sql = `
         INSERT INTO
-            books (title, author, description, borrowedStatus_Id)
+            books (title, author, description, genre, year, borrowedStatus_Id)
         VALUES 
-            (?, ?, ?, ?)
+            (?, ?, ?, ?, ?, ?);
         `;
 
-    return await pool.query(sql, [title, author, description, status]);
+    return await pool.query(sql, [title, author, description, genre, year, status]);
 };
 
 /** 
@@ -590,7 +590,7 @@ const insertBook = async (title, author, description, status) => {
 * @returns {Promise<object>} Promise with the book data if found in the database.
 */
 const updateBookInfo = async (bookInfo) => {
-    const { id, title, author, description, status } = bookInfo;
+    const { id, title, author, description, genre, year, status } = bookInfo;
 
     const sql = `
     UPDATE books 
@@ -598,11 +598,13 @@ const updateBookInfo = async (bookInfo) => {
         title = ?,
         author = ?,
         description = ?,
+        genre = ?,
+        year = ?,
         borrowedStatus_Id = ?
     WHERE
         book_Id = ?;
     `;
-    return await pool.query(sql, [title, author, description, status, id]);
+    return await pool.query(sql, [title, author, description, genre, year, status, id]);
 };
 
 /** 
@@ -657,14 +659,14 @@ const findBook = async (title, author) => {
 * @param {number} id - The unique user number.
 * @returns {Promise<object>} Promise.
 */
-const insertVote = async (reviewId, voteId, userId) => {
+const insertVote = async (reviewId, vote, userId) => {
     const sql = `
     INSERT INTO
         reviews_have_votes (review_Id, vote_Id, user_Id)
     VALUES
-        (?, ?, ?)`;
+        (?, (SELECT vote_Id FROM reviews_votes WHERE type_of_Vote LIKE ?), ?)`;
 
-    return await pool.query(sql, [reviewId, voteId, userId]);
+    return await pool.query(sql, [reviewId, vote, userId]);
 };
 
 /** 
@@ -680,7 +682,7 @@ const updateVote = async (voteId, reviewId, userId) => {
     UPDATE 
         reviews_have_votes
     SET 
-        vote_Id = ?
+        vote_Id = (SELECT vote_Id FROM reviews_votes WHERE type_of_vote LIKE ?)
     WHERE 
         review_Id = ?
     AND 

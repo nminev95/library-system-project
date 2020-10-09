@@ -5,7 +5,7 @@ import serviceErrors from '../services/service-errors.js';
 import booksService from '../services/books-service.js';
 import usersData from '../data/users-data.js';
 import booksData from '../data/books-data.js';
-import gamificationService from '../data/gamification-data.js';
+import gamificationService from '../services/gamification-service.js';
 import gamificationData from '../data/gamification-data.js';
 import { createValidator, banUserSchema, createBookSchema, updateBookSchema } from '../validations/index_2.js';
 import usersService from '../services/users-service.js';
@@ -13,6 +13,26 @@ import usersService from '../services/users-service.js';
 const adminsController = express.Router();
 
 adminsController
+    .get('/books',
+        authMiddleware,
+        roleMiddleware(['admin']),
+        async (req, res) => {
+            res.redirect('http://localhost:3000/books');
+        })
+    .get('/books/:id',
+        authMiddleware,
+        roleMiddleware(['admin']),
+        async (req, res) => {
+            const id = req.params.id;
+            res.redirect(`http://localhost:3000/books/${+id}`);
+        })
+    .get('/books/pages/:id',
+        authMiddleware,
+        roleMiddleware(['admin']),
+        async (req, res) => {
+            const id = req.params.id;
+            res.redirect(`http://localhost:3000/books/pages/${+id}`);
+        })
     .get('/users',
         authMiddleware,
         roleMiddleware(['admin']),
@@ -47,7 +67,7 @@ adminsController
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'User not found!' });
             } else {
-                res.status(200).send(user);
+                res.status(200).send({ message: 'User was deleted successfully!' });
             }
         })
     .post('/books',
@@ -55,8 +75,8 @@ adminsController
         roleMiddleware(['admin']),
         createValidator(createBookSchema),
         async (req, res) => {
-            const { title, description, author, status } = req.body;
-            const { error, book } = await booksService.createBook(booksData)(title, description, author, status);
+            const { title, description, author, status, genre, year } = req.body;
+            const { error, book } = await booksService.createBook(booksData)(title, description, author, genre, year, status);
 
             if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(409).send({ message: 'Book is already in library!' });
@@ -112,12 +132,7 @@ adminsController
         authMiddleware,
         roleMiddleware(['admin']),
         async (req, res) => {
-            const newReview = (Object.values(req.body)).toString();
-            const result = req.originalUrl.match(/[0-9]+/g);
-            const reviewId = result[1];
-            const userId = req.body.id;
-            const role = req.body.role;
-            const { error, review } = await booksService.updateReview(booksData)(+reviewId, newReview, userId, role);
+            const { error, review } = await booksService.updateReview(booksData)(req);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(409).send({ message: 'Book/review not found!' });
@@ -129,12 +144,8 @@ adminsController
         authMiddleware,
         roleMiddleware(['admin']),
         async (req, res) => {
-            const newReview = (Object.values(req.body)).toString();
-            const bookId = req.params.id;
-            const userId = req.user.id;
-            const role = req.user.role;
 
-            const { error, review } = await booksService.createReview(booksData)(+bookId, +userId, newReview, role);
+            const { error, review } = await booksService.createReview(booksData)(req);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(409).send({ message: 'Book not found!' });

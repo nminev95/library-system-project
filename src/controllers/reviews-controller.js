@@ -17,10 +17,10 @@ reviewsController
         validateBanStatusMiddleware(),
         async (req, res) => {
             const reviewId = req.params.id;
-            const vote = (Object.values(req.body)).toString();
+            const vote = req.body.vote;
             const userId = req.user.id;
 
-            const { error, review, author } = await booksService.voteReview(booksData)(+reviewId, +userId, +vote);
+            const { error, review, author } = await booksService.voteReview(booksData)(+reviewId, +userId, vote);
             
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 return res.status(409).send({ message: 'Review not found!' });

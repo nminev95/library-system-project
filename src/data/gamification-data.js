@@ -66,10 +66,25 @@ const decreaseLevel = async (value, userId) => {
     return await pool.query(sql, [value, userId]);
 };
 
+/** 
+* Gets the user's level from the database.
+* @async
+* @param {number} id - The unique user number to search by. 
+* @returns {Promise<object>} Promise.
+*/
+const getLevel = async (userId) => {
+    const sql = `SELECT user_level 
+    FROM users WHERE user_Id = ?`;
+    
+    const res = await pool.query(sql, [userId]);
+    return res[0];
+};   
+
 export default {
     getPoints,
     addPoint,
     changeLevel,
     removePoints,
     decreaseLevel,
+    getLevel,
 };
