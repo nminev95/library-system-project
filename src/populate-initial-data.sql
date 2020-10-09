@@ -8,8 +8,8 @@ ALTER table reviews auto_increment = 1;
 ALTER table user_levels auto_increment = 1;
 ALTER table book_ratings auto_increment = 1;
 
-INSERT INTO `mydb`.`roles` (`name`) VALUES ('user');
-INSERT INTO `mydb`.`roles` (`name`) VALUES ('admin');
+INSERT INTO `mydb`.`roles` (`type_of_user`) VALUES ('user');
+INSERT INTO `mydb`.`roles` (`type_of_user`) VALUES ('admin');
 
 INSERT INTO `mydb`.`user_levels` (`type`) VALUES ('Newbie');
 INSERT INTO `mydb`.`user_levels` (`type`) VALUES ('Basic');

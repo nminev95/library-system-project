@@ -39,17 +39,8 @@ CREATE TABLE `ban_status` (
   PRIMARY KEY (`idban_status`),
   KEY `fk_ban_status_users1_idx` (`user_Id`),
   CONSTRAINT `fk_ban_status_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ban_status`
---
-
-LOCK TABLES `ban_status` WRITE;
-/*!40000 ALTER TABLE `ban_status` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ban_status` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `book_ratings`
@@ -66,16 +57,6 @@ CREATE TABLE `book_ratings` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `book_ratings`
---
-
-LOCK TABLES `book_ratings` WRITE;
-/*!40000 ALTER TABLE `book_ratings` DISABLE KEYS */;
-INSERT INTO `book_ratings` VALUES (1,1),(2,2),(3,3),(4,4),(5,5);
-/*!40000 ALTER TABLE `book_ratings` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `books`
 --
 
@@ -86,26 +67,16 @@ CREATE TABLE `books` (
   `book_Id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(45) NOT NULL,
   `author` varchar(45) NOT NULL,
-  `description` varchar(45) NOT NULL,
-  `genre` varchar(45) DEFAULT NULL,
-  `year` int(11) DEFAULT NULL,
-  `borrowedStatus_Id` int(11) NOT NULL,
+  `description` varchar(300) NOT NULL,
+  `genre` varchar(45) NOT NULL,
+  `year` int(11) NOT NULL,
+  `borrowedStatus_Id` int(11) NOT NULL DEFAULT 3,
   `borrower_Id` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`book_Id`),
   KEY `fk_books_borrowed_status1_idx` (`borrowedStatus_Id`),
   CONSTRAINT `fk_books_borrowed_status1` FOREIGN KEY (`borrowedStatus_Id`) REFERENCES `status` (`status_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `books`
---
-
-LOCK TABLES `books` WRITE;
-/*!40000 ALTER TABLE `books` DISABLE KEYS */;
-INSERT INTO `books` VALUES (4,'HELLO','Pesho','Peshos book.','horror',1995,6,'0'),(5,'Gosho Goshov','maikatiIIII','A book about maikati.',NULL,NULL,6,'0'),(8,'updateeeee','Hehehehe','hahahaha',NULL,NULL,5,'0'),(10,'book test2','admina','hahahahadddddd',NULL,NULL,4,'9'),(11,'book test552','admina','hahahahafgdgdf',NULL,NULL,4,'8'),(12,'asdsadas','hahahaha','neeeeee',NULL,NULL,6,'0'),(13,'ddddddd','ddddddda','ddddddddddddddddddddddddddd',NULL,NULL,6,'0'),(14,'na','azzzz','lud summm',NULL,NULL,6,NULL);
-/*!40000 ALTER TABLE `books` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `books_has_book_ratings`
@@ -126,16 +97,6 @@ CREATE TABLE `books_has_book_ratings` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `books_has_book_ratings`
---
-
-LOCK TABLES `books_has_book_ratings` WRITE;
-/*!40000 ALTER TABLE `books_has_book_ratings` DISABLE KEYS */;
-INSERT INTO `books_has_book_ratings` VALUES (4,5,0),(4,1,0),(4,3,0),(4,1,0),(12,5,0),(12,5,0),(10,5,10),(4,5,10),(11,4,10),(4,5,8),(12,5,8);
-/*!40000 ALTER TABLE `books_has_book_ratings` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `reviews`
 --
 
@@ -145,7 +106,6 @@ DROP TABLE IF EXISTS `reviews`;
 CREATE TABLE `reviews` (
   `review_Id` int(11) NOT NULL AUTO_INCREMENT,
   `content` varchar(45) NOT NULL,
-  `isDeleted` tinyint(4) NOT NULL DEFAULT 0,
   `book_Id` int(11) NOT NULL,
   `user_Id` int(11) NOT NULL,
   PRIMARY KEY (`review_Id`),
@@ -153,18 +113,8 @@ CREATE TABLE `reviews` (
   KEY `fk_reviews_users1_idx` (`user_Id`),
   CONSTRAINT `fk_reviews_books1` FOREIGN KEY (`book_Id`) REFERENCES `books` (`book_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_reviews_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `reviews`
---
-
-LOCK TABLES `reviews` WRITE;
-/*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
-INSERT INTO `reviews` VALUES (3,'Very Very nice book',0,4,9),(4,'qko qkooooooooo',0,4,9),(15,'jajajaj',0,4,9),(16,'hhhhhhhh',0,4,9);
-/*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `reviews_have_votes`
@@ -185,16 +135,6 @@ CREATE TABLE `reviews_have_votes` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `reviews_have_votes`
---
-
-LOCK TABLES `reviews_have_votes` WRITE;
-/*!40000 ALTER TABLE `reviews_have_votes` DISABLE KEYS */;
-INSERT INTO `reviews_have_votes` VALUES (4,2,8),(15,1,8),(16,1,8);
-/*!40000 ALTER TABLE `reviews_have_votes` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `reviews_votes`
 --
 
@@ -209,16 +149,6 @@ CREATE TABLE `reviews_votes` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `reviews_votes`
---
-
-LOCK TABLES `reviews_votes` WRITE;
-/*!40000 ALTER TABLE `reviews_votes` DISABLE KEYS */;
-INSERT INTO `reviews_votes` VALUES (1,'Like'),(2,'Dislike');
-/*!40000 ALTER TABLE `reviews_votes` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `roles`
 --
 
@@ -229,18 +159,8 @@ CREATE TABLE `roles` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
   `type_of_user` varchar(45) NOT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `roles`
---
-
-LOCK TABLES `roles` WRITE;
-/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (3,'user'),(4,'admin');
-/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `status`
@@ -253,18 +173,8 @@ CREATE TABLE `status` (
   `status_Id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(45) NOT NULL,
   PRIMARY KEY (`status_Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `status`
---
-
-LOCK TABLES `status` WRITE;
-/*!40000 ALTER TABLE `status` DISABLE KEYS */;
-INSERT INTO `status` VALUES (4,'Borrowed'),(5,'Unlisted'),(6,'Free');
-/*!40000 ALTER TABLE `status` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user_levels`
@@ -281,16 +191,6 @@ CREATE TABLE `user_levels` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_levels`
---
-
-LOCK TABLES `user_levels` WRITE;
-/*!40000 ALTER TABLE `user_levels` DISABLE KEYS */;
-INSERT INTO `user_levels` VALUES (1,'Newbie'),(2,'Basic'),(3,'Member'),(4,'Regular'),(5,'Bookworm');
-/*!40000 ALTER TABLE `user_levels` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `users`
 --
 
@@ -302,28 +202,17 @@ CREATE TABLE `users` (
   `username` varchar(45) NOT NULL,
   `password` varchar(256) NOT NULL,
   `email` varchar(45) NOT NULL,
-  `isDeleted` tinyint(4) NOT NULL DEFAULT 0,
   `role_id` int(11) NOT NULL DEFAULT 1,
   `user_points` int(11) NOT NULL DEFAULT 0,
   `user_level` int(11) NOT NULL DEFAULT 1,
-  `register_date` date DEFAULT NULL,
+  `register_date` date NOT NULL,
   PRIMARY KEY (`user_Id`),
   KEY `fk_users_roles1_idx` (`role_id`),
   KEY `fk_users_user_levels1_idx` (`user_level`),
   CONSTRAINT `fk_users_roles1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_user_levels1` FOREIGN KEY (`user_level`) REFERENCES `user_levels` (`user_level_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `users`
---
-
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (8,'nikiiiii','$2b$10$sYpROqQtJgYshtOrH0ybDOF/qSYpG1Jat96Kf/JLUkIVhkbREJR7C','niki123@gmail.com',0,3,11,2,NULL),(9,'mariq','$2b$10$a9s.n0Nn.8BqImlTFc8PLuI1HSW7AnEXuF7YKCN78DatmMGOJCxXC','mariq123@gmail.com',0,4,22,3,NULL),(11,'test_sum145','$2b$10$uoP/Lo8Xgtgm/zA4Dpa1oOJQQV93FuLehtYEhuuBI/uMTPpFsLjV6','testemail@gmail.com',0,3,0,1,'2020-10-08');
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `users_history`
@@ -341,16 +230,6 @@ CREATE TABLE `users_history` (
   CONSTRAINT `fk_users_has_books_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `users_history`
---
-
-LOCK TABLES `users_history` WRITE;
-/*!40000 ALTER TABLE `users_history` DISABLE KEYS */;
-INSERT INTO `users_history` VALUES (8,4),(8,4),(8,4);
-/*!40000 ALTER TABLE `users_history` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -361,4 +240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-08 23:42:56
+-- Dump completed on 2020-10-09 18:33:19
