@@ -1,45 +1,45 @@
 import express from 'express';
-//import usersService from '../services/users-service.js';
+import usersService from '../services/users-service.js';
 import usersData from '../data/users-data.js';
+import serviceErrors from '../services/service-errors.js';
+import { createValidator, createUserSchema, updateUserSchema } from '../validations/index_2.js';
+import { authMiddleware, roleMiddleware } from '../auth/auth-middleware.js';
 
 const usersController = express.Router();
 
 usersController
-    .get(() => {
+    .post('/',
+        createValidator(createUserSchema),
+        async (req, res) => {
+            const createData = req.body;
 
-    })
-
-    .get(() => {
-
-    })
-
-    .put(() => {
-
-    })
-
-    .post('/login', async (req, res) => {
-        const username = req.body.username;
-        const password = req.body.password;
-
-        try {
-            const foundUsers = await usersData.findUser(username);
-            if (foundUsers.length === 0) {
-                res.status(400).json({ message: `Username ${username} does not exist!` });
+            const { error } = await usersService.createUser(usersData)(createData);
+            if (error === serviceErrors.DUPLICATE_RECORD) {
+                res.status(409).send({ message: 'Name not available' });
+            } else {
+                res.status(201).send({ message: `Account name ${createData.username} has been created!` });
             }
-            const loggedUser = await foundUsers.find((user) => user.password === password);
-            if (!loggedUser) {
-                res.status(400).json({ message: 'Password is incorrect!' });
-            }
-            res.status(200).json(loggedUser);
-        } catch (err) {
-            res.status(404).json({ message: err });
-        }
-    })
-    .post('/logout', async (req, res) => {
-        res.status(200).json({ message: 'You have logged out! ' });
-    })
-    .delete(() => {
+        })
+    .put('/:id',
+        createValidator(updateUserSchema),
+        authMiddleware,
+        roleMiddleware(['user']),
+        async (req, res) => {
+            const { id } = req.params;
+            const updateData = req.body;
+            const loggedUser = req.user;
 
-    });
+            const { error, user } = await usersService.updateUser(usersData)(+id, updateData, loggedUser);
+
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'User not found!' });
+            } else if (error === serviceErrors.DUPLICATE_RECORD) {
+                res.status(409).send({ message: 'Name not available' });
+            } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
+                res.status(409).send({ message: 'Users can only change their own usernames!' });
+            } else {
+                res.status(200).send({ message: 'You have successfully updated your account info!' });
+            }
+        });
 
 export default usersController;
