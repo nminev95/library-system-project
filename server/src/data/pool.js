@@ -4,7 +4,7 @@ const pool = mariadb.createPool({
     host: 'localhost',
     port: '3306',
     user: 'root',
-    password: 'MarVel147',
+    password: 'QWErty123!',
     database: 'mydb', //to rename!!!!!!!!!!!!!!!!
 
 });
