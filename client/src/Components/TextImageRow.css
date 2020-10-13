@@ -1,0 +1,17 @@
+.textImageBlock {
+    position: relative;
+    display: grid;
+    grid-template-columns: 35% 35%;
+    background-color: lightgrey;
+    border-width:5px;  
+    border-bottom-style:outset;
+    padding:35px;
+    justify-content: center;
+}
+
+.textBlock {
+    padding: 55px;
+    font-size: 22px;
+    text-align: center;
+    
+}

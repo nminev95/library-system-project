@@ -1,0 +1,55 @@
+.imageDiv {
+    display:grid;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    height: auto;
+    border-width:8px;  
+    border-bottom-style:outset;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #cccccc;
+    padding:65px;
+    border-radius: 39px;
+    box-shadow: 2px 3px #ccc;
+    height: 50%;
+    width:40%;
+    background-color: #ccc;
+    opacity:0.65;
+}
+
+.centeredText {
+    opacity: none;
+    color:black;
+    font-weight: bold;
+    font-size: 42px
+}
+
+.centeredText2 {
+    opacity: none;
+    color:ccc;
+    font-weight: bold;
+    font-size: 30px
+}
+
+.buttonsGrid {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-column-gap: 20px;
+    justify-content: center;
+    padding:20px;
+    height: 100px;
+}
+
+button:hover {
+    background-color: white;
+}
+
+button:active {
+    background-color: dimgrey;
+}
