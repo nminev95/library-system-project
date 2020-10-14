@@ -14,7 +14,7 @@ const HomePage = () => {
     
 
     <div className="body">
-      <NavBar sticky="top" />
+      {/* <NavBar sticky="top" /> */}
       <Content />
       <TextImageRow id="1" icon={books}>
         <h1>Huge variety.</h1>

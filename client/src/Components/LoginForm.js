@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './LoginForm.css';
+import { Link } from 'react-router-dom';
 
 const LoginForm = (props) => {
 
@@ -11,22 +12,28 @@ const LoginForm = (props) => {
             <h1>Sign In</h1>
             <div>
                 <input type="text"
+                    placeholder="Username"
                     className="usernameField"
                     value={username}
+                    onFocus={(event) => event.target.placeholder = ''}
                     onChange={(event) => setUsername(event.target.value)}>
                 </input>
             </div>
             <div>
                 <input type="password"
+                    placeholder="Password"
                     className="passwordField"
                     value={password}
+                    onFocus={(event) => event.target.placeholder = ''}
                     onChange={(event) => setPassword(event.target.value)}>
                 </input>
             </div>
             <button className="loginButton" onClick={() => console.log({ username, password })}>Sign In</button>
             <div>
                 <p>Don't have an account?</p>
-                <p><a href="localhost:3000/register">Sign up now.</a></p>
+                <Link to="/users">
+                <a>Sign up now.</a>
+                </Link>
             </div>
         </div>
     )

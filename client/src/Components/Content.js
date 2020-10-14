@@ -15,10 +15,10 @@ const Content = () => {
                 <p className="centeredText2">Grab your pass to personal freedom.</p>
                 <div className="buttonsGrid">
                     <Link to="/auth/signin">
-                        <button className="signInButton"><LockIcon />Sign In</button>
+                    <button className="signInButton"><LockIcon/>Sign In</button>
                     </Link>
                     <Link to="/users">
-                        <button className="registerButton"><PersonAddIcon />Register</button>
+                    <button className="registerButton"><PersonAddIcon/>Register</button>
                     </Link>
                 </div>
             </div>

@@ -40,10 +40,9 @@
 
 .buttonsGrid {
     display: grid;
-    grid-template-columns: 50% 50%;
-    grid-column-gap: 20px;
+    grid-template-columns: 38% 38%;
     justify-content: center;
-    padding:20px;
+    padding:30px;
     height: 100px;
 }
 
@@ -53,4 +52,17 @@ button:hover {
 
 button:active {
     background-color: dimgrey;
+}
+
+.signInButton {
+    height: 70px;
+    width: 180px;
+    border-radius: 18px;
+}
+
+
+.registerButton {
+    height: 70px;
+    width: 180px;
+    border-radius: 18px;
 }

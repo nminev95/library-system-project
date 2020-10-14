@@ -13,10 +13,10 @@ const NavBar = () => {
                     <Nav className="mr-auto">
                     </Nav>
                     <Nav>
-                        <Nav.Link className="signInButton" eventKey={2} href="#signin">
+                        <Nav.Link className="signInButton" eventKey={2} href="/auth/signin">
                             Sing In
                     </Nav.Link>
-                    <Nav.Link className="registerButton" eventKey={2} href="#register">
+                    <Nav.Link className="registerButton" eventKey={2} href="/users">
                             Register
                     </Nav.Link>
                     </Nav>
