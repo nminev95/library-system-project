@@ -1,12 +1,9 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NavBar from './NavBar';
-import LoginForm from './LoginForm';
 import Content from './Content';
 import TextImageRow from './TextImageRow';
 import books from '../Closed_Book_Icon.svg';
 import returnBook from '../aha.png';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './Homepage.css';
 
 const HomePage = () => {
@@ -14,7 +11,6 @@ const HomePage = () => {
     
 
     <div className="body">
-      {/* <NavBar sticky="top" /> */}
       <Content />
       <TextImageRow id="1" icon={books}>
         <h1>Huge variety.</h1>

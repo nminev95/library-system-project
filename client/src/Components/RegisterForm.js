@@ -15,6 +15,22 @@ const LoginForm = (props) => {
         }
     }
 
+    const sendUserData = async (userObject) => {
+        const settings = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userObject)
+        };
+        try {
+            const data = await fetch('http://localhost:4000/users', settings);
+            alert('You have registered successfully!');
+        } catch (e) {
+            return e;
+        }
+    }
+
     return (
         <div className="registerForm">
             <h1>Create an account.</h1>
@@ -54,9 +70,10 @@ const LoginForm = (props) => {
                     onChange={(event) => setPassword(event.target.value)}>
                 </input>
             </div>
-            <button className="registerButton" onClick={() => {
+            <button className="registerUserButton" onClick={() => {
                 handleSubmit();
-                console.log({ username, password })}}>Sign In</button>
+                sendUserData({ username, password, email });
+            }}>Sign In</button>
             <div>
                 <p>Already have an account?</p>
                 <Link to="/auth/signin">
