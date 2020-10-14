@@ -2,6 +2,7 @@
     display:grid;
     position: relative;
     text-align: center;
+    overflow: hidden;
     width: 100%;
     height: auto;
     border-width:8px;  
