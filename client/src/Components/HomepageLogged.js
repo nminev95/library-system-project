@@ -1,13 +1,15 @@
 import React from 'react';
 import Header from '../Components/Private page/Header/Header';
-import PageContent from './PageContent';
+import Books from './Books';
 import './HomepageLogged';
+import RandomBookRow from './RandomBookRow';
 
 const HomepageLogged = () => {
     return (
         <div>
             <Header />
-            <PageContent />
+            <RandomBookRow />
+            <Books />
 
         </div>
     )

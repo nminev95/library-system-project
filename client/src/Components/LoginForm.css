@@ -53,6 +53,6 @@ input[type=password] {
     box-shadow: 2px 3px #ccc;
 }
 
-h1 {
+#loginTitle {
     padding-bottom:30px;
 }

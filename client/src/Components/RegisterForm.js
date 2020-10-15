@@ -33,7 +33,7 @@ const LoginForm = (props) => {
 
     return (
         <div className="registerForm">
-            <h1>Create an account.</h1>
+            <h1 id="registerTitle">Create an account.</h1>
             <div>
                 <input type="text"
                     placeholder="Username"

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SingleBookDisplay from './SingleBookDisplay';
 
-const PageContent = () => {
+const Books = () => {
 
     const [books, setBooks] = useState([]);
 
@@ -20,4 +20,4 @@ const PageContent = () => {
 
 
 
-export default PageContent;
+export default Books;

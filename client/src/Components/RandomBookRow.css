@@ -1,0 +1,42 @@
+.randomBookContainer {
+    display:grid;
+    height: 650px;
+    background-color:gray;
+    grid-template-columns: 50% 50%;
+    justify-content: center;
+}
+
+#bookInfo {
+    display: grid;
+    justify-content: center;
+    position: relative;
+    top:19%;
+    width: 600px
+}
+
+.bookParams {
+    display:inline-block;
+    justify-self:center;
+    justify-content: center;
+    margin: auto;
+    padding: 3px;
+
+}
+
+#bookImage {
+    height: 540px;
+    width: 390px;
+    object-fit: cover;
+    display:block;
+    margin:auto;
+    background: rgb(255,255,255,0.25);;
+    padding:40px;
+    border-radius: 20px;
+
+}
+
+#book1 {
+    min-inline-size: -webkit-fill-available;
+    border-radius: 25px;
+    border:none
+}

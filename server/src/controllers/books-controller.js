@@ -40,9 +40,9 @@ booksController
         })
     //get a book by id
     .get('/:id',
-        authMiddleware,
-        roleMiddleware(['admin', 'user']),
-        validateBanStatusMiddleware(),
+        // authMiddleware,
+        // roleMiddleware(['admin', 'user']),
+        // validateBanStatusMiddleware(),
         async (req, res) => {
             const { id } = req.params;
             const { error, book } = await booksService.getBookById(booksData)(+id);
