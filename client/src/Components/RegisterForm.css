@@ -18,7 +18,7 @@ input[type=password] {
     width: 280px
 }
 
-.loginButton {
+.registerUserButton {
     height: 43px;
     width: 130px;
     border-radius: 5px;
@@ -30,18 +30,19 @@ input[type=password] {
     cursor: pointer;
     outline: none;
     transition: 0.4s;
+
 }
 
-.loginButton:hover {
+.registerUserButton:hover {
     background-color: #7EA9EB;
 }
 
-.loginButton:active {
+.registerUserButton:active {
     background-color: #4A85E0;
 }
 
 
-.loginForm {
+.registerForm {
     position: fixed;
     top: 40%;
     left: 50%;

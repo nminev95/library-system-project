@@ -3,7 +3,8 @@ import './Content.css';
 import image from '../test2-min.png'
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import LockIcon from '@material-ui/icons/Lock';
-
+import { Link } from 'react-router-dom';
+import style from './Content.css'
 const Content = () => {
     return (
 
@@ -13,8 +14,12 @@ const Content = () => {
                 <p className="centeredText">All your favourite books in one place.</p>
                 <p className="centeredText2">Grab your pass to personal freedom.</p>
                 <div className="buttonsGrid">
+                    <Link to="/auth/signin">
                     <button className="signInButton"><LockIcon/>Sign In</button>
+                    </Link>
+                    <Link to="/users">
                     <button className="registerButton"><PersonAddIcon/>Register</button>
+                    </Link>
                 </div>
             </div>
         </div>
