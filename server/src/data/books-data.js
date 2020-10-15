@@ -14,6 +14,7 @@ const getAllBasicInfo = async () => {
             b.description as 'Description',
             b.genre as Genre,
             b.year as Year,
+            b.imageUrl as Cover,
             s.type as Status,
             ROUND(AVG(rr.rating_value), 2) as Rating
         from 

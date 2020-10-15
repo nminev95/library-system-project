@@ -13,8 +13,8 @@ const booksController = express.Router();
 booksController
     //get all books
     .get('/',
-        authMiddleware,
-        roleMiddleware(['admin', 'user']),
+        // authMiddleware,
+        // roleMiddleware(['admin', 'user']),
         async (req, res) => {
             const { error, books } = await booksService.getAllBooks(booksData)(req.query);
 

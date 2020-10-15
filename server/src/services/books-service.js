@@ -2,12 +2,6 @@ import booksData from '../data/books-data.js';
 /* eslint-disable no-unused-vars */
 import serviceErrors from './service-errors.js';
 
-<<<<<<< HEAD:server/src/services/books-service.js
-const getAllBooks = async (filter) => {
-    return filter
-        ? await booksData.searchBy('title', filter)
-        : await booksData.getAll();
-=======
 /**
 * Gets all books information from the database.
 * @param module books data SQL queries module.
@@ -492,14 +486,9 @@ const deleteReview = booksData => {
             return { error: null, review: { message: 'Review was successfully deleted!' } };
         }
     };
->>>>>>> c4c50fd2e0247bcb8214362caa9883f2f6be41bc:src/services/books-service.js
 };
 
 
-<<<<<<< HEAD:server/src/services/books-service.js
-const getBookReviews = async (id) => {
-    return await booksData.getReviews(id);
-=======
 /**
 * Creates and sends a new rate record to the database.
 * @param module books data SQL queries module.
@@ -558,7 +547,6 @@ const rateBook = booksData => {
         }
 
     };
->>>>>>> c4c50fd2e0247bcb8214362caa9883f2f6be41bc:src/services/books-service.js
 };
 
 /**
@@ -605,10 +593,6 @@ const voteReview = booksData => {
     };
 };
 
-<<<<<<< HEAD:server/src/services/books-service.js
-const updateBookStatus = async (id) => {
-    return await booksData.updateBook(id);
-=======
 /** 
 * Gets some data and maps it.
 * @async
@@ -658,7 +642,6 @@ const mapReviewsAndRating = async (data) => {
     }
 
     return map.values();
->>>>>>> c4c50fd2e0247bcb8214362caa9883f2f6be41bc:src/services/books-service.js
 };
 
 export default {
