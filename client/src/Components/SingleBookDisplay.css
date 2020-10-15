@@ -1,0 +1,21 @@
+.singleBook {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    row-gap: 65px;
+    justify-content: center;
+    padding:70px
+}
+.books {
+    display: block;
+    align-items: center;
+    
+}
+.bookImage {
+    height: 350px;
+    width: 190px;
+    text-align: center;
+    object-fit: fill;
+    position: relative;
+    display:block;
+    margin:auto;
+}
