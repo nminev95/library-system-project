@@ -2,10 +2,10 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import HomePage from './Components/Homepage';
-import LoginForm from './Components/LoginForm';
-import RegisterForm from './Components/RegisterForm';
-import HomepageLogged from './Components/HomepageLogged';
+import HomePage from './Components/Public page/Homepage/Homepage';
+import LoginForm from './Components/Public page/LoginForm/LoginForm';
+import RegisterForm from './Components/Public page/RegisterForm/RegisterForm';
+import HomepageLogged from './Components/Private page/Homepage/HomepageLogged';
 
 function App() {
   return (
@@ -25,5 +25,3 @@ function App() {
 }
 
 export default App;
-
-//<LoginForm />

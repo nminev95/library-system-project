@@ -8,6 +8,7 @@ import {
   faGoogle,
   faFacebook,
 } from '@fortawesome/free-brands-svg-icons';
+
 const LoginForm = () => {
   return (
     <MDBContainer className="loginContainer">

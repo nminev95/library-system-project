@@ -84,7 +84,7 @@ const LoginForm = () => {
                             <MDBModalFooter className="mx-5 pt-3 mb-1">
                                 <p className="font-small grey-text d-flex justify-content-end">
                                     Already have an account?
-                                    <Link to="/users">
+                                    <Link to="/auth/signin">
                                         <a href="#!" className="blue-text ml-1">Sign In</a>
                                     </Link>
                                 </p>
