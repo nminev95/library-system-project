@@ -2,10 +2,6 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import HomePage from './Components/Homepage';
-import LoginForm from './Components/LoginForm';
-import RegisterForm from './Components/RegisterForm';
-import HomepageLogged from './Components/HomepageLogged';
 import SingleBook from './Components/Private page/Single book content/Single_book'
 import HomePage from './Components/Public page/Homepage/Homepage';
 import LoginForm from './Components/Public page/LoginForm/LoginForm';

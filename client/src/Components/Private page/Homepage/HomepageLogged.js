@@ -4,13 +4,13 @@ import Books from './AllBooks/Books';
 import './HomepageLogged';
 import RandomBookRow from './RandomBook/RandomBookRow';
 
+
 const HomepageLogged = () => {
     return (
         <div>
             <Header />
             <RandomBookRow />
             <Books />
-            <Footer/>
 
         </div>
     )
