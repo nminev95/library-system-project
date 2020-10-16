@@ -1,11 +1,82 @@
-import React from 'react';
+import React from "react";
+import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
 import './Footer.css';
 
 const Footer = () => {
 
-    return (
-        <div id="footer"> Ⓒ All rights reserved, 2020 </div>
-    )
-}
 
+  return (
+    <MDBFooter color="grey lighten-1" className="font-small lighten-3 pt-4 mt-4">
+      <MDBContainer className="text-center text-md-left">
+        <MDBRow className="my-4">
+          <MDBCol md="4" lg="4">
+            <h5 className="text-uppercase mb-4 font-weight-bold">
+              Library system
+            </h5>
+            <p>
+              Here you can use rows and columns here to organize your footer
+              content.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit,
+              error amet numquam iure provident voluptate esse quasi,
+              veritatis totam voluptas nostrum.{" "}
+            </p>
+          </MDBCol>
+          <hr className="clearfix w-100 d-md-none" />
+          <MDBCol md="2" lg="2" className="ml-auto">
+            <h5 className="text-uppercase mb-4 font-weight-bold">About</h5>
+            <ul className="list-unstyled">
+              <p>
+                <a href="#!">Home</a>
+              </p>
+              <p>
+                <a href="#!">Browse books</a>
+              </p>
+              <p>
+                <a href="#!">About</a>
+              </p>
+            </ul>
+          </MDBCol>
+          <hr className="clearfix w-100 d-md-none" />
+          <MDBCol md="5" lg="3">
+            <h5 className="text-uppercase mb-4 font-weight-bold">Address</h5>
+            <p>
+              <i className="fa fa-home mr-3" /> Sofia, Bulgaria
+            </p>
+            <p>
+              <i className="fa fa-envelope mr-3" /> info@example.com
+            </p>
+            <p>
+              <i className="fa fa-phone mr-3" /> + 01 234 567 88
+            </p>
+            <p>
+              <i className="fa fa-print mr-3" /> + 01 234 567 89
+            </p>
+          </MDBCol>
+          <hr className="clearfix w-100 d-md-none" />
+          <MDBCol md="2" lg="2" className="text-center">
+            <h5 className="text-uppercase mb-4 font-weight-bold">
+              Follow us
+            </h5>
+            <div className="mt-2 ">
+              <a type="button" className="btn-floating btn-small btn-fb" style={{marginRight:"20px"}}>
+                <i className="fab fa-facebook fa-3x" />
+              </a>
+              <a type="button" className="btn-floating btn-small btn-tw">
+                <i className="fab fa-instagram fa-3x" />
+              </a>
+            </div>
+          </MDBCol>
+          <hr className="clearfix w-100 d-md-none" />
+        </MDBRow>
+      </MDBContainer>
+      <div className="footer-copyright text-center py-3">
+        <MDBContainer fluid>
+          &copy; {new Date().getFullYear()} Copyright: Team 5
+        </MDBContainer>
+      </div>
+    </MDBFooter>
+  );
+}
 export default Footer;
