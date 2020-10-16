@@ -1,0 +1,29 @@
+.registerContainer {
+    background-color: rgb(214, 192, 118);
+    max-height: 100%;
+    max-width: 100%;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow:hidden;
+
+}
+.registerCard {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    border: 1px solid #cccccc;
+    padding:65px;
+    border-radius: 6px;
+    box-shadow: 2px 3px #ccc;
+    width: 30%;
+    background: rgb(192,192,192, 0.3)
+} 
+
+.mx-5 {
+    margin-top: 20px
+}

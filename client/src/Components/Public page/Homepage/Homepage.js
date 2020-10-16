@@ -1,9 +1,9 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Content from './Content';
-import TextImageRow from './TextImageRow';
-import books from '../Closed_Book_Icon.svg';
-import returnBook from '../aha.png';
+import Content from './Content/Content';
+import TextImageRow from './ContentRow/TextImageRow';
+import books from '../../../Closed_Book_Icon.svg';
+import returnBook from '../../../aha.png';
 import './Homepage.css';
 
 const HomePage = () => {

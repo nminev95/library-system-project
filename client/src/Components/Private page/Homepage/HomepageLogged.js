@@ -1,9 +1,8 @@
 import React from 'react';
-import Header from '../Components/Private page/Header/Header';
-import Books from './Books';
+import Header from '../Header/Header';
+import Books from './AllBooks/Books';
 import './HomepageLogged';
-import RandomBookRow from './RandomBookRow';
-import Footer from '../Components/Private page/Footer/Footer'
+import RandomBookRow from './RandomBook/RandomBookRow';
 
 const HomepageLogged = () => {
     return (

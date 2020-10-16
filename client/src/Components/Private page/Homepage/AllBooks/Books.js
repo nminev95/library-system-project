@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SingleBookDisplay from './SingleBookDisplay';
+import SingleBookDisplay from '../SingleBookDisplay/SingleBookDisplay';
 
 const Books = () => {
 
