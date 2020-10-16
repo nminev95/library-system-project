@@ -12,13 +12,11 @@ const Pagination = ({ paginate, pages, currentPage }) => {
                     <button id="prev" onClick={() => paginate(+(currentPage) - 1)}>Previous</button>
                     {pages.map(number => {
                         return (
-                           
-                                <li className="pageNum" key={number}>
-                                    <a onClick={() => paginate(number)} className="pageLink">
-                                        {number}
-                                    </a>
-                                </li>
-                            
+                            <li className="pageNum" key={number}>
+                                <a onClick={() => paginate(number)} className="pageLink">
+                                    {number}
+                                </a>
+                            </li>
                         )
                     })}
                     <button id="next" onClick={() => paginate(+(currentPage) + 1)}>Next</button>

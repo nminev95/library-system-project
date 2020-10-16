@@ -20,6 +20,7 @@ const LoginForm = () => {
               <MDBInput
                 label="Your username"
                 group
+                icon="user"
                 type="text"
                 validate
                 error="wrong"
@@ -28,6 +29,7 @@ const LoginForm = () => {
               <MDBInput
                 label="Your password"
                 group
+                icon="lock"
                 type="password"
                 validate
                 containerClass="mb-0"
