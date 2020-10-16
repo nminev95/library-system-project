@@ -1,0 +1,28 @@
+li.pageNum {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    background-color: lightblue;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+ul.pagination {
+    place-content: center;  
+}
+
+#prev {
+    margin-right: 15px;
+    border-radius:10px;
+    border:none;
+    background-color:lightblue;
+}
+
+#next {
+    margin-left: 15px;
+    width: 80px;
+    border-radius:10px;
+    border:none;
+    background-color:lightblue;
+}

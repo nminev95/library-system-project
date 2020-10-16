@@ -25,8 +25,8 @@ booksController
             }
         })
     .get('/pages/:id',
-        authMiddleware,
-        roleMiddleware(['admin', 'user']),
+        // authMiddleware,
+        // roleMiddleware(['admin', 'user']),
         async (req, res) => {
             const page = req.params.id;
            

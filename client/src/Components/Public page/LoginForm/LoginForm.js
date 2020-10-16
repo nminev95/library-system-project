@@ -4,11 +4,7 @@ import 'mdbreact/dist/css/mdb.css'
 import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBInput, MDBBtn, MDBIcon, MDBModalFooter } from 'mdbreact';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faGoogle,
-  faFacebook,
-} from '@fortawesome/free-brands-svg-icons';
-
+import { faGoogle, faFacebook } from '@fortawesome/free-brands-svg-icons';
 const LoginForm = () => {
   return (
     <MDBContainer className="loginContainer">
@@ -22,9 +18,9 @@ const LoginForm = () => {
                 </h3>
               </div>
               <MDBInput
-                label="Your email"
+                label="Your username"
                 group
-                type="email"
+                type="text"
                 validate
                 error="wrong"
                 success="right"

@@ -1,16 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './RandomBookRow.css'
 
-const RandomBookRow = () => {
-
-    const [book, setBook] = useState('');
-
-    useEffect(() => {
-        const id = Math.ceil(Math.random() * 8)
-        fetch(`http://localhost:4000/books/${id}`)
-            .then(res => res.json())
-            .then(data => setBook(data[0]))
-    }, []);
+const RandomBookRow = ({ book }) => {
 
     return (
         <div className="randomBookContainer">
