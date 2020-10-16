@@ -39,7 +39,7 @@ CREATE TABLE `ban_status` (
   PRIMARY KEY (`idban_status`),
   KEY `fk_ban_status_users1_idx` (`user_Id`),
   CONSTRAINT `fk_ban_status_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,12 +70,13 @@ CREATE TABLE `books` (
   `description` varchar(300) NOT NULL,
   `genre` varchar(45) NOT NULL,
   `year` int(11) NOT NULL,
+  `imageUrl` varchar(500) NOT NULL,
   `borrowedStatus_Id` int(11) NOT NULL DEFAULT 3,
   `borrower_Id` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`book_Id`),
   KEY `fk_books_borrowed_status1_idx` (`borrowedStatus_Id`),
   CONSTRAINT `fk_books_borrowed_status1` FOREIGN KEY (`borrowedStatus_Id`) REFERENCES `status` (`status_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,7 +114,7 @@ CREATE TABLE `reviews` (
   KEY `fk_reviews_users1_idx` (`user_Id`),
   CONSTRAINT `fk_reviews_books1` FOREIGN KEY (`book_Id`) REFERENCES `books` (`book_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_reviews_users1` FOREIGN KEY (`user_Id`) REFERENCES `users` (`user_Id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,4 +241,4 @@ CREATE TABLE `users_history` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-09 18:33:19
+-- Dump completed on 2020-10-15 21:01:04

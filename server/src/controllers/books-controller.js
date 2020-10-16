@@ -13,8 +13,8 @@ const booksController = express.Router();
 booksController
     //get all books
     .get('/',
-        authMiddleware,
-        roleMiddleware(['admin', 'user']),
+        // authMiddleware,
+        // roleMiddleware(['admin', 'user']),
         async (req, res) => {
             const { error, books } = await booksService.getAllBooks(booksData)(req.query);
 
@@ -40,9 +40,9 @@ booksController
         })
     //get a book by id
     .get('/:id',
-        authMiddleware,
-        roleMiddleware(['admin', 'user']),
-        validateBanStatusMiddleware(),
+        // authMiddleware,
+        // roleMiddleware(['admin', 'user']),
+        // validateBanStatusMiddleware(),
         async (req, res) => {
             const { id } = req.params;
             const { error, book } = await booksService.getBookById(booksData)(+id);

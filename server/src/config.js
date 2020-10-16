@@ -2,11 +2,11 @@ export const DB_CONFIG = {
     host: 'localhost',
     port: '3306',
     user: 'root',
-    password: 'MarVel147',
+    password: 'QWErty123!',
     database: 'mydb',
 };
 
-export const PORT = 3000;
+export const PORT = 4000;
 
 export const PRIVATE_KEY = 'sekreten_chasten_klu4';
 

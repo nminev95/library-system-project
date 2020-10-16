@@ -9,7 +9,7 @@ const LoginForm = (props) => {
 
     return (
         <div className="loginForm">
-            <h1>Sign In</h1>
+            <h1 id="loginTitle">Sign In</h1>
             <div>
                 <input type="text"
                     placeholder="Username"

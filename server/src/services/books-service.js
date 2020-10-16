@@ -2,12 +2,6 @@ import booksData from '../data/books-data.js';
 /* eslint-disable no-unused-vars */
 import serviceErrors from './service-errors.js';
 
-<<<<<<< HEAD:server/src/services/books-service.js
-const getAllBooks = async (filter) => {
-    return filter
-        ? await booksData.searchBy('title', filter)
-        : await booksData.getAll();
-=======
 /**
 * Gets all books information from the database.
 * @param module books data SQL queries module.
@@ -492,14 +486,9 @@ const deleteReview = booksData => {
             return { error: null, review: { message: 'Review was successfully deleted!' } };
         }
     };
->>>>>>> c4c50fd2e0247bcb8214362caa9883f2f6be41bc:src/services/books-service.js
 };
 
 
-<<<<<<< HEAD:server/src/services/books-service.js
-const getBookReviews = async (id) => {
-    return await booksData.getReviews(id);
-=======
 /**
 * Creates and sends a new rate record to the database.
 * @param module books data SQL queries module.
@@ -558,7 +547,6 @@ const rateBook = booksData => {
         }
 
     };
->>>>>>> c4c50fd2e0247bcb8214362caa9883f2f6be41bc:src/services/books-service.js
 };
 
 /**
@@ -605,10 +593,6 @@ const voteReview = booksData => {
     };
 };
 
-<<<<<<< HEAD:server/src/services/books-service.js
-const updateBookStatus = async (id) => {
-    return await booksData.updateBook(id);
-=======
 /** 
 * Gets some data and maps it.
 * @async
@@ -619,13 +603,13 @@ const mapReviewsAndRating = async (data) => {
     const map = new Map();
 
     for (const book of data) {
-        const { id, Title, Author, Description, Genre, Year, Status, Review_Id, Review, ReviewAuthor, Rating, TimesBorrowed } = book;
+        const { id, Title, Author, Description, Genre, Year, Cover, Status, Review_Id, Review, ReviewAuthor, Rating, TimesBorrowed } = book;
         const likes = await booksData.getReviewLikes(Review_Id);
         const dislikes = await booksData.getReviewDislikes(Review_Id);
 
         if (!map.get(id)) {
             map.set(id, {
-                id, Title, Author, Description, Genre, Year, Status, TimesBorrowed, Reviews: [], Rating,
+                id, Title, Author, Description, Genre, Year, Cover, Status, TimesBorrowed, Reviews: [], Rating,
             });
         }
 
@@ -642,23 +626,22 @@ const mapReviewsAndRating = async (data) => {
             if (map.get(id).Rating === null) {
                 const Reviews = map.get(id).Reviews;
                 map.set(id, {
-                    id, Title, Author, Description, Genre, Year, Status, TimesBorrowed, Reviews, Rating: 'Be the first person to rate this book!',
+                    id, Title, Author, Description, Genre, Year, Cover, Status, TimesBorrowed, Reviews, Rating: 'Be the first person to rate this book!',
                 });
             }
         } else {
             map.set(id, {
-                id, Title, Author, Description, Genre, Year, Status, TimesBorrowed, Reviews: 'No reviews for this book yet!', Rating,
+                id, Title, Author, Description, Genre, Year, Cover, Status, TimesBorrowed, Reviews: 'No reviews for this book yet!', Rating,
             });
             if (map.get(id).Rating === null) {
                 map.set(id, {
-                    id, Title, Author, Description, Genre, Year, Status, TimesBorrowed, Reviews: 'No reviews for this book yet.', Rating: 'Be the first person to rate this book!',
+                    id, Title, Author, Description, Genre, Year, Cover, Status, TimesBorrowed, Reviews: 'No reviews for this book yet.', Rating: 'Be the first person to rate this book!',
                 });
             }
         }
     }
 
     return map.values();
->>>>>>> c4c50fd2e0247bcb8214362caa9883f2f6be41bc:src/services/books-service.js
 };
 
 export default {

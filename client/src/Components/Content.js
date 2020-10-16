@@ -4,7 +4,7 @@ import image from '../test2-min.png'
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import LockIcon from '@material-ui/icons/Lock';
 import { Link } from 'react-router-dom';
-import style from './Content.css'
+
 const Content = () => {
     return (
 

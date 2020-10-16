@@ -1,0 +1,41 @@
+.singleBook {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: 50% 50%;
+    row-gap: 65px;
+    justify-content: center;
+    padding:70px
+}
+
+.books {
+    display: block;
+    align-items: center;
+    margin: 30px;
+    padding-top: 30px;
+    background: rgb(192,192,192, 0.7);
+    border-radius: 15px;
+}
+
+.books:hover {
+    background: rgba(112, 112, 112, 0.5);
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.bookImage {
+    height: 325px;
+    width: 190px;
+    text-align: center;
+    position: relative;
+    display:block;
+    margin:auto;
+    min-inline-size: fit-content;
+}
+
+.allBooksInfo {
+    padding-top: 25px
+}
+
+.imageSize {
+    border-radius: 15px
+}

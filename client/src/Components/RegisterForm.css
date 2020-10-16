@@ -54,6 +54,6 @@ input[type=password] {
     box-shadow: 2px 3px #ccc;
 }
 
-h1 {
+#registerTitle {
     padding-bottom:30px;
 }
