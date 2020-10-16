@@ -2,6 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import SingleBook from './Components/Private page/Single book content/Single_book'
 import HomePage from './Components/Public page/Homepage/Homepage';
 import LoginForm from './Components/Public page/LoginForm/LoginForm';
 import RegisterForm from './Components/Public page/RegisterForm/RegisterForm';
@@ -17,7 +18,7 @@ function App() {
           <Route path='/auth/signin' component={LoginForm} />
           <Route path='/users' component={RegisterForm} />
           <Route exact path='/books' component={HomepageLogged} />
-          
+          <Route path='/books/:id' component={SingleBook} />
         </Switch>
       </div>
     </Router>

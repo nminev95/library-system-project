@@ -1,44 +1,43 @@
 import React, { useState } from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
-
+import 'mdbreact/dist/css/mdb.css'
 import './Header.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css';
 
 const NavBar = () => {
 
     return (
-        <div className="navBar">
-            <Navbar id="NB" collapseOnSelect expand="lg">
-                <Navbar.Brand href="#home">Library</Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="mr-auto">
-                    </Nav>
-                    <Nav>
-                        <svg id="home-button" width="1.5em" height="1.5em" viewBox="0 0 16 16" className="bi bi-house-door" fill="white" >
-                            <path fillRule="evenodd" d="M7.646 1.146a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5H9.5a.5.5 0 0 1-.5-.5v-4H7v4a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6zM2.5 7.707V14H6v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4h3.5V7.707L8 2.207l-5.5 5.5z" />
-                            <path fillRule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
-                        </svg>
+        <div>
+            <nav id="nav-bar" class="navbar fixed-top navbar-expand-lg navbar- amber lighten-5 scrolling-navbar">
+                <a class="navbar-brand" href="#"><strong>Navbar</strong></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#"> Home <span class="sr-only">(current)</span></a>
+                        </li>
 
-                    </Nav>
+                    </ul>
+          
+                    <form class="form-inline md-form mt-0 mb-0">
 
-                    <input id="search-input" className="form-control mr-sm-2" type="search" placeholder="Search..." aria-label="Search" />
+                        <input class="form-control mr-sm-2 length-5 " type="text" placeholder="Search..." aria-label="Search" />
+                        <button class="btn black btn-rounded btn-sm my-0 text-white fa-lg" type="submit">Search</button>
+                        
+                    </form>
 
 
-                    <Nav><svg  id="search-button" width="1.5em" height="1.5em" viewBox="0 0 16 16" className="bi bi-search" fill="white">
-                        <path fillRule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
-                        <path fillRule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
-                    </svg></Nav>
-                    <Nav>
-                        <svg id="profile-button" width="1.5em" height="1.5em" viewBox="0 0 16 16" className="bi bi-person-circle" fill="white">
-                            <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z" />
-                            <path fillRule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                            <path fillRule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" />
-                        </svg>
+                    <ul class="navbar-nav nav-flex-icons">
+                        <li class="nav-item">
+                            <a class="nav-link"><i class="fas fa-user-circle fa-2x"></i></a>
+                        </li>
 
-                    </Nav>
-
-                </Navbar.Collapse>
-            </Navbar>
+                    </ul>
+                </div>
+            </nav>
         </div>
     )
 }
