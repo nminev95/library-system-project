@@ -3,6 +3,7 @@ import Header from '../Components/Private page/Header/Header';
 import Books from './Books';
 import './HomepageLogged';
 import RandomBookRow from './RandomBookRow';
+import Footer from '../Components/Private page/Footer/Footer'
 
 const HomepageLogged = () => {
     return (
@@ -10,6 +11,7 @@ const HomepageLogged = () => {
             <Header />
             <RandomBookRow />
             <Books />
+            <Footer/>
 
         </div>
     )
