@@ -43,7 +43,6 @@ const HomepageLogged = (props) => {
 
     return (
         <div>
-            <Header />
             <RandomBookRow book={book} />
             <Books books={currentBooks} />
             <Pagination paginate={paginate} pages={pages} currentPage={page}/>

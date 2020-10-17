@@ -6,7 +6,7 @@ const Footer = () => {
 
 
   return (
-    <MDBFooter id="footerDiv" color="grey lighten-1" className="font-small lighten-3 pt-4 mt-4">
+    <MDBFooter id="footerDiv" color="grey lighten-1" className="font-small lighten-3 pt-4 mt-2">
       <MDBContainer className="text-center text-md-left">
         <MDBRow className="my-4">
           <MDBCol md="4" lg="4">
@@ -14,13 +14,10 @@ const Footer = () => {
               Library system
             </h5>
             <p>
-              Here you can use rows and columns here to organize your footer
-              content.
+              .
             </p>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit,
-              error amet numquam iure provident voluptate esse quasi,
-              veritatis totam voluptas nostrum.{" "}
+             
             </p>
           </MDBCol>
           <hr className="clearfix w-100 d-md-none" />
@@ -47,12 +44,12 @@ const Footer = () => {
             <p>
               <i className="fa fa-envelope mr-3" /> info@example.com
             </p>
-            <p>
+            {/* <p>
               <i className="fa fa-phone mr-3" /> + 01 234 567 88
-            </p>
-            <p>
+            </p> */}
+            {/* <p>
               <i className="fa fa-print mr-3" /> + 01 234 567 89
-            </p>
+            </p> */}
           </MDBCol>
           <hr className="clearfix w-100 d-md-none" />
           <MDBCol md="2" lg="2" className="text-center">

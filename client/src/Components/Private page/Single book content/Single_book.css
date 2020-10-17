@@ -1,5 +1,8 @@
 #book-details{
-    border-radius: 10%;
-    background-color: rgb(251, 247, 201);
+    background-color: rgb(255, 233, 191);
     
+    
+}
+.single-book-main{
+    margin-top: 7%;
 }

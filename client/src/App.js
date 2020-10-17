@@ -9,6 +9,7 @@ import RegisterForm from './Components/Public page/RegisterForm/RegisterForm';
 import HomepageLogged from './Components/Private page/Homepage/HomepageLogged';
 import Header from './Components/Private page/Header/Header';
 import Footer from './Components/Private page/Footer/Footer';
+import SingleBookVis from './Components/Private page/Single book content/SingleBookVis';
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
             <Route path='/auth/signin' component={LoginForm} />
             <Route path='/users' component={RegisterForm} />
             <Route exact path='/books' component={HomepageLogged} />
-            <Route path='/books/:id' component={SingleBook} />
+            <Route path='/books/:id' component={SingleBookVis} />
           </Switch>
         </div>
       </Router>
