@@ -4,7 +4,8 @@
     grid-template-rows: 50% 50%;
     row-gap: 65px;
     justify-content: center;
-    padding:70px
+    padding:70px;
+    text-align: center;
 }
 
 .books {

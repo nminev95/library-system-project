@@ -8,3 +8,7 @@ navbar-brand{
 .nav-bar-link{
    color: black;
 }
+
+nav#nav-bar {
+   position: relative;
+}

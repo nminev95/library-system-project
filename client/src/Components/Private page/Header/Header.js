@@ -4,7 +4,6 @@ import './Header.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
-import { MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from "mdbreact";
 import UserDropdown from './UserDropdown/UserDropdown';
 
 const NavBar = () => {
@@ -27,7 +26,7 @@ const NavBar = () => {
                     <form className="form-inline md-form mt-0 mb-0">
 
                         <input className="form-control mr-sm-2 length-5 " type="text" placeholder="Search..." aria-label="Search" />
-                        <button className="btn black btn-rounded btn-sm my-0 text-white fa-lg" type="submit">Search</button>
+                        <button className="btn rounded-pill black btn-sm my-0 text-white fa-lg" type="submit">Search</button>
 
                     </form>
 

@@ -30,9 +30,6 @@ const Footer = () => {
               <p>
                 <a href="#!">Browse books</a>
               </p>
-              <p>
-                <a href="#!">About</a>
-              </p>
             </ul>
           </MDBCol>
           <hr className="clearfix w-100 d-md-none" />
@@ -44,12 +41,6 @@ const Footer = () => {
             <p>
               <i className="fa fa-envelope mr-3" /> info@example.com
             </p>
-            {/* <p>
-              <i className="fa fa-phone mr-3" /> + 01 234 567 88
-            </p> */}
-            {/* <p>
-              <i className="fa fa-print mr-3" /> + 01 234 567 89
-            </p> */}
           </MDBCol>
           <hr className="clearfix w-100 d-md-none" />
           <MDBCol md="2" lg="2" className="text-center">

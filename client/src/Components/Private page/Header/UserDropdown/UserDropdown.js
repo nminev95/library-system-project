@@ -3,8 +3,8 @@ import { MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from
 
 const DropdownPage = () => {
     return (
-        <MDBDropdown ref={React.createRef()} className="dropdownProfile">
-            <MDBDropdownToggle color="white">
+        <MDBDropdown className="block-example border border-0">
+            <MDBDropdownToggle className="block-example border border-0" color="white">
                 <i className="fas fa-user-circle fa-2x"></i>
             </MDBDropdownToggle>
             <MDBDropdownMenu right basic>

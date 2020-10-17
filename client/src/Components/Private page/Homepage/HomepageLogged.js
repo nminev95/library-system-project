@@ -4,6 +4,7 @@ import Header from '../Header/Header';
 import Books from './AllBooks/Books';
 import RandomBookRow from './RandomBook/RandomBookRow';
 import Pagination from './Pagination/Pagination';
+import Card from './CardTEst';
 
 const HomepageLogged = (props) => {
 
@@ -35,17 +36,13 @@ const HomepageLogged = (props) => {
 
 
     const paginate = (pageNum) => setPage(pageNum);
-    // useEffect(() => {
-    //     fetch(`http://localhost:4000/books/pages/${page}`)
-    //         .then(res => res.json())
-    //         .then(data => setBooks(data))
-    // }, [page]);
 
     return (
         <div>
             <RandomBookRow book={book} />
             <Books books={currentBooks} />
             <Pagination paginate={paginate} pages={pages} currentPage={page}/>
+            <Card />
         </div>
     )
 }

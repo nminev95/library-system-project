@@ -12,6 +12,10 @@ ul.pagination {
     place-content: center;  
 }
 
+#navDiv {
+    text-align: center;
+}
+
 #prev {
     margin-right: 15px;
     border-radius:10px;
