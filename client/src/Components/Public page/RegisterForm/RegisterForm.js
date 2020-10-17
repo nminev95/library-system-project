@@ -14,7 +14,7 @@ const LoginForm = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPasswod] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
 
     const handleSubmit = () => {
@@ -49,17 +49,23 @@ const LoginForm = () => {
                         <div className="grey-text">
                             <MDBInput label="Your name" icon="user" group type="text" validate error="wrong"
                                 success="right"
+                                value={username}
                                 onChange={(event) => setUsername(event.target.value)}
                             />
                             <MDBInput label="Your email" icon="envelope" group type="email" validate error="wrong"
                                 success="right"
-                                onChange={(event) => setUsername(event.target.value)}
+                                value={email}
+                                onChange={(event) => setEmail(event.target.value)}
                             />
-                            <MDBInput label="Your password" icon="exclamation-triangle" group type="password" validate
+                            <MDBInput label="Your password" icon="lock" group type="password" validate
                                 error="wrong" success="right"
-                                onChange={(event) => setUsername(event.target.value)}
+                                value={password}
+                                onChange={(event) => setPassword(event.target.value)}
                             />
-                            <MDBInput label="Confirm your password" icon="lock" group type="password" validate />
+                            <MDBInput label="Confirm your password" icon="exclamation-triangle" group type="password" validate 
+                                value={confirmPassword}
+                                onChange={(event) => setConfirmPassword(event.target.value)}
+                            />
                         </div>
                         <div className="text-center">
                             <MDBBtn color="primary" onClick={() => sendUserData()}>Register</MDBBtn>
@@ -96,62 +102,5 @@ const LoginForm = () => {
         </MDBContainer>
     );
 };
-
-
-
-// const LoginForm = (props) => {
-
-//     return (
-//         <div className="registerForm">
-//             <h1 id="registerTitle">Create an account.</h1>
-//             <div>
-//                 <input type="text"
-//                     placeholder="Username"
-//                     className="usernameField"
-//                     value={username}
-//                     onFocus={(event) => event.target.placeholder = ''}
-//                     onChange={(event) => setUsername(event.target.value)}>
-//                 </input>
-//             </div>
-//             <div>
-//                 <input type="text"
-//                     placeholder="Email address"
-//                     className="emailField"
-//                     value={email}
-//                     onFocus={(event) => event.target.placeholder = ''}
-//                     onChange={(event) => setEmail(event.target.value)}>
-//                 </input>
-//             </div>
-//             <div>
-//                 <input type="password"
-//                     placeholder="Password"
-//                     className="passwordField"
-//                     value={confirmPassword}
-//                     onFocus={(event) => event.target.placeholder = ''}
-//                     onChange={(event) => setConfirmPasswod(event.target.value)}>
-//                 </input>
-//             </div>
-//             <div>
-//                 <input type="password"
-//                     placeholder="Password"
-//                     className="passwordField"
-//                     value={password}
-//                     onFocus={(event) => event.target.placeholder = ''}
-//                     onChange={(event) => setPassword(event.target.value)}>
-//                 </input>
-//             </div>
-//             <button className="registerUserButton" onClick={() => {
-//                 handleSubmit();
-//                 sendUserData({ username, password, email });
-//             }}>Sign In</button>
-//             <div>
-//                 <p>Already have an account?</p>
-//                 <Link to="/auth/signin">
-//                     <a>Sign in now.</a>
-//                 </Link>
-//             </div>
-//         </div>
-//     )
-// }
 
 export default LoginForm;
