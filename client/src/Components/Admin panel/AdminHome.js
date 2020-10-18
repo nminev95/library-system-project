@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import AdminUsers from './AdminUsers/AdminUsers'
 import AdminBooks from './AdminBooks/AdminBooks'
 import AdminReviews from './AdminReviews/AdminReviews'
+import AdminDashboard from './AdminDashboard/AdminDashboard'
 import './AdminHome.css';
 
 const AdminHome = () => {
@@ -21,6 +22,7 @@ const AdminHome = () => {
             <SideNav changeMenu={changeButtons} />
             <TopNav />
             <div className="adminUIContainer">
+                <Route path='/admin/dashboard' component={AdminDashboard} />
                 <Route path='/admin/users' component={AdminUsers} />
                 <Route path='/admin/books' component={AdminBooks} />
                 <Route path='/admin/reviews' component={AdminReviews} />
