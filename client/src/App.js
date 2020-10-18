@@ -11,6 +11,8 @@ import Header from './Components/Private page/Header/Header';
 import Footer from './Components/Private page/Footer/Footer';
 import IndividualBook from './Components/Private page/Single book content/IndividualBook';
 import NotFound from './Components/NotFound';
+import SingleBookVis from './Components/Private page/Single book content/SingleBookVis';
+import AdminHome from './Components/Admin panel/AdminHome';
 
 function App() {
   return (
@@ -25,6 +27,9 @@ function App() {
             <Route exact path='/books' exact component={HomepageLogged} />
             <Route path='/books/:id' component={IndividualBook} />
             <Route path='*' component={NotFound} />
+            <Route exact path='/books' component={HomepageLogged} />
+            <Route path='/books/:id' component={SingleBookVis} />
+            <Route path='/admin' component={AdminHome}/>
           </Switch>
         </div>
       </Router>

@@ -8,12 +8,11 @@ import pool from './pool.js';
 const getAll = async () => {
     const sql = `
         SELECT 
-            u.user_Id AS Id, 
-            u.username AS Username, 
-            u.email AS Email, 
-            u.user_points AS Points, 
-            l.type AS Level,
-            (SELECT DATE_FORMAT(u.register_date, "%M %d %Y")) AS Joined
+            u.user_Id AS id, 
+            u.username AS username, 
+            u.email AS email, 
+            l.type AS level,
+            (SELECT DATE_FORMAT(u.register_date, "%M %d %Y")) AS registered
         FROM 
             users u
         JOIN    

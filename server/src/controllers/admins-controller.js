@@ -34,8 +34,8 @@ adminsController
             res.redirect(`http://localhost:3000/books/pages/${+id}`);
         })
     .get('/users',
-        authMiddleware,
-        roleMiddleware(['admin']),
+        // authMiddleware,
+        // roleMiddleware(['admin']),
         async (req, res) => {
             const { search } = req.query;
             const users = await usersService.getAllUsers(usersData)(search);
