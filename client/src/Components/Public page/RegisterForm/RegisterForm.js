@@ -68,25 +68,10 @@ const LoginForm = () => {
                             />
                         </div>
                         <div className="text-center">
-                            <MDBBtn color="primary" onClick={() => sendUserData()}>Register</MDBBtn>
+                            <MDBBtn id="main-button" onClick={() => sendUserData()}>Register</MDBBtn>
                         </div>
                         <div className="row my-3 d-flex justify-content-center">
-                            <MDBBtn
-                                type="button"
-                                color="white"
-                                rounded
-                                className="mr-md-3 z-depth-1a"
-                            >
-                                <FontAwesomeIcon icon={faFacebook} style={{ color: "#99ccff" }} size='2x' />
-                            </MDBBtn>
-                            <MDBBtn
-                                type="button"
-                                color="white"
-                                rounded
-                                className="mr-md-3 z-depth-1a"
-                            >
-                                <FontAwesomeIcon icon={faGoogle} style={{ color: "#99ccff" }} size='2x' />
-                            </MDBBtn>
+                           
                             <MDBModalFooter className="mx-5 pt-3 mb-1">
                                 <p className="font-small grey-text d-flex justify-content-end">
                                     Already have an account?

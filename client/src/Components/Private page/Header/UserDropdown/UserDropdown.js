@@ -9,7 +9,7 @@ const DropdownPage = () => {
             </MDBDropdownToggle>
             <MDBDropdownMenu right basic>
                 <MDBDropdownItem>Profile</MDBDropdownItem>
-                <MDBDropdownItem>History</MDBDropdownItem>
+                <MDBDropdownItem>Borrowed books</MDBDropdownItem>
                 <MDBDropdownItem>Settings</MDBDropdownItem>
                 <MDBDropdownItem>Logout</MDBDropdownItem>
             </MDBDropdownMenu>
