@@ -11,28 +11,28 @@ const NavBar = () => {
 
     return (
         <div>
-            <nav id="nav-bar" className="navbar fixed-top navbar-expand-lg navbar- amber lighten-5 scrolling-navbar">
-                <div>
-            <img src={image}></img>
-            </div>
+            <nav id="nav-bar" className="navbar fixed-top navbar-expand-lg navbar- amber lighten-5 scrolling-navbar ">
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon black"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            
+                    <img src={image}></img>
+                
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item active">
                             <a className="nav-bar-link" href="#"> Home <span className="sr-only">(current)</span></a>
-                            
+
                             <a className="nav-bar-link" href="#"> Аll books <span className="sr-only">(current)</span></a>
                         </li>
 
                     </ul>
 
                     <form class="form-inline d-flex justify-content-center md-form form-sm">
-  <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search..."
-    aria-label="Search"/>
-  <i class="fas fa-search fa-lg " aria-hidden="true"></i>
-</form>
+                        <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search..."
+                            aria-label="Search" />
+                        <i class="fas fa-search fa-lg " aria-hidden="true"></i>
+                    </form>
                     <ul className="navbar-nav nav-flex-icons">
                         <li className="nav-item">
                             <UserDropdown />
