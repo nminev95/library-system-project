@@ -6,7 +6,6 @@ body{
     line-height: 1.5;
     color: #212529;
     text-align: left;
-    background-color: #EDEDEE;
   }
   
   a{
@@ -34,7 +33,7 @@ body{
   main {
     background-color: #EDEDEE;
   }
-  
+
   .navbar-brand{
     margin-left: 15px;
     color: #2196f3 !important;
@@ -181,9 +180,9 @@ body{
     background-color: #007bff !important;
   }
   
-  .page-footer{
+  /* .page-footer{
     margin-left: 270px;
-  }
+  } */
   
   @media (max-width: 1199.98px) {
     .sidebar-fixed {

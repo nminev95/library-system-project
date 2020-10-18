@@ -11,7 +11,6 @@ import Header from './Components/Private page/Header/Header';
 import Footer from './Components/Private page/Footer/Footer';
 import IndividualBook from './Components/Private page/Single book content/IndividualBook';
 import NotFound from './Components/NotFound';
-import SingleBookVis from './Components/Private page/Single book content/SingleBookVis';
 import AdminHome from './Components/Admin panel/AdminHome';
 
 function App() {
@@ -24,16 +23,13 @@ function App() {
             <Route path='/' exact component={HomePage} />
             <Route path='/auth/signin' component={LoginForm} />
             <Route path='/users' component={RegisterForm} />
-            <Route exact path='/books' exact component={HomepageLogged} />
-            <Route path='/books/:id' component={IndividualBook} />
-            <Route path='*' component={NotFound} />
             <Route exact path='/books' component={HomepageLogged} />
-            <Route path='/books/:id' component={SingleBookVis} />
+            <Route path='/books/:id' component={SingleBook} />
             <Route path='/admin' component={AdminHome}/>
           </Switch>
         </div>
       </Router>
-      <Footer />
+       <Footer /> 
     </>
   );
 }
