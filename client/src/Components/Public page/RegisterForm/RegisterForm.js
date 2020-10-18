@@ -42,7 +42,7 @@ const LoginForm = () => {
 
     return (
         <MDBContainer className="registerContainer">
-            <MDBRow>
+            <MDBRow className="registerRow">
                 <MDBCol className="registerCard" md="6">
                     <form>
                         <p className="h5 text-center mb-4">Sign up</p>

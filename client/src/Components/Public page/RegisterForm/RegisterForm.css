@@ -1,4 +1,9 @@
 .registerContainer {
     position: relative;
     margin:100px;
+    width:400px
+}
+
+.registerRow {
+    justify-content: center;
 }

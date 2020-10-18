@@ -10,7 +10,7 @@ const HomepageLogged = (props) => {
     const [book, setBook] = useState('');
     const [books, setBooks] = useState([]);
     const [page, setPage] = useState(1)
-    const [booksPerPage] = useState(3)
+    const [booksPerPage, setBooksPerPage] = useState(3)
 
     const lastPostIndex = page * booksPerPage;
     const firstPostIndex = lastPostIndex - booksPerPage;
