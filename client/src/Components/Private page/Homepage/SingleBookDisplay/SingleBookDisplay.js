@@ -29,7 +29,7 @@ const SingleBookDisplay = ({ book }) => {
                                 <MDBCardText>
                                     Year: {book.Year}
                                 </MDBCardText>
-                                <MDBBtn color='GRAY'>See more</MDBBtn>
+                                <MDBBtn id="main-button" > See more </MDBBtn>
                             </MDBCardBody>
                         </MDBCard>
                     </MDBCol>

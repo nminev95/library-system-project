@@ -13,3 +13,18 @@
     align-items: center;
 }
 
+#main-button{
+    box-shadow: 0px 4px 6px 0px #818485;
+    background:linear-gradient(to bottom, #f0e6da 20%, #969b9b 100%);
+    background-color:#f0eace;
+    display:inline-block;
+    color:black;
+    border: none;
+    font-size:10px;
+   
+    
+}
+#main-button:hover {
+    background:linear-gradient(to bottom,  #7f8585 20%, #f1e1cf 100%);
+    
+}

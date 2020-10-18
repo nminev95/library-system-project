@@ -5,15 +5,18 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 import UserDropdown from './UserDropdown/UserDropdown';
+import image from './Logo.png';
 
 const NavBar = () => {
 
     return (
         <div>
             <nav id="nav-bar" className="navbar fixed-top navbar-expand-lg navbar- amber lighten-5 scrolling-navbar">
-                <a className="navbar-brand" href="#"><strong>Navbar</strong></a>
+                <div>
+            <img src={image}></img>
+            </div>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
+                    <span className="navbar-toggler-icon black"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">

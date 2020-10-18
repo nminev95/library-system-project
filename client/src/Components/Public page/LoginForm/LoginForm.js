@@ -42,14 +42,7 @@ const LoginForm = () => {
                           </a>
               </p>
               <div className="text-center mb-3">
-                <MDBBtn
-                  type="button"
-                  gradient="blue"
-                  rounded
-                  className="btn-block z-depth-1a"
-                >
-                  Sign in
-                          </MDBBtn>
+                <MDBBtn id="main-button" > Sign in </MDBBtn>
               </div>
               <p className="font-small dark-grey-text text-right d-flex justify-content-center mb-3 pt-2">
 

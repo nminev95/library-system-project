@@ -1,6 +1,7 @@
 import React from 'react';
 import './Single_book.css';
 import 'mdbreact/dist/css/mdb.css'
+import {MDBBtn} from 'mdbreact';
 
 
 const SingleBook = ({ book }) => {
@@ -19,7 +20,6 @@ const SingleBook = ({ book }) => {
                                 <img src={book.Cover} class=" h-100 d-inline-block w-50 p-3" alt="smaple image" />
                             </div>
                             <div class="text-center" >
-                                <button type="button" class=" text-center btn btn-green btn-rounded mx-15 ">Borrow</button>
                             </div>
 
                         </div>
@@ -30,19 +30,10 @@ const SingleBook = ({ book }) => {
 
                                 <p class="text-center" class="text-justify">{book.Description}</p>
 
-                                <div>
-                                    <ul class="list-unstyled list-inline rating mb-0 text-center ">
-                                        <li class="list-inline-item mr-0"><i class="fas fa-star amber-text"> </i></li>
-                                        <li class="list-inline-item mr-0"><i class="fas fa-star amber-text"></i></li>
-                                        <li class="list-inline-item mr-0"><i class="fas fa-star amber-text"></i></li>
-                                        <li class="list-inline-item mr-0"><i class="fas fa-star amber-text"></i></li>
-                                        <li class="list-inline-item"><i class="fas fa-star-half-alt amber-text"></i></li>
-                                        <li class="list-inline-item"><p class="text-muted">{book.Rating}</p></li>
-                                    </ul>
-                                </div>
-                                <div class="text-center">
-                                    {book.Reviews}
-                                </div>
+                            <div id="buttons" class="text-center">
+                            <MDBBtn id="main-button"  > Borrow </MDBBtn>
+                            <MDBBtn id="main-button"  > Reviews </MDBBtn>
+                            </div>
                             </div>
                         </div>
                     </div>
