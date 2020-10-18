@@ -1,21 +1,38 @@
 import React from 'react';
 import './SingleBookDisplay.css'
+import { MDBCol, MDBCard, MDBCardBody, MDBCardImage, MDBView, MDBCardTitle, MDBCardText, MDBInput, MDBBtn, MDBIcon, MDBModalFooter } from 'mdbreact';
 
 const SingleBookDisplay = ({ book }) => {
 
     return (
-        <div className="books">
-            <div className="bookImage">
-                <img className="imageSize" src={book.Cover}></img>
-            </div>
-            <div className="allBooksInfo">
-                <h2>{book.Title}</h2>
-                <h5>{book.Author}</h5>
-                <p>{book.Genre}</p>
-                <p>{book.Year}</p>
-                <p>{book.Rating}</p>
-            </div>
-        </div>
+        <MDBCol xl="3"  className="cardBook">
+                        <MDBCard className="border-0">
+                            <MDBView cascade className="d-flex justify-content-center">
+                                <MDBCardImage id="bookImageContainer"
+                                    hover
+                                    overlay='white-slight'
+                                    className='card-img-top w-responsive text-center mx-auto p-3 mt-2 h-auto d-inline-block'
+                                    src={book.Cover}
+                                    alt='food'
+                                />
+                            </MDBView>
+                            <MDBCardBody>
+                                <h5 className='pink-text'>
+                                    <MDBIcon icon='pen-nib' />{book.Genre}
+                                </h5>
+                                <MDBCardTitle className='font-weight-bold'>
+                                    {book.Title}
+                                </MDBCardTitle>
+                                <MDBCardTitle>
+                                    {book.Author}
+                                </MDBCardTitle>
+                                <MDBCardText>
+                                    Year: {book.Year}
+                                </MDBCardText>
+                                <MDBBtn color='GRAY'>See more</MDBBtn>
+                            </MDBCardBody>
+                        </MDBCard>
+                    </MDBCol>
     )
 }
 

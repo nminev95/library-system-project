@@ -4,14 +4,13 @@ import Header from '../Header/Header';
 import Books from './AllBooks/Books';
 import RandomBookRow from './RandomBook/RandomBookRow';
 import Pagination from './Pagination/Pagination';
-import Card from './CardTEst';
 
 const HomepageLogged = (props) => {
 
     const [book, setBook] = useState('');
     const [books, setBooks] = useState([]);
     const [page, setPage] = useState(1)
-    const [booksPerPage, setBooksPerPage] = useState(2)
+    const [booksPerPage] = useState(3)
 
     const lastPostIndex = page * booksPerPage;
     const firstPostIndex = lastPostIndex - booksPerPage;
@@ -42,7 +41,6 @@ const HomepageLogged = (props) => {
             <RandomBookRow book={book} />
             <Books books={currentBooks} />
             <Pagination paginate={paginate} pages={pages} currentPage={page}/>
-            <Card />
         </div>
     )
 }
