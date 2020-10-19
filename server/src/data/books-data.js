@@ -150,11 +150,11 @@ const getReviewVotes = async (reviewId) => {
 const getReviewsInDatabase = async (value) => {
     const sql = `
         SELECT 
-            r.review_Id as review_id, 
+            r.review_Id as id, 
             r.content as Review,
             u.username as Author,
             (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 1) as Likes,
-            (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 2) as Disikes
+            (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 2) as Dislikes
         from 
             reviews r
         left join 
@@ -183,7 +183,7 @@ const getReviews = async (value) => {
             r.content as Review,
             u.username as Author,
             (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 1) as Likes,
-            (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 2) as Disikes
+            (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 2) as Dislikes
         from 
             reviews r
         left join 
