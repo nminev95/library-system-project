@@ -14,7 +14,7 @@ import AdminRoutes from './Components/Admin panel/AdminRoutes';
 function App() {
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <Router>
         <div className="body">
           <Switch>
@@ -22,12 +22,12 @@ function App() {
             <Route path='/auth/signin' component={LoginForm} />
             <Route path='/users' component={RegisterForm} />
             <Route exact path='/books' component={HomepageLogged} />
-            <Route path='/books/:id' component={IndividualBook} />
+            <Route path='/books/:id' exact component={IndividualBook} />          
             <Route path='/admin' component={AdminRoutes}/>
           </Switch>
         </div>
       </Router>
-       {/* <Footer />  */}
+       <Footer /> 
     </>
   );
 }

@@ -9,7 +9,7 @@ ALTER table user_levels auto_increment = 1;
 ALTER table book_ratings auto_increment = 1;
 
 INSERT INTO `mydb`.`roles` (`type_of_user`) VALUES ('user');
-INSERT INTO `mydb`.`roles` (`type_of_user`) VALUES ('admin');
+ INSERT INTO `mydb`.`roles` (`type_of_user`) VALUES ('admin');
 
 INSERT INTO `mydb`.`user_levels` (`type`) VALUES ('Newbie');
 INSERT INTO `mydb`.`user_levels` (`type`) VALUES ('Basic');
@@ -17,9 +17,9 @@ INSERT INTO `mydb`.`user_levels` (`type`) VALUES ('Member');
 INSERT INTO `mydb`.`user_levels` (`type`) VALUES ('Regular');
 INSERT INTO `mydb`.`user_levels` (`type`) VALUES ('Bookworm');
 
-INSERT INTO `mydb`.`status` (`type`) VALUES ('Borrowed');
+ INSERT INTO `mydb`.`status` (`type`) VALUES ('Borrowed');
 INSERT INTO `mydb`.`status` (`type`) VALUES ('Unlisted');
-INSERT INTO `mydb`.`status` (`type`) VALUES ('Free');
+ INSERT INTO `mydb`.`status` (`type`) VALUES ('Free');
 
 INSERT INTO `mydb`.`reviews_votes` (`type_of_vote`) VALUES ('Like');
 INSERT INTO `mydb`.`reviews_votes` (`type_of_vote`) VALUES ('Dislike');
@@ -39,3 +39,12 @@ INSERT INTO `mydb`.`books` (`title`, `author`, `description`, `genre`, `year`, `
 INSERT INTO `mydb`.`books` (`title`, `author`, `description`, `genre`, `year`, `imageUrl`) VALUES ('The Silence of the Lambs', 'Thomas Harris', 'As part of the search for a serial murderer nicknames "Buffalo Bill", FBI trainee Clarice Starling is given an assignment to visit a man - Dr. Hannibal Lecter at a high-security facility.', 'Horror', '1988', 'https://images-na.ssl-images-amazon.com/images/I/51bteLQSJ8L._SX306_BO1,204,203,200_.jpg');
 INSERT INTO `mydb`.`books` (`title`, `author`, `description`, `genre`, `year`, `imageUrl`) VALUES ('The Shining', 'Stephen King', 'Jack Torrance has a new job at the Overlook Hotel is the perfect chance for a fresh start. As the harsh winter weather sets in, the idyllic location feels ever more remote . . . and more sinister.', 'Horror', '1977', 'https://images-na.ssl-images-amazon.com/images/I/51jSPyJ8v2L._SX302_BO1,204,203,200_.jpg');
 
+INSERT INTO `mydb`.`users` ( `username`, `password`, `email`,`register_date`) VALUES ('Nikinik', '1234', 'test@abv.bg', '2020-10-19');
+INSERT INTO `mydb`.`users` ( `username`, `password`, `email`,`register_date`) VALUES ('Marvel', '12345', 'test2@abv.bg', '2020-10-19');
+INSERT INTO `mydb`.`users` ( `username`, `password`, `email`,`register_date`) VALUES ('Test', '123456', 'test3@abv.bg', '2020-10-19');
+  
+INSERT INTO `mydb`.`reviews` ( `content`, `book_Id`, `user_Id`) VALUES ('The best book I have ever read!', '3', '1');
+INSERT INTO `mydb`.`reviews` ( `content`, `book_Id`, `user_Id`) VALUES ('I like it!', '3', '2');
+
+INSERT INTO `mydb`.`reviews_have_votes` ( `review_Id`, `vote_Id`, `user_Id`) VALUES ('1','1', '1');
+INSERT INTO `mydb`.`reviews_have_votes` ( `review_Id`, `vote_Id`, `user_Id`) VALUES ('2','2', '2');

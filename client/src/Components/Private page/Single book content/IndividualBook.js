@@ -12,7 +12,7 @@ const IndividualBook = props => {
             .then(res => res.json())
             .then(data => setBookData(data[0]))
             .catch((error)=>(setError(console.error.message)));
-    }, []);
+    }, [id]);
     if (error) {
         return <h3> {error} </h3>;
     }

@@ -213,7 +213,6 @@ const getBorrowerId = booksData => {
 const getBookReviews = booksData => {
     return async (id) => {
         const reviews = await booksData.getReviews(id);
-        console.log(reviews)
         if (reviews.length === 0) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
