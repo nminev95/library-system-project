@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { MDBBtn, MDBContainer, MDBDataTableV5 } from 'mdbreact';
+import Loader from '../../Utils/Loader/Loader';
 import BanDeletePopUp from './BanDeletePopUp/BanDeletePopUp';
 import './AdminUsers.css'
 
 const AdminUsers = () => {
-
+    const [loading, setLoading] = useState(false)
     const [records, setRecords] = useState([])
     const [columns, setColumns] = useState([
         {
@@ -51,10 +52,18 @@ const AdminUsers = () => {
     ]);
 
     useEffect(() => {
+        setLoading(true);
         fetch(`http://localhost:4000/admin/users`)
             .then(res => res.json())
             .then(data => setRecords(data))
+            .finally(() => setLoading(false))
     }, []);
+
+    const loader = () => {
+        if (loading) {
+            return <Loader />
+        }
+    }
 
     records.map((record) => {
         record.Button1 = <td><MDBBtn color="default" rounded size="sm">Ban</MDBBtn></td>
@@ -63,11 +72,12 @@ const AdminUsers = () => {
 
     return (
         <MDBContainer className="usersAdminContainer">
+            {loader()}
             <MDBDataTableV5
                 btn
                 hover
                 responsiveXl
-                entries={20}
+                entries={10}
                 data={{ columns: columns, rows: records }}
                 pagingTop
                 searchTop

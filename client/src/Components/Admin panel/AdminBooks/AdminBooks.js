@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { MDBBtn, MDBContainer, MDBDataTableV5, MDBTableBody } from 'mdbreact';
+import { MDBBtn, MDBContainer, MDBDataTableV5, MDBTableBody, MDBSpinner } from 'mdbreact';
 import './AdminBooks.css';
+import Loader from '../../Utils/Loader/Loader';
 
 const AdminBooks = () => {
 
+    const [loading, setLoading] = useState(false)
     const [records, setRecords] = useState([])
     const [columns, setColumns] = useState([{
         label: '#',
@@ -50,10 +52,17 @@ const AdminBooks = () => {
     }
     ]);
 
+    const loader = () => {
+        if (loading) {
+            return <Loader />
+        }
+    }
     useEffect(() => {
+        setLoading(true)
         fetch(`http://localhost:4000/books`)
             .then(res => res.json())
             .then(data => setRecords(data))
+            .finally(() => setLoading(false))
     }, []);
 
     records.map((record) => {
@@ -63,11 +72,12 @@ const AdminBooks = () => {
 
     return (
         <MDBContainer className="booksAdminContainer">
+            {loader()}
             <MDBDataTableV5
                 btn
                 hover
                 responsiveXl
-                entries={20}
+                entries={10}
                 data={{ columns: columns, rows: records }}
                 pagingTop
                 searchTop
