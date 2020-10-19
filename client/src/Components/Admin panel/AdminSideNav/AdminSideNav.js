@@ -11,7 +11,7 @@ const SideNav = ({changeMenu}) => {
                 <MDBBtn className='backToSite'><MDBIcon icon="home"/>Back to website</MDBBtn>
             </MDBContainer>
             <MDBListGroup className="list-group-flush">
-                <NavLink exact={true} to="/admin" activeClassName="activeClass">
+                <NavLink exact={true} to="/admin/dashboard" activeClassName="activeClass">
                     <MDBListGroupItem>
                         <MDBIcon icon="chart-pie" className="mr-3" />
                         Dashboard
