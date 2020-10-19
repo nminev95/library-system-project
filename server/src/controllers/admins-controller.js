@@ -42,6 +42,16 @@ adminsController
 
             res.status(200).send(users);
         })
+    .get('/reviews',
+        // authMiddleware,
+        // roleMiddleware(['admin']),
+        async (req, res) => {
+            const { search } = req.query;
+            const { reviews } = await booksService.getAllReviews(booksData)(search);
+
+            res.status(200).send(reviews);
+        })
+
     .get('/users/:id',
         authMiddleware,
         roleMiddleware(['admin']),

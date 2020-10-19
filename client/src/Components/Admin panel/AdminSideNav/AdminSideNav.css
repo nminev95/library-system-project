@@ -12,6 +12,10 @@ body{
     color: inherit;
   }
   
+  .list-group-flush {
+    margin-top:60px;
+  }
+  
   .buttonDiv {
       text-align: center;
   }

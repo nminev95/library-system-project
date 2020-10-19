@@ -140,6 +140,36 @@ const getReviewVotes = async (reviewId) => {
     return await pool.query(sql, [reviewId]);
 };
 
+
+/** 
+* Gets all book's reviews info from the database.
+* @async
+* @param {number} id - The book's id in the database to search by.
+* @returns {Promise<object>} Promise with the book's reviews data if found in the database.
+*/
+const getReviewsInDatabase = async (value) => {
+    const sql = `
+        SELECT 
+            r.review_Id as review_id, 
+            r.content as Review,
+            u.username as Author,
+            (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 1) as Likes,
+            (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 2) as Disikes
+        from 
+            reviews r
+        left join 
+            users u
+        on 
+            r.user_Id = u.user_Id
+        left join 
+            reviews_have_votes rv
+        ON 
+            rv.review_Id = r.review_Id
+        `;
+
+    return await pool.query(sql, [value]);
+};
+
 /** 
 * Gets all book's reviews info from the database found by unique book number.
 * @async
@@ -749,4 +779,5 @@ export default {
     searchQuery,
     getAllBasicInfo,
     getPageResult,
+    getReviewsInDatabase
 };
