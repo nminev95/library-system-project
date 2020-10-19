@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { MDBBtn, MDBInput, MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
-import UserTableRow from './UserTableRow/UserTableRow';
+import { MDBBtn, MDBContainer, MDBDataTableV5 } from 'mdbreact';
 import BanDeletePopUp from './BanDeletePopUp/BanDeletePopUp';
+import './AdminUsers.css'
 
 const AdminUsers = () => {
 
-    const [tableContent, setTableContent] = useState([]);
-    const [isHidden, setIsHidden] = useState(true)
-
-    const columns = [
+    const [records, setRecords] = useState([])
+    const [columns, setColumns] = useState([
         {
             label: '#',
             field: 'id',
@@ -34,25 +32,49 @@ const AdminUsers = () => {
             field: 'registered',
             sort: 'asc'
         },
-    ];
+        {
+            label: 'Button1',
+            field: 'Button1',
+            width: 150,
+            attributes: {
+                'className': 'button1hide',
+            },
+        },
+        {
+            label: 'Button2',
+            field: 'Button2',
+            width: 150,
+            attributes: {
+                'className': 'button2hide',
+            },
+        }
+    ]);
 
     useEffect(() => {
         fetch(`http://localhost:4000/admin/users`)
             .then(res => res.json())
-            .then(data => setTableContent(data))
+            .then(data => setRecords(data))
     }, []);
 
+    records.map((record) => {
+        record.Button1 = <td><MDBBtn color="default" rounded size="sm">Ban</MDBBtn></td>
+        record.Button2 = <td><MDBBtn color="default" rounded size="sm">Delete</MDBBtn></td>
+    })
 
     return (
-        <MDBTable style={{ margin: "40px" }} btn responsiveMd>
-            <BanDeletePopUp/>
-            <MDBTableHead columns={columns} />
-            <MDBTableBody>
-            {tableContent.map((record) => <UserTableRow content={record}/>)}
-            </MDBTableBody>
-
-        </MDBTable>
-    )
+        <MDBContainer className="usersAdminContainer">
+            <MDBDataTableV5
+                btn
+                hover
+                responsiveXl
+                entries={20}
+                data={{ columns: columns, rows: records }}
+                pagingTop
+                searchTop
+                searchBottom={false}
+            />
+        </MDBContainer>
+    );
 }
 
 export default AdminUsers;

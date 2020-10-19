@@ -9,7 +9,8 @@ th.button1hide {
 th.button2hide {
     display:none;
 }
-.booksAdminContainer {
+
+.usersAdminContainer {
     margin: 60px;
     width:auto;
     max-width: 100%;
@@ -17,7 +18,7 @@ th.button2hide {
 }
 
 @media only screen and (max-width: 620px) {
-    .booksAdminContainer {
+    .usersAdminContainer {
         margin: 10px;
     }
 }

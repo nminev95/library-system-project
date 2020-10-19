@@ -1,38 +1,54 @@
 import React, { useEffect, useState } from 'react';
-import { MDBContainer, MDBDataTableV5 } from 'mdbreact';
+import { MDBBtn, MDBContainer, MDBDataTableV5, MDBTableBody } from 'mdbreact';
 import './AdminBooks.css';
 
 const AdminBooks = () => {
 
     const [records, setRecords] = useState([])
-    const [rows, setRows] = useState([]);
     const [columns, setColumns] = useState([{
         label: '#',
         field: 'id',
-        width: 180,
+        width: 280,
         sort: 'disabled'
     },
     {
         label: 'Title',
         field: 'Title',
-        width: 180,
+        width: 300,
     },
     {
         label: 'Author',
         field: 'Author',
-        width: 270,
+        width: 300,
     },
     {
         label: 'Genre',
         field: 'Genre',
-        width: 200,
+        width: 240,
     },
     {
         label: 'Status',
         field: 'Status',
         sort: 'asc',
-        width: 100,
-    },]);
+        width: 180,
+    },
+    {
+        label: 'Button1',
+        field: 'Button1',
+        width: 150,
+        attributes: {
+            'className': 'button1hide',
+        },
+    },
+    {
+        label: 'Button2',
+        field: 'Button2',
+        width: 150,
+        attributes: {
+            'className': 'button2hide',
+        },
+    }
+    ]);
 
     useEffect(() => {
         fetch(`http://localhost:4000/books`)
@@ -41,24 +57,24 @@ const AdminBooks = () => {
     }, []);
 
     records.map((record) => {
-        record.button1 = <button></button>
-        record.button2 = <button></button>
+        record.Button1 = <td><MDBBtn color="default" rounded size="sm">Edit</MDBBtn></td>
+        record.Button2 = <td><MDBBtn color="default" rounded size="sm">Delete</MDBBtn></td>
     })
 
-        return (
-            <MDBContainer style={{ margin: "30px" }}>
-                <MDBDataTableV5
-                    btn
-                    hover
-                    responsive
-                    entries={20}
-                    data={{ columns: columns, rows: records }}
-                    pagingTop
-                    searchTop
-                    searchBottom={false}
-                />
-            </MDBContainer>
-        );
-    }
+    return (
+        <MDBContainer className="booksAdminContainer">
+            <MDBDataTableV5
+                btn
+                hover
+                responsiveXl
+                entries={20}
+                data={{ columns: columns, rows: records }}
+                pagingTop
+                searchTop
+                searchBottom={false}
+            />
+        </MDBContainer>
+    );
+}
 
-    export default AdminBooks;
+export default AdminBooks;

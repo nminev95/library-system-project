@@ -1,8 +1,8 @@
 .adminUIContainer {
     position: relative;
-    margin-left: 270px;
-    
+    margin-left: 270px;    
 }
+
 @media (max-width: 1199.98px) {
     .adminUIContainer {
     margin-left: 0px;
