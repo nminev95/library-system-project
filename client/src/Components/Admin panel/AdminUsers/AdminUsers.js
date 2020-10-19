@@ -45,7 +45,6 @@ const AdminUsers = () => {
 
     return (
         <MDBTable style={{ margin: "40px" }} btn responsiveMd>
-            <TextareaPage/>
             <BanDeletePopUp/>
             <MDBTableHead columns={columns} />
             <MDBTableBody>
@@ -57,9 +56,3 @@ const AdminUsers = () => {
 }
 
 export default AdminUsers;
-
-const TextareaPage = () => {
-    return (
-        <MDBInput type="textarea" label="Material textarea" rows="5" />
-    )
-}

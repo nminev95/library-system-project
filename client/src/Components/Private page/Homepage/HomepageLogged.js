@@ -33,7 +33,6 @@ const HomepageLogged = (props) => {
             .then(data => setBooks(data))
     }, []);
 
-
     const paginate = (pageNum) => setPage(pageNum);
 
     return (

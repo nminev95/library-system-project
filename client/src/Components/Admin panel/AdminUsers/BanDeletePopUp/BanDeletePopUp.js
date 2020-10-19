@@ -1,16 +1,18 @@
 import React from 'react';
-import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarToggler, MDBCollapse, MDBNavItem, MDBNavLink, MDBIcon, MDBBtn, MDBContainer, MDBRow } from 'mdbreact';
+import { MDBInput, MDBBtn, MDBContainer, MDBRow } from 'mdbreact';
 
 const BanDeletePopUp = () => {
     return (
         <MDBContainer>
             <MDBRow>
-            <p>why</p>
+                <MDBInput style={{ width: "300px" }} border type="textarea" label="Enter reason/description" rows="5" />
             </MDBRow>
             <MDBRow>
-            <p>when</p>
+                <div>
+
+                </div>
             </MDBRow>
-            <MDBRow>    
+            <MDBRow>
             </MDBRow>
         </MDBContainer>
     )
