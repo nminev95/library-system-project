@@ -57,8 +57,8 @@ booksController
         })
     //get all the reviews of a book 
     .get('/:id/reviews',
-        authMiddleware,
-        roleMiddleware(['admin', 'user']),
+        // authMiddleware,
+        // roleMiddleware(['admin', 'user']),
         async (req, res) => {
             const { id } = req.params;
             const { error, reviews } = await booksService.getBookReviews(booksData)(+id);
