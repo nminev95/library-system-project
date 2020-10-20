@@ -61,6 +61,24 @@ const AdminUsers = () => {
             .finally(() => setLoading(false))
     }, []);
 
+    const deleteUser = (id) => {
+        const settings = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        };
+        fetch(`http://localhost:4000/admin/users/${id}`, settings)
+        .then((response) => response.json())
+        .then(() => {
+            const index = records.findIndex((record) => record.id === id);
+            const updatedRecords = records.slice();
+            updatedRecords.splice(index, 1);
+
+            setRecords(updatedRecords)        
+        })
+    } 
+
     const loader = () => {
         if (loading) {
             return <Loader />
@@ -76,7 +94,9 @@ const AdminUsers = () => {
          }}><MDBBtn color="default" rounded size="sm" onClick={() => {
             setCurrentUser(record.id)
         }}>Ban</MDBBtn></Link>
-        record.Button2 = <MDBBtn color="default" rounded size="sm">Delete</MDBBtn>
+        record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
+            deleteUser(record.id)
+        }}>Delete</MDBBtn>
     })
 
     return (
