@@ -65,8 +65,8 @@ const AdminReviews = () => {
     }
 
     records.map((record) => {
-        record.Button1 = <td><MDBBtn color="default" rounded size="sm">Edit</MDBBtn></td>
-        record.Button2 = <td><MDBBtn color="default" rounded size="sm">Delete</MDBBtn></td>
+        record.Button1 = <MDBBtn color="default" rounded size="sm">Edit</MDBBtn>
+        record.Button2 = <MDBBtn color="default" rounded size="sm">Delete</MDBBtn>
     })
 
     return (

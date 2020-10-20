@@ -3,6 +3,7 @@ import { MDBBtn, MDBContainer, MDBDataTableV5 } from 'mdbreact';
 import Loader from '../../Utils/Loader/Loader';
 import BanDeletePopUp from './BanDeletePopUp/BanDeletePopUp';
 import './AdminUsers.css'
+import { Link } from 'react-router-dom';
 
 const AdminUsers = () => {
     const [loading, setLoading] = useState(false)
@@ -66,12 +67,13 @@ const AdminUsers = () => {
     }
 
     records.map((record) => {
-        record.Button1 = <td><MDBBtn color="default" rounded size="sm">Ban</MDBBtn></td>
-        record.Button2 = <td><MDBBtn color="default" rounded size="sm">Delete</MDBBtn></td>
+        record.Button1 = <Link to="users/ban"><MDBBtn color="default" rounded size="sm">Ban</MDBBtn></Link> 
+        record.Button2 = <MDBBtn color="default" rounded size="sm">Delete</MDBBtn>
     })
 
     return (
         <MDBContainer className="usersAdminContainer">
+        <BanDeletePopUp/>
             {loader()}
             <MDBDataTableV5
                 btn
