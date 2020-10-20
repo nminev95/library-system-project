@@ -1,5 +1,5 @@
 #book-details{
-    background:linear-gradient(to bottom, #f0e6da 40%, #969b9b  100%);
+    background:linear-gradient(to bottom, #f0e6da 40%, #828585 100%);
     
     
 }
@@ -18,7 +18,7 @@
     
 }
 #main-button:hover {
-    background:linear-gradient(to bottom,  #7f8585 20%, #f1e1cf 100%);
+    background:linear-gradient(to bottom,  #585c5c 20%, #f1e1cf 100%);
     
 }
 #buttons{
@@ -29,7 +29,7 @@ color: rgb(145, 138, 129);
 }
 
 #container-reviews {
-    background-color:  rgb(165, 170, 170);
+    background-color: #828585;
 }
 .single-review{
     background:linear-gradient(to bottom,   #f5f2f0  20%, #c0bebc 100%);

@@ -115,7 +115,7 @@ const getAllReviews = booksData => {
             };
         }
         return { error: null, reviews: reviews };
-    }
+    };
 };
 
 /**
@@ -679,5 +679,5 @@ export default {
     updateBook,
     deleteBook,
     voteReview,
-    getAllReviews
+    getAllReviews,
 };
