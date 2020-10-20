@@ -24,3 +24,13 @@
 #buttons{
     position: relative;
 }
+.author{
+color: rgb(145, 138, 129);
+}
+
+#container-reviews {
+    background-color:  rgb(165, 170, 170);
+}
+.single-review{
+    background:linear-gradient(to bottom,   #ccbfb0  20%, #f1e1cf 100%);
+}

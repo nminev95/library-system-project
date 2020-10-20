@@ -5,7 +5,7 @@ import { MDBBtn } from 'mdbreact';
 
 
 const IndividualBookDetails = ({ bookData }) => {
- console.log(bookData)
+
     return (
 
         <div id="book-details" className="container my-5 z-depth-1">
