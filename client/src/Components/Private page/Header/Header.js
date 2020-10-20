@@ -6,8 +6,8 @@ import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { MDBFormInline,MDBNavbar, MDBNavbarBrand, MDBNavbarToggler, MDBIcon, MDBCollapse, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu,MDBDropdownItem} from 'mdbreact';
-import UserDropdown from './UserDropdown/UserDropdown';
-import image from './Logo.png';
+// import UserDropdown from './UserDropdown/UserDropdown';
+// import image from './Logo.png';
 
 const NavBar = () => {
  
@@ -20,7 +20,7 @@ const NavBar = () => {
 
     return (
         <Router>
-        <MDBNavbar color="grey" dark expand="md">
+        <MDBNavbar color="grey darken-3" dark expand="md">
         <MDBNavbarBrand>
           <strong className="black-text">Navbar</strong>
         </MDBNavbarBrand>
@@ -28,10 +28,10 @@ const NavBar = () => {
         <MDBCollapse id="navbarCollapse3" isOpen={state} navbar>
           <MDBNavbarNav left>
             <MDBNavItem active>
-              <MDBNavLink to="#!" className="black-text">Home</MDBNavLink>
+              <MDBNavLink to="#!" className="font-weight-bolder">Home</MDBNavLink>
             </MDBNavItem>
             <MDBNavItem>
-              <MDBNavLink to="#!" className="black-text">All books</MDBNavLink>
+              <MDBNavLink to="#!" className="font-weight-bolder">All books</MDBNavLink>
             </MDBNavItem>
           </MDBNavbarNav>
           <MDBNavbarNav right>
@@ -46,7 +46,7 @@ const NavBar = () => {
                 <MDBDropdownToggle nav caret >
                   <MDBIcon icon="user" className="d-md-inline" />
                 </MDBDropdownToggle>
-                <MDBDropdownMenu className="right basic" className="left">
+                <MDBDropdownMenu className="right basic">
                   <MDBDropdownItem href="#!">Profile</MDBDropdownItem>
                   <MDBDropdownItem href="#!">Borrowed books</MDBDropdownItem>
                   <MDBDropdownItem href="#!">Settings</MDBDropdownItem>

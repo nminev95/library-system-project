@@ -26,8 +26,6 @@ const IndividualBook = props => {
         if (error) {
             return <h3> {error} </h3>;
         }
-        
-        console.log(bookReviewsData)
     return (
         <div>
          <IndividualBookDetails bookData={bookData}/>
