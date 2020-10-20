@@ -1,6 +1,6 @@
 import React from 'react';
 import { MDBListGroup, MDBListGroupItem, MDBIcon, MDBBtn, MDBContainer } from 'mdbreact';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import './AdminSideNav.css'
 
 const SideNav = ({changeMenu}) => {
@@ -8,7 +8,9 @@ const SideNav = ({changeMenu}) => {
     return (
         <div className="sidebar-fixed position-fixed">
             <MDBContainer className="buttonDiv">
+                <Link to="/books">
                 <MDBBtn className='backToSite'><MDBIcon icon="home"/>Back to website</MDBBtn>
+                </Link>
             </MDBContainer>
             <MDBListGroup className="list-group-flush">
                 <NavLink exact={true} to="/admin/dashboard" activeClassName="activeClass">
