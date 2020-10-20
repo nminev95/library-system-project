@@ -4,6 +4,7 @@ import Loader from '../../Utils/Loader/Loader';
 import './AdminReviews.css'
 
 const AdminReviews = () => {
+    const [bookId, setBookId] = useState('');
     const [loading, setLoading] = useState(false)
     const [records, setRecords] = useState([])
     const [columns, setColumns] = useState([
@@ -58,6 +59,24 @@ const AdminReviews = () => {
             .finally(() => setLoading(false))
     }, []);
 
+    const deleteReview = (bookId, id) => {
+        const settings = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        };
+        fetch(`http://localhost:4000/admin/books/${bookId}/reviews/${id}`, settings)
+            .then((response) => response.json())
+            .then(() => {
+                const index = records.findIndex((review) => review.id === id);
+                const updatedRecords = records.slice();
+                updatedRecords.splice(index, 1);
+
+                setRecords(updatedRecords)
+            })
+    }
+
     const loader = () => {
         if (loading) {
             return <Loader />
@@ -66,9 +85,14 @@ const AdminReviews = () => {
 
     records.map((record) => {
         record.Button1 = <MDBBtn color="default" rounded size="sm">Edit</MDBBtn>
-        record.Button2 = <MDBBtn color="default" rounded size="sm">Delete</MDBBtn>
-    })
+        record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
+            console.log(record.Book)
+            console.log(record.id)
 
+            deleteReview(+(record.Book), +(record.id))
+        }}>Delete</MDBBtn>
+    })
+    console.log(records)
     return (
         <MDBContainer className="reviewAdminContainer">
             {loader()}

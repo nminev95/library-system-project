@@ -5,7 +5,6 @@ import Loader from '../../Utils/Loader/Loader';
 
 const AdminBooks = () => {
 
-    const [currentBook, setCurrentBook] = useState('');
     const [loading, setLoading] = useState(false)
     const [records, setRecords] = useState([])
     const [columns, setColumns] = useState([{
@@ -76,7 +75,7 @@ const AdminBooks = () => {
         fetch(`http://localhost:4000/admin/books/${id}`, settings)
         .then((response) => response.json())
         .then(() => {
-            const index = records.findIndex((record) => record.id === id);
+            const index = records.findIndex((book) => book.id === id);
             const updatedRecords = records.slice();
             updatedRecords.splice(index, 1);
 

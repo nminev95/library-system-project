@@ -123,14 +123,15 @@ adminsController
             }
         })
     .delete('/books/:id/reviews/:id',
-        authMiddleware,
-        roleMiddleware(['admin']),
+        // authMiddleware,
+        // roleMiddleware(['admin']),
         async (req, res) => {
             const url = req.originalUrl;
-            const userId = req.user.id;
-            const role = req.user.role;
+           // const userId = req.user.id;
+            //const role = req.user.role;
 
-            const { error, review } = await booksService.deleteReview(booksData)(url, +userId, role);
+            const { error, review } = await booksService.deleteReview(booksData)(url)
+                // +userId, role);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(409).send({ message: 'Book/review not found!' });
