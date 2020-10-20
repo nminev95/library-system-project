@@ -19,7 +19,7 @@ const LoginForm = () => {
 
     const handleSubmit = () => {
         if (password !== confirmPassword) {
-            alert('Passwords don\'t match!');
+        return alert('Passwords don\'t match!');
         }
     }
 
@@ -68,7 +68,9 @@ const LoginForm = () => {
                             />
                         </div>
                         <div className="text-center">
-                            <MDBBtn id="main-button" onClick={() => sendUserData()}>Register</MDBBtn>
+                            <MDBBtn id="main-button" onClick={() => {
+                                sendUserData({username, password, email})
+                                }}>Register</MDBBtn>
                         </div>
                         <div className="row my-3 d-flex justify-content-center">
                            
