@@ -5,6 +5,7 @@ import Loader from '../../Utils/Loader/Loader';
 
 const AdminBooks = () => {
 
+    const [currentBook, setCurrentBook] = useState('');
     const [loading, setLoading] = useState(false)
     const [records, setRecords] = useState([])
     const [columns, setColumns] = useState([{
@@ -65,9 +66,30 @@ const AdminBooks = () => {
             .finally(() => setLoading(false))
     }, []);
 
+    const deleteBook = (id) => {
+        const settings = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        };
+        fetch(`http://localhost:4000/admin/books/${id}`, settings)
+        .then((response) => response.json())
+        .then(() => {
+            const index = records.findIndex((record) => record.id === id);
+            const updatedRecords = records.slice();
+            updatedRecords.splice(index, 1);
+
+            setRecords(updatedRecords)        
+        })
+    } 
+
+
     records.map((record) => {
         record.Button1 = <MDBBtn color="default" rounded size="sm">Edit</MDBBtn>
-        record.Button2 = <MDBBtn color="default" rounded size="sm">Delete</MDBBtn>
+        record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
+            deleteBook(record.id)
+        }}>Delete</MDBBtn>
     })
 
     return (

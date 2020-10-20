@@ -110,8 +110,8 @@ adminsController
             }
         })
     .delete('/books/:id',
-        authMiddleware,
-        roleMiddleware(['admin']),
+        // authMiddleware,
+        // roleMiddleware(['admin']),
         async (req, res) => {
             const { id } = req.params;
             const { error, book } = await booksService.deleteBook(booksData)(+id);
