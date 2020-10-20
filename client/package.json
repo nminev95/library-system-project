@@ -15,6 +15,7 @@
     "@testing-library/user-event": "^7.2.1",
     "@types/react-fontawesome": "^1.6.4",
     "bootstrap": "^4.5.2",
+    "date-fns": "^2.16.1",
     "font-awesome": "^4.7.0",
     "materialize-css": "^1.0.0-rc.2",
     "mdbreact": "^4.27.0",
@@ -23,6 +24,7 @@
     "react-dom": "^16.13.1",
     "react-fontawesome": "^1.7.1",
     "react-materialize": "^3.9.3",
+    "react-nice-dates": "^3.0.7",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3"
   },

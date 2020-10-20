@@ -73,7 +73,6 @@ const AdminUsers = () => {
 
     return (
         <MDBContainer className="usersAdminContainer">
-        <BanDeletePopUp/>
             {loader()}
             <MDBDataTableV5
                 btn

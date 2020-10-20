@@ -1,21 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './BanUserPage.css'
-import { MDBModal, MDBBtn, MDBContainer, MDBModalBody, MDBModalHeader, MDBRow, MDBModalFooter } from 'mdbreact';
+import { MDBInput, MDBBtn, MDBContainer, MDBModalBody, MDBModalHeader, MDBRow, MDBModalFooter } from 'mdbreact';
 import DatePicker from '../DatePicker/DatePicker';
 import { Link } from 'react-router-dom';
+import BanDeletePopUp from '../BanDeletePopUp/BanDeletePopUp';
 
 const BanUser = () => {
+
+    const [banInfo, setBanInfo] = useState(null);
+    const [expDate, setExpDate] = useState('');
+    const [banDescription, setBanDescription] = useState('');
+
+    const updateDate = (date) => {
+        setExpDate(date);
+    }
+
+    console.log(expDate)
     return (
         <>
             <Link to="/admin/users">
-                <MDBBtn style={{margin: "20px"}}>Back to users</MDBBtn>
-                </Link> 
+                <MDBBtn style={{ margin: "20px" }}>Back to users</MDBBtn>
+            </Link>
             <MDBContainer className="banUserAdminContainer">
-                <h3>You are about to ban a user with id 1 and username niki.
-                </h3>
                 <MDBRow className="banDateRow">
-                    <DatePicker />
+                    <DatePicker setDate={(date) => setExpDate(date)}/>
                 </MDBRow>
+                <MDBInput type="textarea" 
+                label="Enter ban description/reason" 
+                rows="5" 
+                value={banDescription}
+                onChange={(ev) => setBanDescription(ev.target.value)} />
+                <MDBBtn style={{ margin: "20px", float: "right" }} onClick={() => console.log({expDate, banDescription})}>Submit</MDBBtn>
+
             </MDBContainer>
         </>
     );
