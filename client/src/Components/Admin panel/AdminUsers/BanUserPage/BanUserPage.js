@@ -5,17 +5,27 @@ import DatePicker from '../DatePicker/DatePicker';
 import { Link } from 'react-router-dom';
 import BanDeletePopUp from '../BanDeletePopUp/BanDeletePopUp';
 
-const BanUser = () => {
-
-    const [banInfo, setBanInfo] = useState(null);
+const BanUser = (props) => {
+console.log(props)
     const [expDate, setExpDate] = useState('');
     const [banDescription, setBanDescription] = useState('');
-
-    const updateDate = (date) => {
-        setExpDate(date);
+    
+    const sendBanUserData = async ({ desc, date }, id) => {
+        console.log({description: desc, expirationDate: date})
+        const settings = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({description: desc, expirationDate: date})
+        };
+        try {
+            const data = await fetch(`http://localhost:4000/admin/users/${id}/banstatus`, settings);
+        } catch (e) {
+            return e;
+        }
     }
 
-    console.log(expDate)
     return (
         <>
             <Link to="/admin/users">
@@ -30,7 +40,7 @@ const BanUser = () => {
                 rows="5" 
                 value={banDescription}
                 onChange={(ev) => setBanDescription(ev.target.value)} />
-                <MDBBtn style={{ margin: "20px", float: "right" }} onClick={() => console.log({expDate, banDescription})}>Submit</MDBBtn>
+                <MDBBtn style={{ margin: "20px", float: "right" }} onClick={() => sendBanUserData({desc: banDescription, date: expDate.toISOString().split('T')[0]}, props.location.state.id)}>Submit</MDBBtn>
 
             </MDBContainer>
         </>

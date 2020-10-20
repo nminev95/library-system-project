@@ -164,15 +164,16 @@ adminsController
             }
         })
     .post('/users/:id/banstatus',
-        authMiddleware,
-        roleMiddleware(['admin']),
-        createValidator(banUserSchema),
+        // authMiddleware,
+        // roleMiddleware(['admin']),
+        // createValidator(banUserSchema),
         async (req, res) => {
             const userId = req.params.id;
             const { description, expirationDate } = req.body;
-            const adminId = req.user.id;
+            //const adminId = req.user.id;
 
-            const { error, ban } = await usersService.banUser(usersData, gamificationData)(description, expirationDate, +userId, +adminId);
+            const { error, ban } = await usersService.banUser(usersData, gamificationData)(description, expirationDate, +userId)
+                //  +adminId);
             if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(409).send({ message: 'The user has already been banned!' });
             } else if (error === serviceErrors.RECORD_NOT_FOUND) {

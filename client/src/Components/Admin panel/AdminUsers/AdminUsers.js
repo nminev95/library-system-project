@@ -6,13 +6,14 @@ import './AdminUsers.css'
 import { Link } from 'react-router-dom';
 
 const AdminUsers = () => {
-    const [loading, setLoading] = useState(false)
-    const [records, setRecords] = useState([])
+    const [currentUser, setCurrentUser] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [records, setRecords] = useState([]);
     const [columns, setColumns] = useState([
         {
             label: '#',
             field: 'id',
-            sort: 'asc'
+            sort: 'asc',
         },
         {
             label: 'Username',
@@ -67,7 +68,14 @@ const AdminUsers = () => {
     }
 
     records.map((record) => {
-        record.Button1 = <Link to="users/ban"><MDBBtn color="default" rounded size="sm">Ban</MDBBtn></Link> 
+        record.Button1 = <Link to={{
+            pathname: "users/ban",
+            state: {
+                id: record.id
+            }
+         }}><MDBBtn color="default" rounded size="sm" onClick={() => {
+            setCurrentUser(record.id)
+        }}>Ban</MDBBtn></Link>
         record.Button2 = <MDBBtn color="default" rounded size="sm">Delete</MDBBtn>
     })
 
