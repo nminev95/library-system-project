@@ -5,7 +5,33 @@ import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBInput, MDBBtn, M
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faFacebook } from '@fortawesome/free-brands-svg-icons';
+
 const LoginForm = () => {
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const sendUserData = async (userObject) => {
+    console.log(userObject)
+    const settings = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userObject)
+    };
+    try {
+      const data = await fetch('http://localhost:4000/auth/signin', settings);
+      const json = await data.json()
+      if (json.message) {
+        alert(json.message)
+      }
+    } catch (e) {
+      console.log(e.message)
+    }
+  }
+
+
   return (
     <MDBContainer className="loginContainer">
       <MDBRow className='loginRow'>
@@ -25,6 +51,8 @@ const LoginForm = () => {
                 validate
                 error="wrong"
                 success="right"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
               />
               <MDBInput
                 label="Your password"
@@ -33,6 +61,8 @@ const LoginForm = () => {
                 type="password"
                 validate
                 containerClass="mb-0"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
               />
               <p className="font-small blue-text d-flex justify-content-end pb-3">
                 Forgot
@@ -42,7 +72,7 @@ const LoginForm = () => {
                           </a>
               </p>
               <div className="text-center mb-3">
-                <MDBBtn id="main-button" > Sign in </MDBBtn>
+                <MDBBtn id="main-button" onClick={() => sendUserData({ username, password })} > Sign in </MDBBtn>
               </div>
               <p className="font-small dark-grey-text text-right d-flex justify-content-center mb-3 pt-2">
 
