@@ -6,17 +6,16 @@ import AdminUsers from './AdminUsers/AdminUsers'
 import AdminBooks from './AdminBooks/AdminBooks'
 import AdminReviews from './AdminReviews/AdminReviews'
 import AdminDashboard from './AdminDashboard/AdminDashboard'
-import './AdminHome.css';
+import './AdminRoutes.css';
 
-const AdminHome = () => {
+const AdminRoutes = () => {
 
     const [buttons, setButtons] = useState('haha')
 
     const changeButtons = (val) => {
         return setButtons(val)
     }
-
-    console.log(buttons)
+    
     return (
         <div>
             <SideNav changeMenu={changeButtons} />
@@ -31,4 +30,4 @@ const AdminHome = () => {
     )
 }
 
-export default AdminHome;
+export default AdminRoutes;

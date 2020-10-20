@@ -98,6 +98,27 @@ const getBookById = booksData => {
 };
 
 /**
+* Gets all revies found in the database.
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @return {Promise<object>}
+*/
+const getAllReviews = booksData => {
+    return async () => {
+        const reviews = await booksData.getReviewsInDatabase();
+
+        if (reviews.length === 0) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                reviews: null,
+            };
+        }
+        return { error: null, reviews: reviews };
+    }
+};
+
+/**
 * Creates a new book record in the database.
 * @param module books data SQL queries module.
 * @callback 
@@ -658,4 +679,5 @@ export default {
     updateBook,
     deleteBook,
     voteReview,
+    getAllReviews
 };

@@ -9,7 +9,7 @@ import HomepageLogged from './Components/Private page/Homepage/HomepageLogged';
 import Header from './Components/Private page/Header/Header';
 import Footer from './Components/Private page/Footer/Footer';
 import IndividualBook from './Components/Private page/Single book content/IndividualBook';
-import AdminHome from './Components/Admin panel/AdminHome';
+import AdminRoutes from './Components/Admin panel/AdminRoutes';
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
             <Route path='/users' component={RegisterForm} />
             <Route exact path='/books' component={HomepageLogged} />
             <Route path='/books/:id' exact component={IndividualBook} />          
-            <Route path='/admin' component={AdminHome}/>
+            <Route path='/admin' component={AdminRoutes}/>
           </Switch>
         </div>
       </Router>

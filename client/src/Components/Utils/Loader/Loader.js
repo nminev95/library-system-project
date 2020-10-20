@@ -1,12 +1,13 @@
 import React from "react";
-import { MDBSpinner } from 'mdbreact';
+import './Loader.css'
 
 const Loader = () => {
   return (
-    <>
-      <MDBSpinner />
-    </>
-  );
+
+    <div className="spinner-border text-primary" id="loader" role="status">
+      <span className="sr-only">Loading...</span>
+    </div>
+  )
 }
 
 export default Loader;

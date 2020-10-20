@@ -11,7 +11,14 @@ body{
   a{
     color: inherit;
   }
-  
+  button.btn-default.btn.Ripple-parent.backToSite {
+    top: 28px;
+    height: 50px;
+  }
+  .list-group-flush {
+    margin-top:46px;
+  }
+
   .buttonDiv {
       text-align: center;
   }

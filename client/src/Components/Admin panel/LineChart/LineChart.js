@@ -4,8 +4,8 @@ import { Line } from 'react-chartjs-2'
 
 const LineChart = () => {
 
-    const [month, setMonth] = useState([]);
-
+    const [months, setMonths] = useState([]);
+    const [usersCount, setUsersCount] = useState()
     useEffect (() => {
         
             const month = new Array();
@@ -21,14 +21,28 @@ const LineChart = () => {
             month[9] = "October";
             month[10] = "November";
             month[11] = "December";
-
+            const months = [];
             const date = new Date();
-            const result = month[date.getMonth()];
+            const result = date.getMonth();
+            for (let i = result; months.length < 6; i--) {
+                months.push(i);
+                if (i === 0) {
+                    i = 12;
+                }
+            }
+    
+            const monthsAlph = [];
+            months.forEach(monthNum => {
+                monthsAlph.push(month[monthNum]);
+            })
+
+            setMonths(monthsAlph.reverse())
         }
     , []);
 
     const dataLine = {
-        labels: ['October', 'November'],
+        
+        labels: months,
         datasets: [
             {
                 label: 'Registered users by months',
@@ -49,7 +63,7 @@ const LineChart = () => {
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: [65, 59, 80, 81, 56, 55, 40]
+                data: [0, 0, 0, 0, 0, 5]
             }
         ]
     };
