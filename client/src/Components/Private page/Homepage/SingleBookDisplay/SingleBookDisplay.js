@@ -2,7 +2,9 @@ import React from 'react';
 import './SingleBookDisplay.css'
 import { MDBCol, MDBCard, MDBCardBody, MDBCardImage, MDBView, MDBCardTitle, MDBCardText, MDBInput, MDBBtn, MDBIcon, MDBModalFooter } from 'mdbreact';
 
-const SingleBookDisplay = ({ book }) => {
+import { withRouter, Link } from 'react-router-dom';
+
+const SingleBookDisplay = ({book, history}) => {
 
     return (
         <MDBCol xl="3" className="cardBook">
@@ -28,12 +30,12 @@ const SingleBookDisplay = ({ book }) => {
                     </MDBCardTitle>
                     <MDBCardText>
                         Year: {book.Year}
-                    </MDBCardText>
-                    <MDBBtn id="main-button" > See more </MDBBtn>
+                    </MDBCardText>              
+                    <MDBBtn id="main-button" onClick={()=> {history.push(`/books/${book.id}`)}} >  See more </MDBBtn>        
                 </MDBCardBody>
             </MDBCard>
         </MDBCol>
     )
 }
 
-export default SingleBookDisplay;
+export default withRouter(SingleBookDisplay);

@@ -164,8 +164,8 @@ booksController
     //borrow a book
     .put('/:id',
         authMiddleware,
-        roleMiddleware(['admin', 'user']),
-        validateBanStatusMiddleware(),
+        // roleMiddleware(['admin', 'user']),
+        // validateBanStatusMiddleware(),
         async (req, res) => {
             const id = req.params.id;
             const user_Id = req.user.id;
