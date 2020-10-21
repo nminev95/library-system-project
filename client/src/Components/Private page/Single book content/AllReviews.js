@@ -4,6 +4,7 @@ import { MDBCol, MDBInput } from 'mdbreact';
 import './IndividualBook.css';
 
 const Reviews = ({ bookReviewsData }) => {
+    
     if (bookReviewsData.message) {
        
         return (
@@ -23,7 +24,7 @@ const Reviews = ({ bookReviewsData }) => {
                 <section className="dark-grey-text">
                     <h4 className="p-3" > Reviews </h4>
                     <MDBCol className="reviewRow">
-                        {bookReviewsData.map((review) => <IndividualBookReviewsDisplay author={review.Author} review={review.Review} likes={review.Likes} dislikes={review.Dislikes} key={review.id} />)}
+                        {bookReviewsData.map((review) => <IndividualBookReviewsDisplay   author={review.Author} review={review.Review} likes={review.Likes} dislikes={review.Dislikes} key={review.review_id} />)}
                     </MDBCol>
                     <MDBCol className="p-2">
                         <MDBInput type="textarea" label="Leave your review here..." rows="2" />

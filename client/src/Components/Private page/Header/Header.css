@@ -12,3 +12,10 @@ navbar-brand{
 nav#nav-bar {
    position: relative;
 }
+/* .profile{
+   margin-right: 200px;
+} */
+
+.drop-container{
+   transform: translate3d(-103px, 39px, 0px) !important;
+}

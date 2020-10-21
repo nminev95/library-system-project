@@ -4,9 +4,9 @@ import Reviews from './AllReviews';
 import {useState, useEffect} from 'react';
 
 const IndividualBook = props => {
+    const {id} = props.match.params;
     const [bookData, setBookData] = useState('');
     const [bookReviewsData, setBookReviewsData] = useState([]);
-    const {id} = props.match.params;
     const [error, setError] = useState(null);
 
     useEffect(() => {

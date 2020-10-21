@@ -1,6 +1,6 @@
 import React from 'react';
 import './Content.css';
-import image from '../../../../test2-min.png';
+import image from '../../cover2.jpg';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import LockIcon from '@material-ui/icons/Lock';
 import { Link } from 'react-router-dom';

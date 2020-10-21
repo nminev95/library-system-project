@@ -6,7 +6,7 @@ const Footer = () => {
 
 
   return (
-    <MDBFooter id="footerDiv" color="grey darken-3" className="font-small lighten-3 pt-4 mt-2">
+    <MDBFooter id="footerDiv" color="grey darken-3" className="font-small lighten-3 pt-4 ">
       <MDBContainer className="text-center text-md-left">
         <MDBRow className="my-4">
           <MDBCol md="4" lg="4">

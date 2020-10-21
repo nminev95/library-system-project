@@ -11,7 +11,7 @@ const IndividualBookDetails = ({ bookData }) => {
         <div id="book-details" className="container my-5 z-depth-1">
 
 
-            <section className="dark-grey-text">
+            <section className="white-text">
 
                 <div className="row d-flex ">
                     <div className="col-md-4 justify-content-center">

@@ -22,31 +22,31 @@ const NavBar = () => {
         <Router>
         <MDBNavbar color="grey darken-3" dark expand="md">
         <MDBNavbarBrand>
-          <strong className="black-text">Navbar</strong>
+          <strong className="white-text">ReadMe</strong>
         </MDBNavbarBrand>
         <MDBNavbarToggler onClick={toggleCollapse} />
         <MDBCollapse id="navbarCollapse3" isOpen={state} navbar>
           <MDBNavbarNav left>
-            <MDBNavItem active>
+            <MDBNavItem>
               <MDBNavLink to="#!" className="font-weight-bolder">Home</MDBNavLink>
             </MDBNavItem>
-            <MDBNavItem>
+            <MDBNavItem >
               <MDBNavLink to="#!" className="font-weight-bolder">All books</MDBNavLink>
             </MDBNavItem>
           </MDBNavbarNav>
           <MDBNavbarNav right>
           <MDBFormInline waves>
                 <div className="md-form my-0">
-                <input className="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search..."
+                <input className="form-control form-control-sm mr-5 w-75" type="text" placeholder="Search..."
                 aria-label="Search" />
                 </div>
               </MDBFormInline>     
-            <MDBNavItem>
+            <MDBNavItem className=" profile">
               <MDBDropdown>
                 <MDBDropdownToggle nav caret >
-                  <MDBIcon icon="user" className="d-md-inline" />
+                  <MDBIcon icon="user" className="d-md-inline  " />
                 </MDBDropdownToggle>
-                <MDBDropdownMenu className="right basic">
+                <MDBDropdownMenu className="drop-container right basic">
                   <MDBDropdownItem href="#!">Profile</MDBDropdownItem>
                   <MDBDropdownItem href="#!">Borrowed books</MDBDropdownItem>
                   <MDBDropdownItem href="#!">Settings</MDBDropdownItem>
