@@ -1,0 +1,16 @@
+.banUserAdminContainer {
+    margin: 60px;
+    width:auto;
+    max-width: 100%;
+    margin-right: 0px;
+}
+
+@media only screen and (max-width: 620px) {
+    .banUserAdminContainer {
+        margin: 10px;
+    }
+}
+
+.banDateRow {
+    justify-content: center;
+}

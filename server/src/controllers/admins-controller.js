@@ -67,8 +67,8 @@ adminsController
             }
         })
     .delete('/users/:id',
-        authMiddleware,
-        roleMiddleware(['admin']),
+        // authMiddleware,
+        // roleMiddleware(['admin']),
         async (req, res) => {
             const { id } = req.params;
 
@@ -110,8 +110,8 @@ adminsController
             }
         })
     .delete('/books/:id',
-        authMiddleware,
-        roleMiddleware(['admin']),
+        // authMiddleware,
+        // roleMiddleware(['admin']),
         async (req, res) => {
             const { id } = req.params;
             const { error, book } = await booksService.deleteBook(booksData)(+id);
@@ -123,14 +123,15 @@ adminsController
             }
         })
     .delete('/books/:id/reviews/:id',
-        authMiddleware,
-        roleMiddleware(['admin']),
+        // authMiddleware,
+        // roleMiddleware(['admin']),
         async (req, res) => {
             const url = req.originalUrl;
-            const userId = req.user.id;
-            const role = req.user.role;
+           // const userId = req.user.id;
+            //const role = req.user.role;
 
-            const { error, review } = await booksService.deleteReview(booksData)(url, +userId, role);
+            const { error, review } = await booksService.deleteReview(booksData)(url)
+                // +userId, role);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(409).send({ message: 'Book/review not found!' });
@@ -164,15 +165,16 @@ adminsController
             }
         })
     .post('/users/:id/banstatus',
-        authMiddleware,
-        roleMiddleware(['admin']),
-        createValidator(banUserSchema),
+        // authMiddleware,
+        // roleMiddleware(['admin']),
+        // createValidator(banUserSchema),
         async (req, res) => {
             const userId = req.params.id;
             const { description, expirationDate } = req.body;
-            const adminId = req.user.id;
+            //const adminId = req.user.id;
 
-            const { error, ban } = await usersService.banUser(usersData, gamificationData)(description, expirationDate, +userId, +adminId);
+            const { error, ban } = await usersService.banUser(usersData, gamificationData)(description, expirationDate, +userId)
+                //  +adminId);
             if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(409).send({ message: 'The user has already been banned!' });
             } else if (error === serviceErrors.RECORD_NOT_FOUND) {

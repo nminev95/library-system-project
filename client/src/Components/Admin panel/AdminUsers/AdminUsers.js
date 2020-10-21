@@ -3,15 +3,17 @@ import { MDBBtn, MDBContainer, MDBDataTableV5 } from 'mdbreact';
 import Loader from '../../Utils/Loader/Loader';
 import BanDeletePopUp from './BanDeletePopUp/BanDeletePopUp';
 import './AdminUsers.css'
+import { Link } from 'react-router-dom';
 
 const AdminUsers = () => {
-    const [loading, setLoading] = useState(false)
-    const [records, setRecords] = useState([])
+    const [currentUser, setCurrentUser] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [records, setRecords] = useState([]);
     const [columns, setColumns] = useState([
         {
             label: '#',
             field: 'id',
-            sort: 'asc'
+            sort: 'asc',
         },
         {
             label: 'Username',
@@ -59,6 +61,24 @@ const AdminUsers = () => {
             .finally(() => setLoading(false))
     }, []);
 
+    const deleteUser = (id) => {
+        const settings = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        };
+        fetch(`http://localhost:4000/admin/users/${id}`, settings)
+        .then((response) => response.json())
+        .then(() => {
+            const index = records.findIndex((record) => record.id === id);
+            const updatedRecords = records.slice();
+            updatedRecords.splice(index, 1);
+
+            setRecords(updatedRecords)        
+        })
+    } 
+
     const loader = () => {
         if (loading) {
             return <Loader />
@@ -66,8 +86,17 @@ const AdminUsers = () => {
     }
 
     records.map((record) => {
-        record.Button1 = <td><MDBBtn color="default" rounded size="sm">Ban</MDBBtn></td>
-        record.Button2 = <td><MDBBtn color="default" rounded size="sm">Delete</MDBBtn></td>
+        record.Button1 = <Link to={{
+            pathname: "users/ban",
+            state: {
+                id: record.id
+            }
+         }}><MDBBtn color="default" rounded size="sm" onClick={() => {
+            setCurrentUser(record.id)
+        }}>Ban</MDBBtn></Link>
+        record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
+            deleteUser(record.id)
+        }}>Delete</MDBBtn>
     })
 
     return (

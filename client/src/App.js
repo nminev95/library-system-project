@@ -20,14 +20,14 @@ function App() {
           <Switch>
             <Route path='/' exact component={HomePage} />
             <Route path='/auth/signin' component={LoginForm} />
-            <Route path='/users' component={RegisterForm} />
+            <Route exact path='/users' component={RegisterForm} />
             <Route exact path='/books' component={HomepageLogged} />
             <Route path='/books/:id' exact component={IndividualBook} />          
             <Route path='/admin' component={AdminRoutes}/>
           </Switch>
         </div>
       </Router>
-       <Footer /> 
+       <Footer />
     </>
   );
 }

@@ -65,9 +65,30 @@ const AdminBooks = () => {
             .finally(() => setLoading(false))
     }, []);
 
+    const deleteBook = (id) => {
+        const settings = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        };
+        fetch(`http://localhost:4000/admin/books/${id}`, settings)
+        .then((response) => response.json())
+        .then(() => {
+            const index = records.findIndex((book) => book.id === id);
+            const updatedRecords = records.slice();
+            updatedRecords.splice(index, 1);
+
+            setRecords(updatedRecords)        
+        })
+    } 
+
+
     records.map((record) => {
-        record.Button1 = <td><MDBBtn color="default" rounded size="sm">Edit</MDBBtn></td>
-        record.Button2 = <td><MDBBtn color="default" rounded size="sm">Delete</MDBBtn></td>
+        record.Button1 = <MDBBtn color="default" rounded size="sm">Edit</MDBBtn>
+        record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
+            deleteBook(record.id)
+        }}>Delete</MDBBtn>
     })
 
     return (
