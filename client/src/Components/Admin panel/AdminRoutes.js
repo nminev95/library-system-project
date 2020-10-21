@@ -8,6 +8,7 @@ import AdminReviews from './AdminReviews/AdminReviews'
 import AdminDashboard from './AdminDashboard/AdminDashboard'
 import BanUser from './AdminUsers/BanUserPage/BanUserPage'
 import './AdminRoutes.css';
+import EditBookPage from './AdminBooks/EditBookPage/EditBookPage';
 
 const AdminRoutes = () => {
 
@@ -28,6 +29,7 @@ const AdminRoutes = () => {
                 <Route exact path='/admin/books' component={AdminBooks} />
                 <Route exact path='/admin/reviews' component={AdminReviews} />
                 <Route path='/admin/users/ban' component={BanUser} />
+                <Route path='/admin/books/edit' component={EditBookPage} />
             </div>
         </div>
     )

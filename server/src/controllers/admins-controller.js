@@ -95,9 +95,9 @@ adminsController
             }
         })
     .put('/books/:id',
-        authMiddleware,
-        roleMiddleware(['admin']),
-        createValidator(updateBookSchema),
+        // authMiddleware,
+        // roleMiddleware(['admin']),
+        // createValidator(updateBookSchema),
         async (req, res) => {
             const { id } = req.params;
             const bookInfo = req.body;

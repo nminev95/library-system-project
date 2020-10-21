@@ -625,7 +625,7 @@ const insertBook = async (title, author, description, genre, year, status) => {
 * @returns {Promise<object>} Promise with the book data if found in the database.
 */
 const updateBookInfo = async (bookInfo) => {
-    const { id, title, author, description, genre, year, status } = bookInfo;
+    const { id, title, author, description, genre, status } = bookInfo;
 
     const sql = `
     UPDATE books 
@@ -634,12 +634,11 @@ const updateBookInfo = async (bookInfo) => {
         author = ?,
         description = ?,
         genre = ?,
-        year = ?,
-        borrowedStatus_Id = ?
+        borrowedStatus_Id = (SELECT status_Id FROM status WHERE type = ?)
     WHERE
         book_Id = ?;
     `;
-    return await pool.query(sql, [title, author, description, genre, year, status, id]);
+    return await pool.query(sql, [title, author, description, genre, status, id]);
 };
 
 /** 

@@ -2,11 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { MDBBtn, MDBContainer, MDBDataTableV5, MDBTableBody, MDBSpinner } from 'mdbreact';
 import './AdminBooks.css';
 import Loader from '../../Utils/Loader/Loader';
+import { Link } from 'react-router-dom';
 
 const AdminBooks = () => {
 
-    const [loading, setLoading] = useState(false)
-    const [records, setRecords] = useState([])
+    const [editMode, setEditMode] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [records, setRecords] = useState([]);
+    const [currentBook, setCurrentBook] = useState('');
+
+    const toggleEditMode = () => {
+        setEditMode((editMode) => !editMode)
+    }
+
     const [columns, setColumns] = useState([{
         label: '#',
         field: 'id',
@@ -57,13 +65,29 @@ const AdminBooks = () => {
             return <Loader />
         }
     }
+
     useEffect(() => {
         setLoading(true)
         fetch(`http://localhost:4000/books`)
             .then(res => res.json())
             .then(data =>  {
                 data.map((record) => {
-                    record.Button1 = <MDBBtn color="default" rounded size="sm" onClick={() => toggleEditMode()}>Edit</MDBBtn>
+                    record.Button1 = <Link to={{
+                        pathname:"books/edit",
+                        state: {
+                            id: record.id,
+                            title: record.Title,
+                            author: record.Author,
+                            description: record.Description,
+                            genre: record.Genre,
+                            status: record.Status
+                        }
+                    }}>
+                    <MDBBtn color="default" rounded size="sm" onClick={() => {
+                        toggleEditMode()
+                        setCurrentBook(record.id)
+                    }}>Edit</MDBBtn>
+                    </Link>
                     record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
                         deleteBook(record.id)
                     }}>Delete</MDBBtn>
@@ -73,7 +97,7 @@ const AdminBooks = () => {
             .then(result => setRecords(result))
             .finally(setLoading(false));
     }, []);
-
+    
     const deleteBook = (id) => {
         const settings = {
             method: 'DELETE',
@@ -92,9 +116,6 @@ const AdminBooks = () => {
         })
     } 
 
-    const toggleEditMode = () => {
-
-    }
 
     return (
         <MDBContainer className="booksAdminContainer">
