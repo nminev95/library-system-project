@@ -55,7 +55,17 @@ const AdminReviews = () => {
         setLoading(true);
         fetch(`http://localhost:4000/admin/reviews`)
             .then(res => res.json())
-            .then(data => setRecords(data))
+            .then(data => {
+                data.map((record) => {
+                    record.Button1 = <MDBBtn color="default" rounded size="sm">Edit</MDBBtn>
+                    record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
+            
+                        deleteReview(+(record.Book), +(record.id))
+                    }}>Delete</MDBBtn>
+                })
+                return data;   
+            })
+            .then((data) => setRecords(data))
             .finally(() => setLoading(false))
     }, []);
 
@@ -83,14 +93,6 @@ const AdminReviews = () => {
         }
     }
 
-    records.map((record) => {
-        record.Button1 = <MDBBtn color="default" rounded size="sm">Edit</MDBBtn>
-        record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
-
-            deleteReview(+(record.Book), +(record.id))
-        }}>Delete</MDBBtn>
-    })
-    
     return (
         <MDBContainer className="reviewAdminContainer">
             {loader()}

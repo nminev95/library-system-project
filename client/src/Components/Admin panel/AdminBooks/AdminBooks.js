@@ -61,8 +61,17 @@ const AdminBooks = () => {
         setLoading(true)
         fetch(`http://localhost:4000/books`)
             .then(res => res.json())
-            .then(data => setRecords(data))
-            .finally(() => setLoading(false))
+            .then(data =>  {
+                data.map((record) => {
+                    record.Button1 = <MDBBtn color="default" rounded size="sm" onClick={() => toggleEditMode()}>Edit</MDBBtn>
+                    record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
+                        deleteBook(record.id)
+                    }}>Delete</MDBBtn>
+                })
+                return data;
+            })
+            .then(result => setRecords(result))
+            .finally(setLoading(false));
     }, []);
 
     const deleteBook = (id) => {
@@ -83,13 +92,9 @@ const AdminBooks = () => {
         })
     } 
 
+    const toggleEditMode = () => {
 
-    records.map((record) => {
-        record.Button1 = <MDBBtn color="default" rounded size="sm">Edit</MDBBtn>
-        record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
-            deleteBook(record.id)
-        }}>Delete</MDBBtn>
-    })
+    }
 
     return (
         <MDBContainer className="booksAdminContainer">
