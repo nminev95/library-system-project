@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import BanDeletePopUp from '../BanDeletePopUp/BanDeletePopUp';
 
 const BanUser = (props) => {
-console.log(props)
+
     const [expDate, setExpDate] = useState('');
     const [banDescription, setBanDescription] = useState('');
     

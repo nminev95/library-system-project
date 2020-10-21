@@ -57,9 +57,26 @@ const AdminUsers = () => {
         setLoading(true);
         fetch(`http://localhost:4000/admin/users`)
             .then(res => res.json())
-            .then(data => setRecords(data))
-            .finally(() => setLoading(false))
-    }, []);
+            .then(data => {
+                data.map((record) => {
+                    record.Button1 = <Link to={{
+                        pathname: "users/ban",
+                        state: {
+                            id: record.id
+                        }
+                    }}><MDBBtn color="default" rounded size="sm" onClick={() => {
+                        setCurrentUser(record.id)
+                    }}>Ban</MDBBtn></Link>
+                    record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
+                        deleteUser(record.id)
+                    }}>Delete</MDBBtn>
+                    
+                })
+                return data;
+            })
+            .then(result => setRecords(result))
+            .finally(setLoading(false));
+        }, []);
 
     const deleteUser = (id) => {
         const settings = {
@@ -69,35 +86,21 @@ const AdminUsers = () => {
             },
         };
         fetch(`http://localhost:4000/admin/users/${id}`, settings)
-        .then((response) => response.json())
-        .then(() => {
-            const index = records.findIndex((record) => record.id === id);
-            const updatedRecords = records.slice();
-            updatedRecords.splice(index, 1);
+            .then((response) => response.json())
+            .then(() => {
+                const index = records.findIndex((record) => record.id === id);
+                const updatedRecords = records.slice();
+                updatedRecords.splice(index, 1);
 
-            setRecords(updatedRecords)        
-        })
-    } 
+                setRecords(updatedRecords)
+            })
+    }
 
     const loader = () => {
         if (loading) {
             return <Loader />
         }
     }
-
-    records.map((record) => {
-        record.Button1 = <Link to={{
-            pathname: "users/ban",
-            state: {
-                id: record.id
-            }
-         }}><MDBBtn color="default" rounded size="sm" onClick={() => {
-            setCurrentUser(record.id)
-        }}>Ban</MDBBtn></Link>
-        record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
-            deleteUser(record.id)
-        }}>Delete</MDBBtn>
-    })
 
     return (
         <MDBContainer className="usersAdminContainer">
