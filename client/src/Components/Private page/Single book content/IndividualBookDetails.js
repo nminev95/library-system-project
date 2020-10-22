@@ -5,6 +5,23 @@ import { MDBBtn } from 'mdbreact';
 
 
 const IndividualBookDetails = ({ bookData }) => {
+    const bookId = bookData.id;
+    const userId = '1'; //TO EDIT!!!!!!!!!!!!!!!!!!
+
+    const borrowBoook = async (bookId, userId) => {
+        const ids = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        };
+        try {
+            const data = await fetch(`http://localhost:4000/books/${bookId}`, ids);
+        } catch (error) {
+            return error.message;
+        }
+    }
+
 
     return (
 
@@ -18,7 +35,7 @@ const IndividualBookDetails = ({ bookData }) => {
                         <img src={bookData.Cover} className="w-100 p-4 justify-content-center" alt="smaple image" />
                     </div>
                     <div className="col-md-8 p-3 ">
-                <div className="p-5 ">
+                        <div className="p-5 ">
                             <h3 className="font-weight-bold text-center">{bookData.Title}</h3>
                         </div>
                         <div className="p-1 text-center text-justify ">
@@ -27,10 +44,14 @@ const IndividualBookDetails = ({ bookData }) => {
                         <div className="p-4">
                             <p className="text-center text-justify" >{bookData.Description}</p>
                         </div>
+                        
                         <div id="buttons" className="text-center p-5">
-                            <MDBBtn id="main-button"  > Borrow </MDBBtn>
-                            
+                         { bookData.Status ==="Free" ?
+                                <MDBBtn id="main-button" onClick={borrowBoook}> Borrow </MDBBtn> :
+                                <MDBBtn id="main-button" > Return </MDBBtn>         
+                        }
                         </div>
+                     
                     </div>
                 </div>
 

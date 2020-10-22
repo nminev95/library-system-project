@@ -163,12 +163,12 @@ booksController
         })
     //borrow a book
     .put('/:id',
-        authMiddleware,
+        // authMiddleware,
         // roleMiddleware(['admin', 'user']),
         // validateBanStatusMiddleware(),
         async (req, res) => {
-            const id = req.params.id;
-            const user_Id = req.user.id;
+            const id = 4; /////////////////////////TO EDITTTTTTTTTTTTTTTTTT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            const user_Id = 1; ////////TO EDIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 
             const { error } = await booksService.borrowABook(booksData)(+id, +user_Id);
 
