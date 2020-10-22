@@ -188,6 +188,7 @@ booksController
         async (req, res) => {
             const id = req.params.id;
             const user_Id = req.user.id;
+            console.log(id, user_Id);
 
             const { error } = await booksService.returnABook(booksData)(+id, +user_Id);
 

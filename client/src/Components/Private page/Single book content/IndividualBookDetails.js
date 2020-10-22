@@ -5,6 +5,8 @@ import { MDBBtn } from 'mdbreact';
 
 
 const IndividualBookDetails = ({ bookData }) => {
+
+    
     const bookId = bookData.id;
  
     const borrowBoook = async () => {
@@ -18,6 +20,22 @@ const IndividualBookDetails = ({ bookData }) => {
         };
         try {
             const data = await fetch(`http://localhost:4000/books/${bookId}`, ids);
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    const returnBoook = async () => {
+       
+        const settings = {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json'
+            },
+        };
+        try {
+            const data = await fetch(`http://localhost:4000/books/${bookId}`, settings);
         } catch (error) {
             return error.message;
         }
@@ -49,7 +67,7 @@ const IndividualBookDetails = ({ bookData }) => {
                         <div id="buttons" className="text-center p-5">
                          { bookData.Status ==="Free" ?
                                 <MDBBtn id="main-button" onClick={borrowBoook}> Borrow </MDBBtn> :
-                                <MDBBtn id="main-button" > Return </MDBBtn>         
+                                <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>         
                         }
                         </div>
                      
