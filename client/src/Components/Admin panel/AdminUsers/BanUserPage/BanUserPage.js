@@ -3,7 +3,6 @@ import './BanUserPage.css'
 import { MDBInput, MDBBtn, MDBContainer, MDBModalBody, MDBModalHeader, MDBRow, MDBModalFooter } from 'mdbreact';
 import DatePicker from '../DatePicker/DatePicker';
 import { Link } from 'react-router-dom';
-import BanDeletePopUp from '../BanDeletePopUp/BanDeletePopUp';
 
 const BanUser = (props) => {
 
@@ -11,7 +10,7 @@ const BanUser = (props) => {
     const [banDescription, setBanDescription] = useState('');
     
     const sendBanUserData = async ({ desc, date }, id) => {
-        console.log({description: desc, expirationDate: date})
+
         const settings = {
             method: 'POST',
             headers: {

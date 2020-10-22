@@ -59,10 +59,16 @@ export const createBookSchema = {
             return 'Book status is required';
         }
 
-        if (typeof value !== 'string' || value.trim().length > 1) {
+        if (typeof value !== 'string' || value.trim().length > 10) {
             return 'Status should be a valid value';
         }
 
         return null;
     },
+    cover: value => {
+        if (!value) {
+            return "Book cover url required";
+        }
+        return null;
+    }
 };

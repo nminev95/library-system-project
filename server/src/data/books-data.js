@@ -605,15 +605,15 @@ const getReviewDislikes = async (reviewId) => {
 * @param {string} description - a short description of the book
 * @returns {Promise<object>}
 */
-const insertBook = async (title, author, description, genre, year, status) => {
+const insertBook = async (title, author, description, genre, year, status, cover) => {
     const sql = `
         INSERT INTO
-            books (title, author, description, genre, year, borrowedStatus_Id)
+            books (title, author, description, genre, year, borrowedStatus_Id, imageUrl)
         VALUES 
-            (?, ?, ?, ?, ?, ?);
+            (?, ?, ?, ?, ?, (SELECT status_Id FROM status WHERE type = ?), ?);
         `;
 
-    return await pool.query(sql, [title, author, description, genre, year, status]);
+    return await pool.query(sql, [title, author, description, genre, year, status, cover]);
 };
 
 /** 

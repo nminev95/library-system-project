@@ -81,12 +81,12 @@ adminsController
             }
         })
     .post('/books',
-        authMiddleware,
-        roleMiddleware(['admin']),
+        // authMiddleware,
+        // roleMiddleware(['admin']),
         createValidator(createBookSchema),
         async (req, res) => {
-            const { title, description, author, status, genre, year } = req.body;
-            const { error, book } = await booksService.createBook(booksData)(title, description, author, genre, year, status);
+            const { title, description, author, status, genre, year, cover } = req.body;
+            const { error, book } = await booksService.createBook(booksData)(title, description, author, genre, year, status, cover);
 
             if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(409).send({ message: 'Book is already in library!' });

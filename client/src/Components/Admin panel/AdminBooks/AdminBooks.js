@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MDBBtn, MDBContainer, MDBDataTableV5, MDBTableBody, MDBSpinner } from 'mdbreact';
+import { MDBBtn, MDBIcon, MDBContainer, MDBDataTableV5, MDBTableBody, MDBSpinner } from 'mdbreact';
 import './AdminBooks.css';
 import Loader from '../../Utils/Loader/Loader';
 import { Link } from 'react-router-dom';
@@ -70,10 +70,10 @@ const AdminBooks = () => {
         setLoading(true)
         fetch(`http://localhost:4000/books`)
             .then(res => res.json())
-            .then(data =>  {
+            .then(data => {
                 data.map((record) => {
                     record.Button1 = <Link to={{
-                        pathname:"books/edit",
+                        pathname: "books/edit",
                         state: {
                             id: record.id,
                             title: record.Title,
@@ -83,10 +83,10 @@ const AdminBooks = () => {
                             status: record.Status
                         }
                     }}>
-                    <MDBBtn color="default" rounded size="sm" onClick={() => {
-                        toggleEditMode()
-                        setCurrentBook(record.id)
-                    }}>Edit</MDBBtn>
+                        <MDBBtn color="default" rounded size="sm" onClick={() => {
+                            toggleEditMode()
+                            setCurrentBook(record.id)
+                        }}>Edit</MDBBtn>
                     </Link>
                     record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
                         deleteBook(record.id)
@@ -97,7 +97,7 @@ const AdminBooks = () => {
             .then(result => setRecords(result))
             .finally(setLoading(false));
     }, []);
-    
+
     const deleteBook = (id) => {
         const settings = {
             method: 'DELETE',
@@ -106,19 +106,22 @@ const AdminBooks = () => {
             },
         };
         fetch(`http://localhost:4000/admin/books/${id}`, settings)
-        .then((response) => response.json())
-        .then(() => {
-            const index = records.findIndex((book) => book.id === id);
-            const updatedRecords = records.slice();
-            updatedRecords.splice(index, 1);
+            .then((response) => response.json())
+            .then(() => {
+                const index = records.findIndex((book) => book.id === id);
+                const updatedRecords = records.slice();
+                updatedRecords.splice(index, 1);
 
-            setRecords(updatedRecords)        
-        })
-    } 
+                setRecords(updatedRecords)
+            })
+    }
 
 
     return (
         <MDBContainer className="booksAdminContainer">
+            <Link to="books/add">
+                <MDBBtn color="default" rounded size="lg" style={{ float: "right" }}><MDBIcon icon="plus" />Add book</MDBBtn>
+            </Link>
             {loader()}
             <MDBDataTableV5
                 btn

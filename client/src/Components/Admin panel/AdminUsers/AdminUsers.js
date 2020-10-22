@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MDBBtn, MDBContainer, MDBDataTableV5 } from 'mdbreact';
 import Loader from '../../Utils/Loader/Loader';
-import BanDeletePopUp from './BanDeletePopUp/BanDeletePopUp';
 import './AdminUsers.css'
 import { Link } from 'react-router-dom';
 

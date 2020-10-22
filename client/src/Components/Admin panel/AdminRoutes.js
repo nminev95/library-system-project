@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import SideNav from './AdminSideNav/AdminSideNav';
 import TopNav from './AdminTopNav/AdminTopNav';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import AdminUsers from './AdminUsers/AdminUsers'
-import AdminBooks from './AdminBooks/AdminBooks'
-import AdminReviews from './AdminReviews/AdminReviews'
-import AdminDashboard from './AdminDashboard/AdminDashboard'
-import BanUser from './AdminUsers/BanUserPage/BanUserPage'
-import './AdminRoutes.css';
+import AdminUsers from './AdminUsers/AdminUsers';
+import AdminBooks from './AdminBooks/AdminBooks';
+import AdminReviews from './AdminReviews/AdminReviews';
+import AdminDashboard from './AdminDashboard/AdminDashboard';
+import BanUser from './AdminUsers/BanUserPage/BanUserPage';
 import EditBookPage from './AdminBooks/EditBookPage/EditBookPage';
-import EditReviewPage from './AdminReviews/EditReviewPage/EditReviewPage'
+import EditReviewPage from './AdminReviews/EditReviewPage/EditReviewPage';
+import CreateBookPage from './AdminBooks/CreateBookPage/CreateBookPage';
+import './AdminRoutes.css';
 
 const AdminRoutes = () => {
 
@@ -30,8 +31,9 @@ const AdminRoutes = () => {
                 <Route exact path='/admin/books' component={AdminBooks} />
                 <Route exact path='/admin/reviews' component={AdminReviews} />
                 <Route path='/admin/users/ban' component={BanUser} />
-                <Route path='/admin/books/edit' component={EditBookPage} />
+                <Route exact path='/admin/books/edit' component={EditBookPage} />
                 <Route path='/admin/reviews/edit' component={EditReviewPage} />
+                <Route path='/admin/books/add' component={CreateBookPage} />
             </div>
         </div>
     )

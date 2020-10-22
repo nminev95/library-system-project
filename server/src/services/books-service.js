@@ -130,7 +130,7 @@ const getAllReviews = booksData => {
 * @return {Promise<object>}
 */
 const createBook = booksData => {
-    return async (title, description, author, genre, year, status) => {
+    return async (title, description, author, genre, year, status, cover) => {
         const foundBook = await booksData.findBook(title, author);
 
         if (foundBook.length !== 0) {
@@ -140,7 +140,7 @@ const createBook = booksData => {
             };
         }
 
-        const _ = await booksData.insertBook(title, author, description, genre, year, status);
+        const _ = await booksData.insertBook(title, author, description, genre, year, status, cover);
 
         return { error: null, book: { message: 'Book was successfully added to library!' } };
     };
