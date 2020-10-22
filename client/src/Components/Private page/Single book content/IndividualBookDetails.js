@@ -6,12 +6,13 @@ import { MDBBtn } from 'mdbreact';
 
 const IndividualBookDetails = ({ bookData }) => {
     const bookId = bookData.id;
-    const userId = '1'; //TO EDIT!!!!!!!!!!!!!!!!!!
-
-    const borrowBoook = async (bookId, userId) => {
+ 
+    const borrowBoook = async () => {
+       
         const ids = {
             method: 'PUT',
             headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
                 'Content-Type': 'application/json'
             },
         };

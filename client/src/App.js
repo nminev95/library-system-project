@@ -27,8 +27,8 @@ function App() {
             <Route path='/admin' component={AdminRoutes}/>
           </Switch>
         </div>
-      </Router>
        <Footer />
+      </Router>
     </>
   );
 }

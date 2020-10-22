@@ -320,8 +320,8 @@ const createReview = booksData => {
 * @return {Promise<object>}
 */
 const borrowABook = booksData => {
-    return async (bookID, userID) => {
-
+    return async (userID, bookID) => {
+        
         const book = await booksData.getById(+bookID);
 
         if (book.length === 0) {
@@ -331,6 +331,7 @@ const borrowABook = booksData => {
             };
         }
         const bookStatus = (book[0].Status);
+        
 
         if (bookStatus === 'Unlisted' || bookStatus === 'Borrowed') {
             return {

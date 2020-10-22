@@ -163,14 +163,14 @@ booksController
         })
     //borrow a book
     .put('/:id',
-        // authMiddleware,
-        // roleMiddleware(['admin', 'user']),
-        // validateBanStatusMiddleware(),
+        authMiddleware,
+        roleMiddleware(['admin', 'user']),
+        validateBanStatusMiddleware(),
         async (req, res) => {
-            const id = 4; /////////////////////////TO EDITTTTTTTTTTTTTTTTTT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            const user_Id = 1; ////////TO EDIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+            const id = req.params.id;
+            const user_Id = req.user.id;
 
-            const { error } = await booksService.borrowABook(booksData)(+id, +user_Id);
+            const { error } = await booksService.borrowABook(booksData)(+user_Id, +id);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'Book not found!' });

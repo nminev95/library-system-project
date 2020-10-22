@@ -25,6 +25,8 @@ const LoginForm = () => {
       const json = await data.json()
       if (json.message) {
         alert(json.message)
+      } else {
+        localStorage.setItem("token", json.token);
       }
     } catch (e) {
       console.log(e.message)

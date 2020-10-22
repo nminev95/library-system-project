@@ -36,3 +36,12 @@ color: rgb(145, 138, 129);
     background:linear-gradient(to bottom,   #f5f2f0  20%, #c0bebc 100%);
     
 }
+#button-check, #button-edit, #button-trash {
+    opacity: 0.5;
+    
+}
+
+#button-check:hover, #button-edit:hover, #button-trash:hover {
+    opacity: 1;
+}
+ 

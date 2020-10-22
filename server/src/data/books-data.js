@@ -322,7 +322,7 @@ const pushReview = async (content, id, userId) => {
 * @param {number}  id - The unique book number.
 * @returns {Promise<object>}
 */
-const updateBookStatusToBorrowed = async (user_id, book_id) => {
+const updateBookStatusToBorrowed = async ( user_id, book_id) => {
     const sql = `
         UPDATE books SET
           borrowedStatus_Id = (SELECT status_Id FROM status WHERE type = 'Borrowed'),
