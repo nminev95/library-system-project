@@ -19,7 +19,7 @@ const NavBar = () => {
       }
 
     return (
-        <Router>
+        // <Router>
         <MDBNavbar color="grey darken-3" dark expand="md">
         <MDBNavbarBrand>
           <strong className="white-text">ReadMe</strong>
@@ -28,10 +28,10 @@ const NavBar = () => {
         <MDBCollapse id="navbarCollapse3" isOpen={state} navbar>
           <MDBNavbarNav left>
             <MDBNavItem>
-              <MDBNavLink to="#!" className="font-weight-bolder">Home</MDBNavLink>
+              <MDBNavLink to="/home" className="font-weight-bolder">Home</MDBNavLink>
             </MDBNavItem>
             <MDBNavItem >
-              <MDBNavLink to="#!" className="font-weight-bolder">All books</MDBNavLink>
+              <MDBNavLink to="/books" className="font-weight-bolder">All books</MDBNavLink>
             </MDBNavItem>
           </MDBNavbarNav>
           <MDBNavbarNav right>
@@ -57,7 +57,7 @@ const NavBar = () => {
           </MDBNavbarNav>
         </MDBCollapse>
       </MDBNavbar>
-       </Router>
+      //  </Router>
     )
 }
 

@@ -22,12 +22,12 @@ const Reviews = ({ bookReviewsData }) => {
             <div id="container-reviews" className="container my-5 z-depth-1" >
 
                 <section className="dark-grey-text">
-                    <h4 className="p-3" > Reviews </h4>
+                    <h4 className="p-3 white-text" > Reviews </h4>
                     <MDBCol className="reviewRow">
                         {bookReviewsData.map((review) => <IndividualBookReviewsDisplay   author={review.Author} review={review.Review} likes={review.Likes} dislikes={review.Dislikes} key={review.review_id} />)}
                     </MDBCol>
                     <MDBCol className="p-2">
-                        <MDBInput type="textarea" label="Leave your review here..." rows="2" />
+                        <MDBInput className="white-text" type="textarea" label="Leave your review here..." rows="2" />
                     </MDBCol>
                 </section>
             </div>
