@@ -9,6 +9,7 @@ import AdminDashboard from './AdminDashboard/AdminDashboard'
 import BanUser from './AdminUsers/BanUserPage/BanUserPage'
 import './AdminRoutes.css';
 import EditBookPage from './AdminBooks/EditBookPage/EditBookPage';
+import EditReviewPage from './AdminReviews/EditReviewPage/EditReviewPage'
 
 const AdminRoutes = () => {
 
@@ -30,6 +31,7 @@ const AdminRoutes = () => {
                 <Route exact path='/admin/reviews' component={AdminReviews} />
                 <Route path='/admin/users/ban' component={BanUser} />
                 <Route path='/admin/books/edit' component={EditBookPage} />
+                <Route path='/admin/reviews/edit' component={EditReviewPage} />
             </div>
         </div>
     )

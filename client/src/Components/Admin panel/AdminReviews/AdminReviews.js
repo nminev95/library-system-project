@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { MDBBtn, MDBContainer, MDBDataTableV5 } from 'mdbreact';
 import Loader from '../../Utils/Loader/Loader';
-import './AdminReviews.css'
+import './AdminReviews.css';
+import { Link } from 'react-router-dom';
 
 const AdminReviews = () => {
     const [bookId, setBookId] = useState('');
@@ -57,9 +58,19 @@ const AdminReviews = () => {
             .then(res => res.json())
             .then(data => {
                 data.map((record) => {
-                    record.Button1 = <MDBBtn color="default" rounded size="sm">Edit</MDBBtn>
+                    record.Button1 =
+                    <Link to={{
+                        pathname: "reviews/edit",
+                        state: {
+                            id: record.id,
+                            content: record.Review,
+                            bookId: record.Book
+                        }
+                    
+                    }}>
+                     <MDBBtn color="default" rounded size="sm">Edit</MDBBtn>
+                    </Link >
                     record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
-
                         deleteReview(+(record.Book), +(record.id))
                     }}>Delete</MDBBtn>
                 })
