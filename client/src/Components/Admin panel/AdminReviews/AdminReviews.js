@@ -78,7 +78,7 @@ const AdminReviews = () => {
             })
             .then((data) => setRecords(data))
             .finally(() => setLoading(false))
-    }, []);
+    }, [records.length]);
 
     const deleteReview = (bookId, id) => {
         const settings = {

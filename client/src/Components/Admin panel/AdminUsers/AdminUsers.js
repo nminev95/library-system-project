@@ -75,7 +75,7 @@ const AdminUsers = () => {
             })
             .then(result => setRecords(result))
             .finally(setLoading(false));
-        }, []);
+        }, [records.length]);
 
     const deleteUser = (id) => {
         const settings = {
