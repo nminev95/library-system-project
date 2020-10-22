@@ -59,7 +59,7 @@ export const updateBookSchema = {
             return null;
         }
 
-        if (typeof value !== 'string' || value.trim().length > 1) {
+        if (typeof value !== 'string' || value.trim().length > 10) {
             return 'Status should be a valid value';
         }
 

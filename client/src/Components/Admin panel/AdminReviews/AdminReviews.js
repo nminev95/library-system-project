@@ -59,11 +59,11 @@ const AdminReviews = () => {
                 data.map((record) => {
                     record.Button1 = <MDBBtn color="default" rounded size="sm">Edit</MDBBtn>
                     record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
-            
+
                         deleteReview(+(record.Book), +(record.id))
                     }}>Delete</MDBBtn>
                 })
-                return data;   
+                return data;
             })
             .then((data) => setRecords(data))
             .finally(() => setLoading(false))
