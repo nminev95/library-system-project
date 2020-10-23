@@ -96,7 +96,7 @@ const AdminBooks = () => {
             })
             .then(result => setRecords(result))
             .finally(setLoading(false));
-    }, [records.length]);
+    }, []);
 
     const deleteBook = (id) => {
         const settings = {
@@ -108,7 +108,8 @@ const AdminBooks = () => {
         fetch(`http://localhost:4000/admin/books/${id}`, settings)
             .then((response) => response.json())
             .then(() => {
-                const filtered = records.filter((book) => book.id !== id);
+                const filtered = records.filter((book) => +(book.id) !== +id);
+                console.log(filtered)
                 setRecords(filtered)
             })
     }

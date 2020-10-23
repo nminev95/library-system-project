@@ -18,8 +18,9 @@ const getAllBooks = booksData => {
             const title = query.title || null;
             const author = query.author || null;
             const genre = query.genre || null;
+            const search = query.search || null;
 
-            const books = await booksData.searchQuery(title, author, genre);
+            const books = await booksData.searchQuery(title, author, genre, search);
             const res = await mapReviewsAndRating(books);
 
             if (books.length === 0) {
