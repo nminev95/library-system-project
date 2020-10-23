@@ -24,6 +24,20 @@ booksController
                 res.status(200).send(books);
             }
         })
+
+    .get('/user/books',
+        authMiddleware,
+        roleMiddleware(['admin', 'user']),
+        async (req, res) => {
+            const user_Id = req.user.id;
+            const { error, books } = await booksService.getBorrowedBooks(booksData)(user_Id);
+
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'No books found!' });
+            } else {
+                res.status(200).send(books);
+            }
+        })
     .get('/pages/:id',
         // authMiddleware,
         // roleMiddleware(['admin', 'user']),

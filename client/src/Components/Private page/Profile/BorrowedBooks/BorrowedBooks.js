@@ -1,12 +1,13 @@
 import React from 'react';
+import {MDBRow} from 'mdbreact';
+import SingleBorrowedBook from './SingleBorrowedBook';
 
-const BorrowedBooks = ({  }) => {
-
+const BorrowedBooks = (props) => {
     return (
-
-        <div id="borrowed-books ClassName="pt-2 pb-2>
-            
-        </div>
+        <MDBRow className="bookRow">
+        {props.books.map((book) => <SingleBorrowedBook book={book} key={book.id} />)}
+    </MDBRow>
+       
     )
 };
 

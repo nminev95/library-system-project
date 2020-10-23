@@ -87,6 +87,14 @@ const getById = async (value) => {
     return await pool.query(sql, [value, value]);
 };
 
+const borrowedByUser = async(user_Id) =>{
+    const sql = `
+    SELECT *
+    FROM books
+    WHERE borrower_Id = ?`;
+    return await pool.query(sql, [user_Id]);
+};
+
 const getPageResult = async (offset) => {
     const sql = `
             SELECT
@@ -780,5 +788,6 @@ export default {
     searchQuery,
     getAllBasicInfo,
     getPageResult,
-    getReviewsInDatabase
+    getReviewsInDatabase,
+    borrowedByUser,
 };

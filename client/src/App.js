@@ -8,9 +8,9 @@ import RegisterForm from './Components/Public page/RegisterForm/RegisterForm';
 import HomepageLogged from './Components/Private page/Homepage/HomepageLogged';
 import Header from './Components/Private page/Header/Header';
 import Footer from './Components/Private page/Footer/Footer';
-import IndividualBook from './Components/Private page/Single book content/IndividualBook';
+import IndividualBook from './Components/Private page/SingleBookContent/IndividualBook';
 import AdminRoutes from './Components/Admin panel/AdminRoutes';
-import BorrowedBooks from './Components/Private page/Profile/BorrowedBooks/BorrowedBooks';
+import ProfileBorrowedBooks from './Components/Private page/Profile/BorrowedBooks/ProfileBorrowedBooks';
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
             <Route path='/home' exact component={HomePage} />
             <Route path='/auth/signin' component={LoginForm} />
             <Route exact path='/users' exact component={RegisterForm} />
-            <Route exact path='/profile/borrowed' component={BorrowedBooks} />
+            <Route exact path='/profile/borrowed' component={ProfileBorrowedBooks} />
             <Route exact path='/books' exact component={HomepageLogged} />
             <Route path='/books/:id' exact component={IndividualBook} />          
             <Route path='/admin' component={AdminRoutes}/>

@@ -118,6 +118,20 @@ const getAllReviews = booksData => {
     };
 };
 
+const getBorrowedBooks = booksData => {
+    return async (user_Id) => {
+        const books = await booksData.borrowedByUser(user_Id);
+
+        if (books.length === 0) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                books: null,
+            };
+        }
+        return { error: null, books: books };
+    };
+};
+
 /**
 * Creates a new book record in the database.
 * @param module books data SQL queries module.
@@ -682,4 +696,5 @@ export default {
     deleteBook,
     voteReview,
     getAllReviews,
+    getBorrowedBooks,
 };
