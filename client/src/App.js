@@ -12,10 +12,12 @@ import IndividualBook from './Components/Private page/SingleBookContent/Individu
 import AdminRoutes from './Components/Admin panel/AdminRoutes';
 import { SearchContext } from './Components/Private page/Context/SearchContext';
 import ProfileBorrowedBooks from './Components/Private page/Profile/BorrowedBooks/ProfileBorrowedBooks';
+import SearchResultPage from './Components/Private page/SearchResultPage/SearchResultPage';
 
 function App() {
 
   const [currentSearch, setCurrentSearch] = useState('');
+  const searchPath = `/search?query=${currentSearch}`
 
   return (
     <>
@@ -26,19 +28,19 @@ function App() {
         <div className="body">
           <Switch>
             <Redirect from="/" exact to="/home" />
+            <Route exact path='/books' exact component={HomepageLogged} />
             <Route path='/home' exact component={HomePage} />
             <Route path='/auth/signin' component={LoginForm} />
-            <SearchContext.Provider value={{ search: currentSearch, setSearch: setCurrentSearch }}>
-              <Route exact path='/books' exact component={HomepageLogged} />
-            </SearchContext.Provider>
-            <Route path='/books/:id' exact component={IndividualBook} />
+            <Route exact path='/books/:id' exact component={IndividualBook} />
             <Route path='/admin' component={AdminRoutes} />
             <Route exact path='/users' exact component={RegisterForm} />
             <Route exact path='/profile/borrowed' component={ProfileBorrowedBooks} />
-            <Route exact path='/books' exact component={HomepageLogged} />
+            <SearchContext.Provider value={{ search: currentSearch, setSearch: setCurrentSearch }}>
+            <Route exact path='/search' component={SearchResultPage}/>
+            </SearchContext.Provider>
           </Switch>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </Router>
     </>
   );

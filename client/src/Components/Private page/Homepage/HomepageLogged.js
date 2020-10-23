@@ -28,15 +28,10 @@ const HomepageLogged = (props) => {
     }, []);
 
     useEffect(() => {
-        if (!search) {
-            fetch(`http://localhost:4000/books`)
-                .then(res => res.json())
-                .then(data => setBooks(data))
-        } else
-            fetch(`http://localhost:4000/books?search=${search}`)
-                .then(res => res.json())
-                .then(data => setBooks(data))
-    }, [search]);
+        fetch(`http://localhost:4000/books`)
+            .then(res => res.json())
+            .then(data => setBooks(data))
+    }, []);
 
     const paginate = (pageNum) => setPage(pageNum);
 
