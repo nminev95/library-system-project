@@ -48,7 +48,7 @@ const NavBar = () => {
                 </MDBDropdownToggle>
                 <MDBDropdownMenu className="drop-container right basic">
                   <MDBDropdownItem href="#!">Profile</MDBDropdownItem>
-                  <MDBDropdownItem href="#!">Borrowed books</MDBDropdownItem>
+                  <MDBDropdownItem href="/profile/borrowed">Borrowed books</MDBDropdownItem>
                   <MDBDropdownItem href="#!">Settings</MDBDropdownItem>
                   <MDBDropdownItem href="#!">Logout</MDBDropdownItem>
                 </MDBDropdownMenu>
