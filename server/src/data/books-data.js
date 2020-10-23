@@ -252,7 +252,7 @@ const searchBy = async (column, value) => {
 
 };
 
-const searchQuery = async (title, author, genre) => {
+const searchQuery = async (title, author, genre, search) => {
     const sql = `
         SELECT
             b.book_Id AS id,
@@ -291,11 +291,13 @@ const searchQuery = async (title, author, genre) => {
             (? IS NULL OR author LIKE '%${author}%')
         AND 
             (? IS NULL OR genre LIKE '%${genre}%')
+        AND 
+            (? IS NULL OR title LIKE '%${search}%')
         GROUP BY 
             IFNULL(r.review_Id, b.description);
         `;
 
-    return await pool.query(sql, [title, author, genre]);
+    return await pool.query(sql, [title, author, genre, search]);
 };
 /** 
 * Creates a new book review in the database. 
