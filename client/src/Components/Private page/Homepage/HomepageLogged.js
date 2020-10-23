@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './HomepageLogged';
-import Header from '../Header/Header';
 import Books from './AllBooks/Books';
 import RandomBookRow from './RandomBook/RandomBookRow';
 import Pagination from './Pagination/Pagination';

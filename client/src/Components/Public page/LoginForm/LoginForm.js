@@ -12,7 +12,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
 
   const sendUserData = async (userObject) => {
-    console.log(userObject)
+  
     const settings = {
       method: 'POST',
       headers: {

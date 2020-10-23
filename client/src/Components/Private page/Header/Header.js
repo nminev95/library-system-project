@@ -42,25 +42,26 @@ const NavBar = () => {
                 onChange={(ev) => setSearch(ev.target.value)}
                 placeholder="Search..."
                 aria-label="Search" />
-            </div>
-          </MDBFormInline>
-          <MDBNavItem className=" profile">
-            <MDBDropdown>
-              <MDBDropdownToggle nav caret >
-                <MDBIcon icon="user" className="d-md-inline  " />
-              </MDBDropdownToggle>
-              <MDBDropdownMenu className="drop-container right basic">
-                <MDBDropdownItem href="#!">Profile</MDBDropdownItem>
-                <MDBDropdownItem href="#!">Borrowed books</MDBDropdownItem>
-                <MDBDropdownItem href="#!">Settings</MDBDropdownItem>
-                <MDBDropdownItem href="#!">Logout</MDBDropdownItem>
-              </MDBDropdownMenu>
-            </MDBDropdown>
-          </MDBNavItem>
-        </MDBNavbarNav>
-      </MDBCollapse>
-    </MDBNavbar>
-  )
+                </div>
+              </MDBFormInline>     
+            <MDBNavItem className=" profile">
+              <MDBDropdown>
+                <MDBDropdownToggle nav caret >
+                  <MDBIcon icon="user" className="d-md-inline  " />
+                </MDBDropdownToggle>
+                <MDBDropdownMenu className="drop-container right basic">
+                  <MDBDropdownItem href="#!">Profile</MDBDropdownItem>
+                  <MDBDropdownItem href="/profile/borrowed">Borrowed books</MDBDropdownItem>
+                  <MDBDropdownItem href="#!">Settings</MDBDropdownItem>
+                  <MDBDropdownItem href="#!">Logout</MDBDropdownItem>
+                </MDBDropdownMenu>
+              </MDBDropdown>
+            </MDBNavItem>
+          </MDBNavbarNav>
+        </MDBCollapse>
+      </MDBNavbar>
+      //  </Router>
+    )
 }
 
 export default NavBar;

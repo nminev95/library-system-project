@@ -29,7 +29,7 @@ usersController
             const updateData = req.body;
             const loggedUser = req.user;
 
-            const { error, user } = await usersService.updateUser(usersData)(+id, updateData, loggedUser);
+            const { error } = await usersService.updateUser(usersData)(+id, updateData, loggedUser);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'User not found!' });

@@ -8,9 +8,10 @@ import RegisterForm from './Components/Public page/RegisterForm/RegisterForm';
 import HomepageLogged from './Components/Private page/Homepage/HomepageLogged';
 import Header from './Components/Private page/Header/Header';
 import Footer from './Components/Private page/Footer/Footer';
-import IndividualBook from './Components/Private page/Single book content/IndividualBook';
+import IndividualBook from './Components/Private page/SingleBookContent/IndividualBook';
 import AdminRoutes from './Components/Admin panel/AdminRoutes';
 import { SearchContext } from './Components/Private page/Context/SearchContext';
+import ProfileBorrowedBooks from './Components/Private page/Profile/BorrowedBooks/ProfileBorrowedBooks';
 
 function App() {
 
@@ -27,12 +28,14 @@ function App() {
             <Redirect from="/" exact to="/home" />
             <Route path='/home' exact component={HomePage} />
             <Route path='/auth/signin' component={LoginForm} />
-            <Route exact path='/users' component={RegisterForm} />
             <SearchContext.Provider value={{ search: currentSearch, setSearch: setCurrentSearch }}>
               <Route exact path='/books' exact component={HomepageLogged} />
             </SearchContext.Provider>
             <Route path='/books/:id' exact component={IndividualBook} />
             <Route path='/admin' component={AdminRoutes} />
+            <Route exact path='/users' exact component={RegisterForm} />
+            <Route exact path='/profile/borrowed' component={ProfileBorrowedBooks} />
+            <Route exact path='/books' exact component={HomepageLogged} />
           </Switch>
         </div>
         <Footer />
