@@ -3,6 +3,16 @@ import { MDBRow } from 'mdbreact';
 import SingleBorrowedBook from './SingleBorrowedBook';
 
 const BorrowedBooks = (props) => {
+    console.log(props);
+  if(props.books.message) {
+      return (
+        <div>
+            <p5 className = "text-center">Oops, you have no borrowed books! </p5>
+           
+        </div>
+
+    )
+  }
     return (
         <div>
             <p5 className = "text-center">Your borrowed books...</p5>
