@@ -6,7 +6,10 @@
 .font-weight-bold {
     font-size: 20px;
 }
+.border-2{
+    background:linear-gradient(to bottom, rgb(117, 141, 136) 20%, rgb(154, 236, 229) 100%);
 
+}
 #bookImageContainer {
     height: 450px;
     width:240px;
@@ -14,13 +17,13 @@
 }
 
 #main-button{
-    box-shadow: 0px 4px 6px 0px #818485;
+    /* box-shadow: 0px 4px 6px 0px #818485; */
     background:linear-gradient(to bottom, #f0e6da 20%, #969b9b 100%);
     background-color:#f0eace;
     display:inline-block;
-    color:black;
+    /* color:black; */
     border: none;
-    font-size:10px;
+    font-size:8px;
    
     
 }

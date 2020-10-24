@@ -1,16 +1,20 @@
 import React from 'react';
-import './IndividualBook.css';
+import {useState} from 'react'
+;import './IndividualBook.css';
 import 'mdbreact/dist/css/mdb.css'
 import { MDBBtn } from 'mdbreact';
 
 
 const IndividualBookDetails = ({ bookData }) => {
+    const [borrowMode, setModeBorrow] = useState(true);
+    const toggleBorrowMode = () => {
+        setModeBorrow((prevState) => !prevState);
+    };
 
-    
     const bookId = bookData.id;
- 
+
     const borrowBoook = async () => {
-       
+
         const ids = {
             method: 'PUT',
             headers: {
@@ -20,6 +24,7 @@ const IndividualBookDetails = ({ bookData }) => {
         };
         try {
             const data = await fetch(`http://localhost:4000/books/${bookId}`, ids);
+            toggleBorrowMode();
         } catch (error) {
             return error.message;
         }
@@ -28,7 +33,7 @@ const IndividualBookDetails = ({ bookData }) => {
     //WHERE DOES IT SHOULD BE?
 
     const returnBoook = async () => {
-       
+
         const settings = {
             method: 'POST',
             headers: {
@@ -38,6 +43,7 @@ const IndividualBookDetails = ({ bookData }) => {
         };
         try {
             const data = await fetch(`http://localhost:4000/books/${bookId}`, settings);
+            toggleBorrowMode();
         } catch (error) {
             return error.message;
         }
@@ -63,14 +69,14 @@ const IndividualBookDetails = ({ bookData }) => {
                         <div className="p-4">
                             <p className="text-center text-justify" >{bookData.Description}</p>
                         </div>
-                        
+
                         <div id="buttons" className="text-center p-5">
-                         { bookData.Status ==="Free" ?
+                            {borrowMode && bookData.Status === "Free" ?
                                 <MDBBtn id="main-button" onClick={borrowBoook}> Borrow </MDBBtn> :
-                                <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>         
-                        }
+                                <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>
+                            }
                         </div>
-                     
+
                     </div>
                 </div>
 
