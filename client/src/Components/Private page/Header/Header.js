@@ -4,7 +4,7 @@ import './Header.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Link, useHistory } from 'react-router-dom';
 import { MDBFormInline, MDBNavbar, MDBNavbarBrand, MDBNavbarToggler, MDBIcon, MDBBtn, MDBCollapse, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from 'mdbreact';
 // import UserDropdown from './UserDropdown/UserDropdown';
 // import image from './Logo.png';
@@ -15,9 +15,16 @@ const NavBar = () => {
   const { isLoggedIn, setLoginState } = useContext(AuthContext);
   const { search, setSearch } = useContext(SearchContext);
   const [state, setState] = useState(false)
-
+  const history = useHistory();
+  
   const toggleCollapse = () => {
     setState((prevState) => !prevState);
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setLoginState(false);
+    history.push('/')
   }
 
   const url = `/search?query=${search}`
@@ -71,7 +78,7 @@ const NavBar = () => {
                     </Link>
                     <MDBDropdownItem href="/profile/borrowed">Borrowed books</MDBDropdownItem>
                     <MDBDropdownItem href="#!">Settings</MDBDropdownItem>
-                    <MDBDropdownItem href="#!">Logout</MDBDropdownItem>
+                    <MDBDropdownItem href="#!" onClick={() => handleLogout()}>Logout</MDBDropdownItem>
                   </MDBDropdownMenu>
                 </MDBDropdown>
               </MDBNavItem>
@@ -91,9 +98,9 @@ const NavBar = () => {
                 </MDBNavItem>
               </MDBNavbarNav>
               <MDBNavbarNav right>
-              <MDBNavItem >
+                <MDBNavItem >
                   <MDBNavLink to="/auth/signin" className="font-weight-bolder">Sign in</MDBNavLink>
-                </MDBNavItem> 
+                </MDBNavItem>
                 <MDBNavItem >
                   <MDBNavLink to="/users" className="font-weight-bolder">Register</MDBNavLink>
                 </MDBNavItem>

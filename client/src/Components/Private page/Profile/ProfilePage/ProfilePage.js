@@ -2,10 +2,11 @@ import React from 'react';
 
 const ProfilePage = () => {
     return (
-        <div>
-            
-        </div>
-    )
+        <>
+        <h1>Your profile</h1>
+        
+        </>
+   )
 }
 
 export default ProfilePage;

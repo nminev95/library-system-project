@@ -20,7 +20,6 @@ function App() {
 
   const [currentSearch, setCurrentSearch] = useState('');
   const [authValue, setAuthValue] = useState(false);
-  const searchPath = `/search?query=${currentSearch}`
 
   return (
     <>
