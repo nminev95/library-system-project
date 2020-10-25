@@ -27,9 +27,28 @@ const IndividualBook = props => {
             .catch((error) => (setError(console.error.message)));
     }, []);
 
-
-
-
+  
+    const updateReview = (review_id, newContent) => {
+        fetch(`http://localhost:4000/books/${id}/reviews/${review_id}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newContent),
+        })
+          .then((res) => res.json())
+          .then((updatedReview) => {
+            const index = bookReviewsData.findIndex((review) => review.review_id === updatedReview.review_id);
+            const copy = [...bookReviewsData];
+            copy[index] = updatedReview;
+    
+            setBookReviewsData(copy);
+          })
+          .catch((error) => (setError(console.error.message)));
+      };
+    
+    
     const removeReview = (review_id) => {
 
         fetch(`http://localhost:4000/books/${id}/reviews/${review_id}`,
@@ -45,6 +64,8 @@ const IndividualBook = props => {
                 setBookReviewsData((reviews) => reviews.filter((review) => review.review_id !== review_id)))
             .catch((error) => (setError(console.error.message)));
     };
+
+
 
     const Reviews = Data => {
         if (Data.message) {
@@ -68,9 +89,10 @@ const IndividualBook = props => {
                         <MDBCol className="reviewRow">
                             {Data.map((review) => <IndividualBookReviewsDisplay 
                             author={review.Author} 
-                            review={review.Review} 
+                            content={review.Review} 
                             likes={review.Likes} 
                             dislikes={review.Dislikes} 
+                            update={(updateData) => updateReview(review.review_id, updateData)}
                             remove={()=> removeReview(review.review_id)}
                             key={review.review_id} />)}
                         </MDBCol>

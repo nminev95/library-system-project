@@ -415,12 +415,8 @@ const returnABook = booksData => {
 * @return {Promise<object>}
 */
 const updateReview = booksData => {
-    return async (req) => {
-        const newReview = req.body.content;
-        const result = req.originalUrl.match(/[0-9]+/g);
-        const reviewId = result[1];
-        const userId = req.body.id;
-        const role = req.body.role;
+    return async (reviewId, content, userId, role) => {
+      
 
         if (role === 'user') {
             const foundReview = await booksData.getReview(reviewId);
@@ -441,7 +437,7 @@ const updateReview = booksData => {
                 };
             }
 
-            const oldContent = await booksData.getReviewByContent(newReview, reviewId);
+            const oldContent = await booksData.getReviewByContent(content, reviewId);
 
             if (oldContent.length !== 0) {
                 return {
@@ -449,7 +445,7 @@ const updateReview = booksData => {
                     review: null,
                 };
             }
-            const _ = await booksData.updateReview(newReview, reviewId);
+            const _ = await booksData.updateReview(content, reviewId);
 
             return { error: null, review: { message: 'Review was successfully updated!' } };
         } else {
@@ -462,12 +458,12 @@ const updateReview = booksData => {
                 };
             }
 
-            const _ = await booksData.updateReview(newReview, reviewId);
+            const _ = await booksData.updateReview(content, reviewId);
 
             return { error: null, review: { message: 'Review was successfully updated!' } };
         }
+        };
     };
-};
 
 /**
 * Deletes review from the database.

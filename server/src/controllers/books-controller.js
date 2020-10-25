@@ -116,10 +116,9 @@ booksController
         createValidator(updateReviewSchema),
         async (req, res) => {
             const { content } = req.body;
-            const { id } = req.params;
-            const userId = req.user.id;
+            const { id } = req.params;          
+            const userId = req.user.id;       
             const role = req.user.role;
-
             const { error, review } = await booksService.updateReview(booksData)(+id, content, +userId, role);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
