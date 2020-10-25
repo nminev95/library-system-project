@@ -6,7 +6,7 @@ import { MDBRow, MDBContainer, MDBCol, MDBBtn, MDBIcon } from 'mdbreact';
 
 
 
-const IndividualBookReviewsDisplay = ({ review, likes, dislikes, author}) => {
+const IndividualBookReviewsDisplay = ({ review, likes, dislikes, author, remove}) => {
 
     return (
 
@@ -21,7 +21,7 @@ const IndividualBookReviewsDisplay = ({ review, likes, dislikes, author}) => {
                         <MDBBtn  id="button-edit" tag="a" size="sm" color="grey">
                             <MDBIcon icon="pencil-alt" />
                         </MDBBtn>
-                        <MDBBtn id="button-trash" tag="a" size="sm" color="grey">
+                        <MDBBtn id="button-trash" tag="a" size="sm" color="grey" onClick={remove}>
                             <MDBIcon icon="trash-alt" />
                         </MDBBtn>
                     </MDBCol>
