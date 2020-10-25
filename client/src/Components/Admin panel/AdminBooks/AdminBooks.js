@@ -96,7 +96,7 @@ const AdminBooks = () => {
             })
             .then(result => setRecords(result))
             .finally(setLoading(false));
-    }, []);
+    }, [records.length]);
 
     const deleteBook = (id) => {
         const settings = {

@@ -13,15 +13,19 @@ import AdminRoutes from './Components/Admin panel/AdminRoutes';
 import { SearchContext } from './Components/Private page/Context/SearchContext';
 import ProfileBorrowedBooks from './Components/Private page/Profile/BorrowedBooks/ProfileBorrowedBooks';
 import SearchResultPage from './Components/Private page/SearchResultPage/SearchResultPage';
+import ProfilePage from './Components/Private page/Profile/ProfilePage/ProfilePage'
+import { AuthContext } from './Components/Private page/Context/AuthContext';
 
 function App() {
 
   const [currentSearch, setCurrentSearch] = useState('');
+  const [authValue, setAuthValue] = useState(false);
   const searchPath = `/search?query=${currentSearch}`
 
   return (
     <>
       <Router>
+        <AuthContext.Provider value= {{ isLoggedIn: authValue, setLoginState: setAuthValue}}>
         <SearchContext.Provider value={{ search: currentSearch, setSearch: setCurrentSearch }}>
           <Header />
         </SearchContext.Provider>
@@ -35,13 +39,16 @@ function App() {
             <Route path='/admin' component={AdminRoutes} />
             <Route exact path='/users' exact component={RegisterForm} />
             <Route exact path='/profile/borrowed' component={ProfileBorrowedBooks} />
+            <Route path="/profile" component={ProfilePage} />
             <SearchContext.Provider value={{ search: currentSearch, setSearch: setCurrentSearch }}>
             <Route exact path='/search' component={SearchResultPage}/>
             </SearchContext.Provider>
           </Switch>
         </div>
-        {/* <Footer /> */}
+        <Footer />
+      </AuthContext.Provider>
       </Router>
+
     </>
   );
 }
