@@ -6,7 +6,7 @@ import { MDBRow, MDBContainer, MDBCol, MDBBtn, MDBIcon } from 'mdbreact';
 
 
 
-const IndividualBookReviewsDisplay = ({ review, likes, dislikes, author }) => {
+const IndividualBookReviewsDisplay = ({ review, likes, dislikes, author}) => {
 
     return (
 

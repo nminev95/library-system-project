@@ -5,6 +5,7 @@ import 'mdbreact/dist/css/mdb.css'
 import { MDBBtn } from 'mdbreact';
 
 
+
 const IndividualBookDetails = ({ bookData }) => {
     const [borrowMode, setModeBorrow] = useState(true);
     const toggleBorrowMode = () => {

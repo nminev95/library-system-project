@@ -3,8 +3,8 @@ import IndividualBookReviewsDisplay from './IndividualBookReviewsDisplay';
 import { MDBCol, MDBInput } from 'mdbreact';
 import './IndividualBook.css';
 
-const Reviews = ({ bookReviewsData }) => {
-    
+const Reviews = ({ bookReviewsData}) => {
+   
     if (bookReviewsData.message) {
        
         return (
