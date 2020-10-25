@@ -4,111 +4,113 @@ import './Header.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Link, useHistory } from 'react-router-dom';
 import { MDBFormInline, MDBNavbar, MDBNavbarBrand, MDBNavbarToggler, MDBIcon, MDBBtn, MDBCollapse, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from 'mdbreact';
 // import UserDropdown from './UserDropdown/UserDropdown';
 // import image from './Logo.png';
 import { SearchContext } from '../Context/SearchContext';
+import { AuthContext } from '../Context/AuthContext';
 
 const NavBar = () => {
+  const { isLoggedIn, setLoginState } = useContext(AuthContext);
   const { search, setSearch } = useContext(SearchContext);
   const [state, setState] = useState(false)
-
+  const history = useHistory();
+  
   const toggleCollapse = () => {
     setState((prevState) => !prevState);
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setLoginState(false);
+    history.push('/')
+  }
+
   const url = `/search?query=${search}`
-  
+
   return (
-    <MDBNavbar color="grey darken-3" dark expand="md">
-      <MDBNavbarBrand>
-        <strong className="white-text">ReadMe</strong>
-      </MDBNavbarBrand>
-      <MDBNavbarToggler onClick={toggleCollapse} />
-      <MDBCollapse id="navbarCollapse3" isOpen={state} navbar>
-        <MDBNavbarNav left>
-          <MDBNavItem >
-            <MDBNavLink to="/home" className="font-weight-bolder">Home</MDBNavLink>
-          </MDBNavItem>
-          <MDBNavItem  >
-            <MDBNavLink to="/books" className="font-weight-bolder">All books</MDBNavLink>
-          </MDBNavItem>
-        </MDBNavbarNav>
-        <MDBNavbarNav right>
-          <MDBFormInline>
-            <input
-              className="form-control mr-sm-2"
-              type="text"
-              placeholder="Search"
-              aria-label="Search"
-              value={search}
-              onChange={(ev) => setSearch(ev.target.value)}
-              onClick={() => setSearch('')}
-            />
-            <Link to={url}>
-              <MDBBtn gradient="aqua"
-                rounded size="sm"
-                type="submit"
-                className="mr-auto"
-                ><MDBIcon icon="search"></MDBIcon>
+    <>
+      {isLoggedIn ? (
+        <MDBNavbar color="grey darken-3" dark expand="md">
+          <MDBNavbarBrand>
+            <strong className="white-text">ReadMe</strong>
+          </MDBNavbarBrand>
+          <MDBNavbarToggler onClick={toggleCollapse} />
+          <MDBCollapse id="navbarCollapse3" isOpen={state} navbar>
+            <MDBNavbarNav left>
+              <MDBNavItem >
+                <MDBNavLink to="/home" className="font-weight-bolder">Home</MDBNavLink>
+              </MDBNavItem>
+              <MDBNavItem  >
+                <MDBNavLink to="/books" className="font-weight-bolder">All books</MDBNavLink>
+              </MDBNavItem>
+            </MDBNavbarNav>
+            <MDBNavbarNav right>
+              <MDBFormInline>
+                <input
+                  className="form-control mr-sm-2"
+                  type="text"
+                  placeholder="Search"
+                  aria-label="Search"
+                  value={search}
+                  onChange={(ev) => setSearch(ev.target.value)}
+                  onClick={() => setSearch('')}
+                />
+                <Link to={url}>
+                  <MDBBtn gradient="aqua"
+                    rounded size="sm"
+                    type="submit"
+                    className="mr-auto"
+                  ><MDBIcon icon="search"></MDBIcon>
               Search
               </MDBBtn>
-            </Link>
-          </MDBFormInline>
-          <MDBNavItem className=" profile">
-            <MDBDropdown>
-              <MDBDropdownToggle nav caret >
-                <MDBIcon icon="user" className="d-md-inline  " />
-              </MDBDropdownToggle>
-              <MDBDropdownMenu className="drop-container right basic">
-                <MDBDropdownItem href="#!">Profile</MDBDropdownItem>
-                <MDBDropdownItem href="/profile/borrowed">Borrowed books</MDBDropdownItem>
-                <MDBDropdownItem href="#!">Settings</MDBDropdownItem>
-                <MDBDropdownItem href="#!">Logout</MDBDropdownItem>
-              </MDBDropdownMenu>
-            </MDBDropdown>
-          </MDBNavItem>
-        </MDBNavbarNav>
-      </MDBCollapse>
-    </MDBNavbar>
-    //  </Router>
+                </Link>
+              </MDBFormInline>
+              <MDBNavItem className="profile">
+                <MDBDropdown>
+                  <MDBDropdownToggle nav caret >
+                    <MDBIcon icon="user" className="d-md-inline  " />
+                  </MDBDropdownToggle>
+                  <MDBDropdownMenu className="drop-container right basic">
+                    <Link to="/profile">
+                      <MDBDropdownItem href="#!">Profile</MDBDropdownItem>
+                    </Link>
+                    <MDBDropdownItem href="/profile/borrowed">Borrowed books</MDBDropdownItem>
+                    <MDBDropdownItem href="#!">Settings</MDBDropdownItem>
+                    <MDBDropdownItem href="#!" onClick={() => handleLogout()}>Logout</MDBDropdownItem>
+                  </MDBDropdownMenu>
+                </MDBDropdown>
+              </MDBNavItem>
+            </MDBNavbarNav>
+          </MDBCollapse>
+        </MDBNavbar>
+      ) : (
+          <MDBNavbar color="grey darken-3" dark expand="md">
+            <MDBNavbarBrand>
+              <strong className="white-text">ReadMe</strong>
+            </MDBNavbarBrand>
+            <MDBNavbarToggler onClick={toggleCollapse} />
+            <MDBCollapse id="navbarCollapse3" isOpen={state} navbar>
+              <MDBNavbarNav left>
+                <MDBNavItem >
+                  <MDBNavLink to="/home" className="font-weight-bolder">Home</MDBNavLink>
+                </MDBNavItem>
+              </MDBNavbarNav>
+              <MDBNavbarNav right>
+                <MDBNavItem >
+                  <MDBNavLink to="/auth/signin" className="font-weight-bolder">Sign in</MDBNavLink>
+                </MDBNavItem>
+                <MDBNavItem >
+                  <MDBNavLink to="/users" className="font-weight-bolder">Register</MDBNavLink>
+                </MDBNavItem>
+              </MDBNavbarNav>
+            </MDBCollapse>
+          </MDBNavbar>
+        )}
+    </>
+
   )
 }
 
 export default NavBar;
-
-
-{/* <div>
-<nav id="nav-bar" className="navbar fixed-top navbar-expand-lg navbar- amber lighten-5 scrolling-navbar ">
-    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon black"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-
-        <img src={image}></img>
-    
-        <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-                <a className="nav-bar-link" href="#"> Home <span className="sr-only">(current)</span></a>
-
-                <a className="nav-bar-link" href="#"> Аll books <span className="sr-only">(current)</span></a>
-            </li>
-
-        </ul>
-
-        <form className="form-inline d-flex justify-content-center md-form form-sm">
-            <input className="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search..."
-                aria-label="Search" />
-            <i class="fas fa-search fa-lg " aria-hidden="true"></i>
-        </form>
-        <ul className="navbar-nav nav-flex-icons">
-            <li className="nav-item">
-                <UserDropdown />
-            </li>
-
-        </ul>
-    </div>
-</nav>
-
-</div> */}

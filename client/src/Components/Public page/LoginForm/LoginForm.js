@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './LoginForm.css';
 import 'mdbreact/dist/css/mdb.css'
 import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBInput, MDBBtn, MDBIcon, MDBModalFooter } from 'mdbreact';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faFacebook } from '@fortawesome/free-brands-svg-icons';
+import { AuthContext } from '../../Private page/Context/AuthContext';
 
 const LoginForm = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { setLoginState } = useContext(AuthContext);
+  const history = useHistory();
 
   const sendUserData = async (userObject) => {
   
@@ -27,6 +30,8 @@ const LoginForm = () => {
         alert(json.message)
       } else {
         localStorage.setItem("token", json.token);
+        setLoginState(true);
+        history.push('/books')
       }
     } catch (e) {
       console.log(e.message)
