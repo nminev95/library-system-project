@@ -12,7 +12,7 @@ const HomePage = () => {
 
     <div className="body">
       <Content />
-      <TextImageRow id="1" icon={books}>
+      {/* <TextImageRow id="1" icon={books}>
         <h1>Huge variety.</h1>
         <p>Many famous and best selling books from all over the world.</p>
         <p>Choose from fictional, horror, biographical, novels, scientific, poetry and others.</p>
@@ -29,7 +29,7 @@ const HomePage = () => {
         <p>Unlimited borrow capacity. Any book, any time, for any period.</p>
         <p>Over 10000 books available and waiting to be borrowed.</p>
         <p>Game system - gain points for every book read and returned and earn rewards.</p>
-      </TextImageRow>
+      </TextImageRow> */}
     </div>
 
   );
