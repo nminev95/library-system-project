@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './IndividualBook.css';
+import '../IndividualBook/IndividualBook.css';
 import 'mdbreact/dist/css/mdb.css';
 import { MDBRow, MDBContainer, MDBCol, MDBBtn, MDBIcon } from 'mdbreact';
 

@@ -1,10 +1,7 @@
 import React from 'react';
 import IndividualBookDetails from './IndividualBookDetails';
 import { useState, useEffect } from 'react';
-import IndividualBookReviewsDisplay from './IndividualBookReviewsDisplay';
-import { MDBCol, MDBInput } from 'mdbreact';
-import CreateReview from './CreateReview/CreateReview';
-import AllReviews from './AllReviews/AllReviews';
+import AllReviews from '../AllReviews/AllReviews';
 
 const IndividualBook = props => {
     const { id } = props.match.params;
@@ -54,7 +51,7 @@ const IndividualBook = props => {
                 setBookReviewsData([...bookReviewsData, data])
             })
             .catch((err) => console.log(err));
-      };
+    };
 
     const updateReview = (review_id, newContent) => {
         fetch(`http://localhost:4000/books/${id}/reviews/${review_id}`, {
@@ -95,58 +92,16 @@ const IndividualBook = props => {
 
 
 
-    // const Reviews = Data => {
-    //     if (Data.message) {
-
-    //         return (
-    //             <div id="container-reviews" className="container my-5 z-depth-1" >
-
-    //                 <section className="dark-grey-text text-center ">
-    //                     <h4 className="p-5" > This book has no reviews... </h4>
-    //                 </section>
-    //             </div>
-
-    //         )
-    //     } else {
-
-    //         return (
-    //             <div id="container-reviews" className="container my-5 z-depth-1" >
-
-    //                 <section className="dark-grey-text">
-    //                     <h4 className="p-3 white-text" > Reviews </h4>
-    //                     <MDBCol className="reviewRow">
-    //                         {Data.map((review) => <IndividualBookReviewsDisplay
-    //                             author={review.Author}
-    //                             content={review.Review}
-    //                             likes={review.Likes}
-    //                             dislikes={review.Dislikes}
-    //                             update={(updateData) => updateReview(review.review_id, updateData)}
-    //                             remove={() => removeReview(review.review_id)}
-    //                             key={review.review_id} />)}
-    //                     </MDBCol>
-    //                     <MDBCol className="p-2">
-    //                         <CreateReview create={createReview} />
-    //                     </MDBCol>
-    //                 </section>
-    //             </div>
-
-    //         )
-    //     }
-    // }
-
-
 
 
     return (
         <div>
             <IndividualBookDetails bookData={bookData} />
             <div>
-            <AllReviews data={bookReviewsData}
-            update={updateReview}
-            remove={removeReview}
-            create={createReview}/> 
-                {/* {Reviews(bookReviewsData)} */}
-            {/* <CreateReview create={createReview}/> */}
+                <AllReviews data={bookReviewsData}
+                    update={updateReview}
+                    remove={removeReview}
+                    create={createReview} />
             </div>
         </div>
 

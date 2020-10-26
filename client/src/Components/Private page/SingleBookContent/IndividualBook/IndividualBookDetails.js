@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState} from 'react'
-;import './IndividualBook.css';
+import './IndividualBook.css';
 import 'mdbreact/dist/css/mdb.css'
 import { MDBBtn } from 'mdbreact';
 
@@ -29,8 +29,6 @@ const IndividualBookDetails = ({ bookData }) => {
             return error.message;
         }
     }
-
-    //WHERE DOES IT SHOULD BE?
 
     const returnBoook = async () => {
 

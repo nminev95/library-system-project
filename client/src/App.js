@@ -8,7 +8,7 @@ import RegisterForm from './Components/Public page/RegisterForm/RegisterForm';
 import HomepageLogged from './Components/Private page/Homepage/HomepageLogged';
 import Header from './Components/Private page/Header/Header';
 import Footer from './Components/Private page/Footer/Footer';
-import IndividualBook from './Components/Private page/SingleBookContent/IndividualBook';
+import IndividualBook from './Components/Private page/SingleBookContent/IndividualBook/IndividualBook';
 import AdminRoutes from './Components/Admin panel/AdminRoutes';
 import ProfileBorrowedBooks from './Components/Private page/Profile/BorrowedBooks/ProfileBorrowedBooks';
 import SearchResultPage from './Components/Private page/SearchResultPage/SearchResultPage';
@@ -43,7 +43,7 @@ function App() {
          <Header />
         <div className="body">
           {authValue.user ? <PrivatePage /> : <PublicPage />}
-          {authValue.user && authValue.user.role === 'admin' ? <AdminRoutes /> : <PrivatePage />}
+          {/* {authValue.user && authValue.user.role === 'admin' ? <AdminRoutes /> : <PrivatePage />} */}
           {/* {authValue.user.role === 'admin' ? <AdminRoutes /> : <PrivatePage />} */}
           {/* <Route exact path='/books' exact component={HomepageLogged} /> */}
           {/* <Redirect from="/" exact to="/home" />
