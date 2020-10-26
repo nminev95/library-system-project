@@ -2,11 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import './HomepageLogged.css';
 import Books from './AllBooks/Books';
 import Pagination from './Pagination/Pagination';
-import { SearchContext } from '../Context/SearchContext'
 import BooksCarousel from './RandomBook/BooksCarousel';
 
 const HomepageLogged = (props) => {
-    const { search } = useContext(SearchContext)
     const [book, setBook] = useState('');
     const [books, setBooks] = useState([]);
     const [page, setPage] = useState(1)

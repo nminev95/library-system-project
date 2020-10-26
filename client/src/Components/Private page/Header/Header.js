@@ -8,12 +8,11 @@ import { BrowserRouter as Router, Link, useHistory } from 'react-router-dom';
 import { MDBFormInline, MDBNavbar, MDBNavbarBrand, MDBNavbarToggler, MDBIcon, MDBBtn, MDBCollapse, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from 'mdbreact';
 // import UserDropdown from './UserDropdown/UserDropdown';
 // import image from './Logo.png';
-import { SearchContext } from '../Context/SearchContext';
 import { AuthContext } from '../Context/AuthContext';
 
 const NavBar = () => {
   const { isLoggedIn, setLoginState } = useContext(AuthContext);
-  const { search, setSearch } = useContext(SearchContext);
+  const [search, setSearch] = useState('');
   const [state, setState] = useState(false)
   const history = useHistory();
   

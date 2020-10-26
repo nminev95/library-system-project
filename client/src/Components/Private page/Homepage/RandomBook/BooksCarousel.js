@@ -17,7 +17,7 @@ const BooksCarousel = ({ books }) => {
                 onHoverStop={false}
             >
                 <MDBCarouselInner className="slider">
-                    {books.map(book => <CarouselItem book={book} count={++count} />)}
+                    {books.map(book => <CarouselItem key={book.id} book={book} count={++count} />)}
                 </MDBCarouselInner>
             </MDBCarousel>
         </MDBContainer>
