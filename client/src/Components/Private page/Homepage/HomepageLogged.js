@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import './HomepageLogged';
+import './HomepageLogged.css';
 import Books from './AllBooks/Books';
-import RandomBookRow from './RandomBook/RandomBookRow';
 import Pagination from './Pagination/Pagination';
 import { SearchContext } from '../Context/SearchContext'
+import BooksCarousel from './RandomBook/BooksCarousel';
 
 const HomepageLogged = (props) => {
     const { search } = useContext(SearchContext)
@@ -37,7 +37,7 @@ const HomepageLogged = (props) => {
 
     return (
         <div>
-            <RandomBookRow book={book} />
+            <BooksCarousel books={books} />      
             <Books books={currentBooks} />
             <Pagination paginate={paginate} pages={pages} currentPage={page} />
         </div>

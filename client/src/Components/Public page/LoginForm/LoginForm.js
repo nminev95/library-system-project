@@ -60,6 +60,7 @@ const LoginForm = () => {
                 success="right"
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}
+                required
               />
               <MDBInput
                 label="Your password"
