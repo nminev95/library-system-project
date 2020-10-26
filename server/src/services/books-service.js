@@ -273,11 +273,8 @@ const getBookReviews = booksData => {
 * @return {Promise<object>}
 */
 const createReview = booksData => {
-    return async (req) => {
-        const content = req.body.content;
-        const id = req.params.id;
-        const userId = req.user.id;
-        const role = req.user.role;
+    return async (id, userId, content, role) => {
+       console.log(id, userId, content, role);
 
         if (role === 'user') {
             const book = await booksData.getById(+id);
@@ -286,15 +283,6 @@ const createReview = booksData => {
                 return {
                     error: serviceErrors.RECORD_NOT_FOUND,
                     book: null,
-                };
-            }
-
-            const history = await booksData.getReadHistory(userId);
-
-            if (!(history.some(el => (+(el.book_Id) === id)))) {
-                return {
-                    error: serviceErrors.OPERATION_NOT_PERMITTED,
-                    reviews: null,
                 };
             }
 

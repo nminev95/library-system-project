@@ -319,9 +319,9 @@ const searchQuery = async (title, author, genre, search) => {
 const pushReview = async (content, id, userId) => {
     const sql = `
         INSERT INTO
-            reviews(content, isDeleted, book_Id, user_Id) 
+            reviews(content, book_Id, user_Id) 
         VALUES
-            (?, '0', ?, ?)`;
+            (?, ?, ?)`;
 
     return await pool.query(sql, [content, id, userId]);
 };

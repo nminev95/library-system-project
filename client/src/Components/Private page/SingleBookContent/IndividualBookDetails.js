@@ -7,12 +7,11 @@ import { MDBBtn } from 'mdbreact';
 
 
 const IndividualBookDetails = ({ bookData }) => {
+    const bookId = bookData.id;
     const [borrowMode, setModeBorrow] = useState(true);
     const toggleBorrowMode = () => {
         setModeBorrow((prevState) => !prevState);
     };
-
-    const bookId = bookData.id;
 
     const borrowBoook = async () => {
 

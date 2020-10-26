@@ -71,8 +71,8 @@ booksController
         })
     //get all the reviews of a book 
     .get('/:id/reviews',
-        // authMiddleware,
-        // roleMiddleware(['admin', 'user']),
+        authMiddleware,
+        roleMiddleware(['admin', 'user']),
         async (req, res) => {
             const { id } = req.params;
             const { error, reviews } = await booksService.getBookReviews(booksData)(+id);
@@ -92,16 +92,14 @@ booksController
         createValidator(createReviewSchema),
         async (req, res) => {
             const { id } = req.params;
-            const { content } = req.body;
-            const userId = req.user.id;
+            const { content } = req.body;      
+            const userId = req.user.id;      
             const role = req.user.role;
 
             const { error } = await booksService.createReview(booksData)(+id, +userId, content, role);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'Book not found!' });
-            } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
-                res.status(400).send({ message: 'You can only review books you have read!' });
             } else if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(400).send({ message: 'You may review each book only once!' });
             } else {

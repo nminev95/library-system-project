@@ -9,7 +9,6 @@ import { MDBRow, MDBContainer, MDBCol, MDBBtn, MDBIcon } from 'mdbreact';
 const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, remove, update }) => {
 
     const [currentContent, setNewCurrentContent] = useState(content);
-    console.log(currentContent);
     const [updateMode, setModeUpdate] = useState(false);
 
     const toggleUpdateMode = () => {
