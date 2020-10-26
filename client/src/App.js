@@ -19,7 +19,8 @@ import { AuthContext } from './Components/Private page/Context/AuthContext';
 function App() {
 
   const [currentSearch, setCurrentSearch] = useState('');
-  const [authValue, setAuthValue] = useState(false);
+  const token = localStorage.getItem('token');
+  const [authValue, setAuthValue] = useState(token ? true : false);
 
   return (
     <>
