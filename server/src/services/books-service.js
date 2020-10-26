@@ -274,7 +274,6 @@ const getBookReviews = booksData => {
 */
 const createReview = booksData => {
     return async (id, userId, content, role) => {
-       console.log(id, userId, content, role);
 
         if (role === 'user') {
             const book = await booksData.getById(+id);
@@ -295,7 +294,7 @@ const createReview = booksData => {
                 };
             }
             const reviews = await booksData.pushReview(content, id, userId);
-            return { error: null, reviews: reviews };
+            return { error: null, reviews: {content, id, userId} };
         } else {
             const book = await booksData.getById(+id);
 

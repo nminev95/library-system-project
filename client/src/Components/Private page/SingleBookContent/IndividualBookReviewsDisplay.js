@@ -6,8 +6,8 @@ import { MDBRow, MDBContainer, MDBCol, MDBBtn, MDBIcon } from 'mdbreact';
 
 
 
-const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, remove, update }) => {
-
+const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, remove, update, id }) => {
+  
     const [currentContent, setNewCurrentContent] = useState(content);
     const [updateMode, setModeUpdate] = useState(false);
 
@@ -16,7 +16,7 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, remove
     };
 
     const saveEdit = () => {
-        update({ content: currentContent });
+        update(id, { content: currentContent });
         toggleUpdateMode();
     };
 
@@ -38,7 +38,7 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, remove
                             <MDBIcon icon="pencil-alt" />
                         </MDBBtn>
                         )}
-                        <MDBBtn id="button-trash" tag="a" size="sm" color="grey" onClick={remove}>
+                        <MDBBtn id="button-trash" tag="a" size="sm" color="grey" onClick={() => remove(id)}>
                             <MDBIcon icon="trash-alt" />
                         </MDBBtn>
                     </MDBCol>
@@ -54,7 +54,6 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, remove
                     )}
                     <MDBCol className="text-right" md="2">Likes: {likes}</MDBCol>
                     <MDBCol className="text-right" md="2">Dislikes: {dislikes}</MDBCol>
-
                 </MDBRow>
             </MDBContainer>
         </div>

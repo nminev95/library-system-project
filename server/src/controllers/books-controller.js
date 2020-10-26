@@ -96,7 +96,7 @@ booksController
             const userId = req.user.id;      
             const role = req.user.role;
 
-            const { error } = await booksService.createReview(booksData)(+id, +userId, content, role);
+            const { error, reviews } = await booksService.createReview(booksData)(+id, +userId, content, role);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'Book not found!' });
@@ -104,7 +104,7 @@ booksController
                 res.status(400).send({ message: 'You may review each book only once!' });
             } else {
                 const _ = await gamificationService.addUserPoints(gamificationData)(userId);
-                res.status(200).send({ message: 'Review successfully added!' });
+                res.status(200).send(reviews);
             }
         })
     .put('/:id/reviews/:id',

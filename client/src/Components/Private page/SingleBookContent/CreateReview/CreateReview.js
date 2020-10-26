@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import {MDBInput} from 'mdbreact';
 
-
-
 const CreateReview = ({ create }) => {
 
   const [text, setText] = useState('');
