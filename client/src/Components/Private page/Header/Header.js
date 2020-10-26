@@ -4,7 +4,7 @@ import './Header.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
-import { BrowserRouter as Router, Link, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Link, useHistory, useLocation } from 'react-router-dom';
 import { MDBFormInline, MDBNavbar, MDBNavbarBrand, MDBNavbarToggler, MDBIcon, MDBBtn, MDBCollapse, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from 'mdbreact';
 import { AuthContext } from '../Context/AuthContext';
 
@@ -25,7 +25,7 @@ const NavBar = () => {
   }
 
   const url = `/search?query=${search}`
-
+  console.log(useLocation().pathname)
   return (
     <>
       {isLoggedIn ? (

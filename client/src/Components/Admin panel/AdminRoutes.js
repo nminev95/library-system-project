@@ -24,17 +24,19 @@ const AdminRoutes = () => {
         <div>
             <SideNav changeMenu={changeButtons} />
             <TopNav />
-            <div className="adminUIContainer">
-                <Redirect path='/admin' exact to="/admin/dashboard" />
-                <Route path='/admin/dashboard' component={AdminDashboard} />
-                <Route exact path='/admin/users' component={AdminUsers} />
-                <Route exact path='/admin/books' component={AdminBooks} />
-                <Route exact path='/admin/reviews' component={AdminReviews} />
-                <Route path='/admin/users/ban' component={BanUser} />
-                <Route exact path='/admin/books/edit' component={EditBookPage} />
-                <Route path='/admin/reviews/edit' component={EditReviewPage} />
-                <Route path='/admin/books/add' component={CreateBookPage} />
-            </div>
+            <Switch>
+                <div className="adminUIContainer">
+                    <Redirect path='/admin' exact to="/admin/dashboard" />
+                    <Route path='/admin/dashboard' component={AdminDashboard} />
+                    <Route exact path='/admin/users' component={AdminUsers} />
+                    <Route exact path='/admin/books' component={AdminBooks} />
+                    <Route exact path='/admin/reviews' component={AdminReviews} />
+                    <Route path='/admin/users/ban' component={BanUser} />
+                    <Route exact path='/admin/books/edit' component={EditBookPage} />
+                    <Route path='/admin/reviews/edit' component={EditReviewPage} />
+                    <Route path='/admin/books/add' component={CreateBookPage} />
+                </div>
+            </Switch>
         </div>
     )
 }

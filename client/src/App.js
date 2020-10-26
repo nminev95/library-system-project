@@ -15,6 +15,8 @@ import SearchResultPage from './Components/Private page/SearchResultPage/SearchR
 import ProfilePage from './Components/Private page/Profile/ProfilePage/ProfilePage'
 import { AuthContext } from './Components/Private page/Context/AuthContext';
 import decode from 'jwt-decode';
+import PrivatePage from './Components/Private page/PrivatePage';
+import PublicPage from './Components/Public page/PublicPage';
 
 function App() {
 
@@ -32,29 +34,33 @@ function App() {
       setAuthValue(false);
     }
   }
-
+  console.log(authValue)
   return (
     <>
-      <Router>
-        <AuthContext.Provider value={{ ...authValue, setLoginState: setAuthValue }}>
-          <Header />
-          <div className="body">
-            <Switch>
-              <Redirect from="/" exact to="/home" />
-              <Route exact path='/books' exact component={HomepageLogged} />
+<Router>
+
+      <AuthContext.Provider value={{ ...authValue, setLoginState: setAuthValue }}>
+         <Header />
+        <div className="body">
+          {authValue.user ? <PrivatePage /> : <PublicPage />}
+          {authValue.user && authValue.user.role === 'admin' ? <AdminRoutes /> : <PrivatePage />}
+          {/* {authValue.user.role === 'admin' ? <AdminRoutes /> : <PrivatePage />} */}
+          {/* <Route exact path='/books' exact component={HomepageLogged} /> */}
+          {/* <Redirect from="/" exact to="/home" />
               <Route path='/home' exact component={HomePage} />
               <Route path='/auth/signin' component={LoginForm} />
-              <Route exact path='/books/:id' exact component={IndividualBook} />
-              <Route path='/admin' component={AdminRoutes} />
-              <Route exact path='/users' exact component={RegisterForm} />
+            <Route exact path='/users' exact component={RegisterForm} /> */}
+          {/* <Route path='/admin' component={AdminRoutes} /> */}
+          {/* <Route exact path='/books/:id' exact component={IndividualBook} />
               <Route exact path='/profile/borrowed' component={ProfileBorrowedBooks} />
               <Route path="/profile" component={ProfilePage} />
-              <Route path='/search' component={SearchResultPage} />
-            </Switch>
-          </div>
-          <Footer />
-        </AuthContext.Provider>
-      </Router>
+            <Route path='/search' component={SearchResultPage} /> */}
+
+        </div>
+        <Footer />
+      </AuthContext.Provider>
+
+            </Router>
 
     </>
   );
