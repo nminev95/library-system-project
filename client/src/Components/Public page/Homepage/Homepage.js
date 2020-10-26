@@ -9,7 +9,6 @@ import './Homepage.css';
 const HomePage = () => {
   return (
     
-
     <div className="body">
       <Content />
       {/* <TextImageRow id="1" icon={books}>

@@ -19,12 +19,24 @@ import decode from 'jwt-decode';
 function App() {
 
   const token = localStorage.getItem('token');
-  const [authValue, setAuthValue] = useState(token ? true : false);
+  const [authValue, setAuthValue] = useState({
+    isLoggedIn: token ? true : false,
+    user: token ? decode(token) : null
+  });
+
+  if (token) {
+    const decoded = decode(token);
+    const expiration = new Date(decoded.exp * 1000);
+    if (expiration < new Date()) {
+      localStorage.removeItem('token');
+      setAuthValue(false);
+    }
+  }
 
   return (
     <>
       <Router>
-      <AuthContext.Provider value={{ isLoggedIn: authValue, setLoginState: setAuthValue}}>
+        <AuthContext.Provider value={{ ...authValue, setLoginState: setAuthValue }}>
           <Header />
           <div className="body">
             <Switch>

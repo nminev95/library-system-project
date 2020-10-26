@@ -6,16 +6,14 @@ import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 import { BrowserRouter as Router, Link, useHistory } from 'react-router-dom';
 import { MDBFormInline, MDBNavbar, MDBNavbarBrand, MDBNavbarToggler, MDBIcon, MDBBtn, MDBCollapse, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from 'mdbreact';
-// import UserDropdown from './UserDropdown/UserDropdown';
-// import image from './Logo.png';
 import { AuthContext } from '../Context/AuthContext';
 
-const NavBar = () => {
-  const { isLoggedIn, setLoginState } = useContext(AuthContext);
+const NavBar = () => { 
+  const { isLoggedIn, setLoginState, user } = useContext(AuthContext);
   const [search, setSearch] = useState('');
   const [state, setState] = useState(false)
   const history = useHistory();
-  
+  console.log(user)
   const toggleCollapse = () => {
     setState((prevState) => !prevState);
   }

@@ -7,15 +7,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { AuthContext } from '../../Private page/Context/AuthContext';
 
-const LoginForm = () => {
 
+const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { setLoginState } = useContext(AuthContext);
+  const { setLoginState, user } = useContext(AuthContext);
   const history = useHistory();
 
   const sendUserData = async (userObject) => {
-  
+
     const settings = {
       method: 'POST',
       headers: {
@@ -30,7 +30,7 @@ const LoginForm = () => {
         alert(json.message)
       } else {
         localStorage.setItem("token", json.token);
-        setLoginState(true);
+        setLoginState({ isLoggedIn: true, ...user });
         history.push('/books')
       }
     } catch (e) {
