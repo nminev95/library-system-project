@@ -7,7 +7,6 @@ import RegisterForm from './RegisterForm/RegisterForm';
 const PublicPage = () => {
     return (
         <>
-   
                 <Switch>
                     <Redirect exact from="/" exact to="/home" />
                     <Route exact path='/home' exact component={HomePage} />
@@ -15,7 +14,6 @@ const PublicPage = () => {
                     <Route exact path='/users' exact component={RegisterForm} />
                     <Redirect from="*" exact to="/"></Redirect>
                 </Switch>
-
         </>
     )
 }

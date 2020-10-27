@@ -28,39 +28,43 @@ function App() {
 
   if (token) {
     const decoded = decode(token);
-    const expiration = new Date(decoded.exp * 1000);
+    const expiration = new Date(decoded.exp * 1000); /// setTimout !!
     if (expiration < new Date()) {
       localStorage.removeItem('token');
       setAuthValue(false);
     }
   }
-  console.log(authValue)
+
+  const authRenderer = (user) => {
+    if (!user) {
+      return <PublicPage />
+    } else {
+      if (user && user.role === 'user') {
+        return <PrivatePage />
+      } else if (user && user.role === 'admin') {
+        return (
+          <>
+            <PrivatePage />
+            <AdminRoutes />
+          </>
+        )
+      }
+    }
+  }
+
+
   return (
     <>
-<Router>
+      <Router>
+        <AuthContext.Provider value={{ ...authValue, setLoginState: setAuthValue }}>
+          <Header />
+          <div className="body">
+            {authRenderer(authValue.user)}
+          </div>
+          <Footer />
+        </AuthContext.Provider>
 
-      <AuthContext.Provider value={{ ...authValue, setLoginState: setAuthValue }}>
-         <Header />
-        <div className="body">
-          {authValue.user ? <PrivatePage /> : <PublicPage />}
-          {/* {authValue.user && authValue.user.role === 'admin' ? <AdminRoutes /> : <PrivatePage />} */}
-          {/* {authValue.user.role === 'admin' ? <AdminRoutes /> : <PrivatePage />} */}
-          {/* <Route exact path='/books' exact component={HomepageLogged} /> */}
-          {/* <Redirect from="/" exact to="/home" />
-              <Route path='/home' exact component={HomePage} />
-              <Route path='/auth/signin' component={LoginForm} />
-            <Route exact path='/users' exact component={RegisterForm} /> */}
-          {/* <Route path='/admin' component={AdminRoutes} /> */}
-          {/* <Route exact path='/books/:id' exact component={IndividualBook} />
-              <Route exact path='/profile/borrowed' component={ProfileBorrowedBooks} />
-              <Route path="/profile" component={ProfilePage} />
-            <Route path='/search' component={SearchResultPage} /> */}
-
-        </div>
-        <Footer />
-      </AuthContext.Provider>
-
-            </Router>
+      </Router>
 
     </>
   );

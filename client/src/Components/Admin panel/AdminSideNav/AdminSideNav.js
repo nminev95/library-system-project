@@ -9,7 +9,7 @@ const SideNav = () => {
     return (
         <>
             {!(path.includes('admin')) ?
-                (<div style={{display: 'none'}}></div>)
+                (null)
                 : (
                     <div className="sidebar-fixed position-fixed">
                         <MDBContainer className="buttonDiv">

@@ -6,12 +6,13 @@ import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { AuthContext } from '../../Private page/Context/AuthContext';
+import decode from 'jwt-decode';
 
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { setLoginState, user } = useContext(AuthContext);
+  const { setLoginState } = useContext(AuthContext);
   const history = useHistory();
 
   const sendUserData = async (userObject) => {
@@ -30,8 +31,8 @@ const LoginForm = () => {
         alert(json.message)
       } else {
         localStorage.setItem("token", json.token);
-        setLoginState({ isLoggedIn: true, ...user });
-        history.push('/books')
+        const user = decode(json.token);
+        setLoginState({ isLoggedIn: true, user: user });
       }
     } catch (e) {
       console.log(e.message)

@@ -26,7 +26,9 @@ const AdminRoutes = () => {
             <TopNav />
             <Switch>
                 <div className="adminUIContainer">
-                    <Redirect path='/admin' exact to="/admin/dashboard" />
+                    <Route exact path="/admin">
+                        <Redirect to="/admin/dashboard" />
+                    </Route>
                     <Route path='/admin/dashboard' component={AdminDashboard} />
                     <Route exact path='/admin/users' component={AdminUsers} />
                     <Route exact path='/admin/books' component={AdminBooks} />
