@@ -6,14 +6,14 @@ const BorrowedBooks = (props) => {
   if(props.books.message) {
       return (
         <div>
-            <p5 className = "text-center">Oops, you have no borrowed books! </p5>         
+            <div className = "text-center">Oops, you have no borrowed books! </div>         
         </div>
 
     )
   }
     return (
         <div>
-            <p5 className = "text-center">Your borrowed books...</p5>
+            <p4 className = "text-center">Your borrowed books...</p4>
             <div className="bookRow">
                 {props.books.map((book) => <SingleBorrowedBook book={book} key={book.id} />)}
             </div>

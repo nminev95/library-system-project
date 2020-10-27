@@ -23,7 +23,7 @@ const returnBoook = async () => {
     }
 }
     return (
-        <div id="borrowed-book" className="pt-2 pb-2" >
+        <div id="borrowed-book" >
          <MDBCol xl="3" className="cardBook">
             <MDBCard  id="card" className="border-3 color-yellow">
                 <MDBView cascade className="justify-content-center">
