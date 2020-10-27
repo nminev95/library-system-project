@@ -32,7 +32,7 @@ const getAll = async () => {
 */
 const getWithRole = async (username) => {
     const sql = `
-    SELECT u.user_Id, u.username, u.password, r.type_of_user as role, b.isBanned, b.expirationDate
+    SELECT u.user_Id, u.username, u.password, u.email, u.user_points, u.user_level, u.register_date, r.type_of_user as role, b.isBanned, b.expirationDate
     FROM users u
     JOIN roles r 
     ON u.role_id = r.role_id

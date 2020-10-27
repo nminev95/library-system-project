@@ -19,7 +19,13 @@ authController
             const payload = {
                 sub: user.user_Id,
                 username: user.username,
+                email: user.email,
+                level: {
+                    points: user.user_points,
+                    level: user.user_level
+                },
                 role: user.role,
+                registered: user.register_date,
                 banInfo: {
                     banned: user.isBanned,
                     banExpiration: user.expirationDate,
