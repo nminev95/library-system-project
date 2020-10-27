@@ -8,6 +8,17 @@ import { authMiddleware, roleMiddleware } from '../auth/auth-middleware.js';
 const usersController = express.Router();
 
 usersController
+    .get('/:id',
+    authMiddleware,
+    roleMiddleware(['admin', 'user']),
+    async (req, res) => {
+        const { id } = req.params;
+        const loggedUser = req.user;
+
+        const { error, user } = await usersService.getUserById(usersData)(+id, loggedUser);
+
+        res.status(200).send(user)
+    })
     .post('/',
         createValidator(createUserSchema),
         async (req, res) => {

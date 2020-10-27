@@ -90,7 +90,6 @@ const updateUser = usersData => {
         }
 
         const updated = { ...loggedUser, ...userUpdate };
-        
         const _ = await usersData.update(updated);
 
         return { error: null, user: updated };

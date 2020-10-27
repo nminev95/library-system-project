@@ -10,4 +10,14 @@ export const updateUserSchema = {
 
         return null;
     },
+    email: value => {
+        if (!value) {
+            return 'Email is required';
+        }
+        const check = new RegExp(/^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/);
+        if(!check.test(value)){
+            return 'Enter a valid email';
+        }
+        return null;
+    },
 };

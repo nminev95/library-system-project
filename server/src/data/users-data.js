@@ -80,14 +80,15 @@ const create = async (username, password, email, role) => {
 * @returns {Promise<object>} Promise.
 */
 const update = async (user) => {
-    const { id, username } = user;
+    const { id, username, email } = user;
     const sql = `
         UPDATE users SET
-          username = ?
+          username = ?,
+          email = ?
         WHERE user_Id = ?
     `;
 
-    return await pool.query(sql, [username, id]);
+    return await pool.query(sql, [username, email, id]);
 };
 
 /** 

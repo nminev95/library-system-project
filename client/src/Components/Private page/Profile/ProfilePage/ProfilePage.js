@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../Context/AuthContext';
 import { MDBBtn, MDBIcon, MDBInput } from 'mdbreact';
 
@@ -6,21 +6,40 @@ const ProfilePage = () => {
     const { user } = useContext(AuthContext);
 
     const [editMode, setEditMode] = useState(false);
-    const [username, setUsername] = useState(user.username);
-    const [email, setEmail] = useState(user.email);
-
+    const [email, setEmail] = useState('');
+    const [userData, setUserData] = useState('');
+    const [username, setUsername] = useState('');
+    
     const toggleEditMode = () => {
         setEditMode((editMode) => !editMode)
     }
 
-    const updateUserDate = () => {
-        fetch(`http://localhost:4000/user/${user.sub}`, {
+    useEffect(() => {
+        fetch(`http://localhost:4000/users/${user.sub}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(data => data.json())
+            .then(info => {
+                setUserData(info[0])
+                setUsername(info[0].Username)
+                setEmail(info[0].Email)
+            })
+    }, [])
+    
+    console.log(userData)
+    const updateUserData = (username, email) => {
+        fetch(`http://localhost:4000/users/${user.sub}`, {
             method: 'PUT',
             headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              
+                username: username,
+                email: email
             }),
         })
             .then(r => r.json())
@@ -28,6 +47,10 @@ const ProfilePage = () => {
                 if (result.error) {
                     throw new Error(result.error);
                 }
+            })
+            .then(() => {
+                setUsername(username)
+                setEmail(email)
             })
     }
 
@@ -46,22 +69,25 @@ const ProfilePage = () => {
                     </>
                 ) : (
                         <>
-                            <p ><MDBIcon icon="user-circle" /> Your username: {user.username}</p>
+                            <p ><MDBIcon icon="user-circle" /> Your username: {username}</p>
                             <br></br>
-                            <p> <MDBIcon icon="envelope" /> Your email address: {user.email}</p>
+                            <p> <MDBIcon icon="envelope" /> Your email address: {email}</p>
                             <br></br>
                         </>
                     )
                 }
-                <p> <MDBIcon icon="user-plus" /> Join date: {user.registered.split('T')[0]}</p>
+                <p> <MDBIcon icon="user-plus" /> Join date: {userData.Joined}</p>
                 <br></br>
-                <p> <MDBIcon icon="trophy" /> Current level: {user.level.level} </p>
+                <p> <MDBIcon icon="trophy" /> Current level: {userData.Level} </p>
                 <br></br>
-                <p> <MDBIcon icon="gamepad" /> Current read points: {user.level.points} </p>
+                <p> <MDBIcon icon="gamepad" /> Current read points: {userData.Points} </p>
                 <br></br>
                 {editMode ? (
                     <>
-                        <MDBBtn onClick={toggleEditMode}>Save changes</MDBBtn> <MDBBtn>Change password</MDBBtn>
+                        <MDBBtn onClick={() => {
+                            updateUserData(username, email)
+                            toggleEditMode()
+                        }}>Save changes</MDBBtn> <MDBBtn>Change password</MDBBtn>
                     </>
                 ) : (
                         <>
