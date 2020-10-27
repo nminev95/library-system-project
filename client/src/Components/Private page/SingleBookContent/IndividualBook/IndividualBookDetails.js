@@ -58,11 +58,17 @@ const IndividualBookDetails = ({ bookData }) => {
                         <img src={bookData.Cover} className="w-100 p-4 justify-content-center" alt="smaple image" />
                     </div>
                     <div className="col-md-8 p-3 ">
-                        <div className="p-5 ">
+                        <div className="p-3 ">
                             <h3 className="font-weight-bold text-center">{bookData.Title}</h3>
+                        </div>
+                        <div className="p-4 text-center text-justify ">
+                            <div> Written by: {bookData.Author}</div>
                         </div>
                         <div className="p-1 text-center text-justify ">
                             <div>{bookData.Rating}</div>
+                        </div>
+                        <div className="p-3 text-center text-justify bold ">
+                            <div>Status: {bookData.Status}</div>
                         </div>
                         <div className="p-4">
                             <p className="text-center text-justify" >{bookData.Description}</p>

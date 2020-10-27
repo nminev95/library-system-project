@@ -29,6 +29,7 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, author
                     <MDBRow >
                         <MDBCol className="author" md="8" pt="2" > {author}</MDBCol>
                         <MDBCol id="edit-delete-buttons" className="text-right" md="4"  >
+                            
 
                             {updateMode ? (
                                 <MDBBtn id="button-check" tag="a" size="sm" color="grey" onClick={saveEdit}>
