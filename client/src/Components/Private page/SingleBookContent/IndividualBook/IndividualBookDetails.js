@@ -1,13 +1,17 @@
 import React from 'react';
-import {useState} from 'react'
+import { useState } from 'react'
 import './IndividualBook.css';
 import 'mdbreact/dist/css/mdb.css'
 import { MDBBtn } from 'mdbreact';
+import { useAuth } from '../../../Private page/Context/AuthContext';
 
 
 
 const IndividualBookDetails = ({ bookData }) => {
+    const { user } = useAuth();
+    const loggedUser = user.sub;
     const bookId = bookData.id;
+    const borrower = bookData.Borrower;
     const [borrowMode, setModeBorrow] = useState(true);
     const toggleBorrowMode = () => {
         setModeBorrow((prevState) => !prevState);
@@ -76,8 +80,18 @@ const IndividualBookDetails = ({ bookData }) => {
 
                         <div id="buttons" className="text-center p-5">
                             {borrowMode && bookData.Status === "Free" ?
-                                <MDBBtn id="main-button" onClick={borrowBoook}> Borrow </MDBBtn> :
-                                <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>
+                                <>
+                                    <MDBBtn id="main-button" onClick={borrowBoook}> Borrow </MDBBtn>
+                                </>
+                                :
+                                <>
+                                    {borrower === loggedUser ?
+                                        <>
+                                            <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>
+                                        </> :
+                                        <div>The book has been borrowed by another user! :) </div>
+                                    }
+                                </>
                             }
                         </div>
 

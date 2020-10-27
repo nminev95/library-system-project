@@ -92,8 +92,6 @@ const IndividualBook = props => {
 
 
 
-
-
     return (
         <div>
             <IndividualBookDetails bookData={bookData} />

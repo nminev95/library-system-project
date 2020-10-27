@@ -72,7 +72,7 @@ CREATE TABLE `books` (
   `year` int(11) NOT NULL,
   `imageUrl` varchar(500) NOT NULL,
   `borrowedStatus_Id` int(11) NOT NULL DEFAULT 3,
-  `borrower_Id` varchar(45) DEFAULT NULL,
+  `borrower_Id` INT(11) NULL DEFAULT NULL ,
   PRIMARY KEY (`book_Id`),
   KEY `fk_books_borrowed_status1_idx` (`borrowedStatus_Id`),
   CONSTRAINT `fk_books_borrowed_status1` FOREIGN KEY (`borrowedStatus_Id`) REFERENCES `status` (`status_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION

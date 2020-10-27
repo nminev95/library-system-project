@@ -623,13 +623,13 @@ const mapReviewsAndRating = async (data) => {
     const map = new Map();
 
     for (const book of data) {
-        const { id, Title, Author, Description, Genre, Year, Cover, Status, Review_Id, Review, ReviewAuthor, Rating, TimesBorrowed } = book;
+        const { id, Title, Author, Description,Borrower, Genre, Year, Cover, Status, Review_Id, Review, ReviewAuthor, Rating, TimesBorrowed } = book;
         const likes = await booksData.getReviewLikes(Review_Id);
         const dislikes = await booksData.getReviewDislikes(Review_Id);
 
         if (!map.get(id)) {
             map.set(id, {
-                id, Title, Author, Description, Genre, Year, Cover, Status, TimesBorrowed, Reviews: [], Rating,
+                id, Title, Author, Description, Borrower, Genre, Year, Cover, Status, TimesBorrowed, Reviews: [], Rating,
             });
         }
 
@@ -646,16 +646,16 @@ const mapReviewsAndRating = async (data) => {
             if (map.get(id).Rating === null) {
                 const Reviews = map.get(id).Reviews;
                 map.set(id, {
-                    id, Title, Author, Description, Genre, Year, Cover, Status, TimesBorrowed, Reviews, Rating: 'Be the first person to rate this book!',
+                    id, Title, Author, Description, Borrower, Genre, Year, Cover, Status, TimesBorrowed, Reviews, Rating: 'Be the first person to rate this book!',
                 });
             }
         } else {
             map.set(id, {
-                id, Title, Author, Description, Genre, Year, Cover, Status, TimesBorrowed, Reviews: 'No reviews for this book yet!', Rating,
+                id, Title, Author, Description, Borrower, Genre, Year, Cover, Status, TimesBorrowed, Reviews: 'No reviews for this book yet!', Rating,
             });
             if (map.get(id).Rating === null) {
                 map.set(id, {
-                    id, Title, Author, Description, Genre, Year, Cover, Status, TimesBorrowed, Reviews: 'No reviews for this book yet.', Rating: 'Be the first person to rate this book!',
+                    id, Title, Author, Description, Borrower,  Genre, Year, Cover, Status, TimesBorrowed, Reviews: 'No reviews for this book yet.', Rating: 'Be the first person to rate this book!',
                 });
             }
         }

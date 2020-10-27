@@ -54,6 +54,7 @@ const getById = async (value) => {
             b.genre as Genre,
             b.year as Year,
             b.imageUrl as Cover,
+            b.borrower_Id as Borrower,
             s.type as Status,
             r.review_Id as Review_Id,
             r.content as Review,
