@@ -30,6 +30,7 @@ const AllReviews = ({ data, update, remove, create, sync }) => {
                     {data.map((review) => <IndividualBookReviewsDisplay
                         id={review.review_id}
                         author={review.Author}
+                        author_id={review.Author_Id}
                         content={review.Review}
                         likes={review.Likes}
                         dislikes={review.Dislikes}

@@ -164,32 +164,33 @@ const getReviewsInDatabase = async (value) => {
             (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 1) as Likes,
             (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 2) as Dislikes,
             r.book_Id as Book
-        from 
+            from 
             reviews r
-        left join 
+            left join 
             users u
-        on 
+            on 
             r.user_Id = u.user_Id
-        left join 
+            left join 
             reviews_have_votes rv
-        ON 
+            ON 
             rv.review_Id = r.review_Id
-        `;
-
-    return await pool.query(sql, [value]);
-};
-
-/** 
-* Gets all book's reviews info from the database found by unique book number.
-* @async
-* @param {number} id - The book's id in the database to search by.
-* @returns {Promise<object>} Promise with the book's reviews data if found in the database.
-*/
-const getReviews = async (value) => {
-    const sql = `
-        SELECT 
+            `;
+            
+            return await pool.query(sql, [value]);
+        };
+        
+        /** 
+         * Gets all book's reviews info from the database found by unique book number.
+         * @async
+         * @param {number} id - The book's id in the database to search by.
+         * @returns {Promise<object>} Promise with the book's reviews data if found in the database.
+         */
+        const getReviews = async (value) => {
+            const sql = `
+            SELECT 
             r.review_Id as review_id, 
             r.content as Review,
+            u.user_Id as Author_Id,
             u.username as Author,
             (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 1) as Likes,
             (select COUNT(*) AS Likes from reviews_have_votes WHERE review_id = r.review_id AND vote_Id = 2) as Dislikes,
