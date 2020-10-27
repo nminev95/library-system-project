@@ -91,6 +91,15 @@ const update = async (user) => {
     return await pool.query(sql, [username, email, id]);
 };
 
+const updatePass = async (newPassword, id) => {
+    const sql = `
+        UPDATE users SET
+          password = ?
+        WHERE user_Id = ?
+    `;
+
+    return await pool.query(sql, [newPassword, id]);
+};
 /** 
 * Gets user info from the database. 
 * @async
@@ -103,6 +112,7 @@ const searchBy = async (column, value) => {
         SELECT 
             u.user_Id AS Id, 
             u.username AS Username, 
+            u.password AS Password,
             u.email AS Email, 
             u.user_points AS Points, 
             l.type AS Level,
@@ -201,4 +211,5 @@ export default {
     sendBannedUserData,
     getExpDate,
     deleteBan,
+    updatePass
 };

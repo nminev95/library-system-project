@@ -74,13 +74,13 @@ const createUser = usersData => {
 const updateUser = usersData => {
     return async (id, userUpdate, loggedUser) => {
         const user = await usersData.getWithRole(userUpdate.username);
-        
-        if (user) {
-            return {
-                error: serviceErrors.DUPLICATE_RECORD,
-                user: null,
-            };
-        }
+
+        // if (user) {
+        //     return {
+        //         error: serviceErrors.DUPLICATE_RECORD,
+        //         user: null,
+        //     };
+        // }
 
         if (+(id) !== +(loggedUser.id)) {
             return {
@@ -96,6 +96,30 @@ const updateUser = usersData => {
     };
 };
 
+const updateUserPassword = usersData => {
+    return async (id, userUpdate, loggedUser) => {
+        const user = await usersData.getWithRole(loggedUser.username);
+
+        if (+(id) !== +(loggedUser.id)) {
+            return {
+                error: serviceErrors.OPERATION_NOT_PERMITTED,
+                user: null,
+            };
+        }
+
+        if (!(await bcrypt.compare(userUpdate.oldPassword, user.password))) {
+            return {
+                error: serviceErrors.NO_MATCH,
+                user: null,
+            };
+        } else { 
+            const passwordHash = await bcrypt.hash(userUpdate.newPassword, 10);
+            const _ = await usersData.updatePass(passwordHash, id)
+        }
+
+        return { error: null, user: 'Password was updated successfully!' };
+    };
+};
 /**
 * Gets all users information.
 * @param module users data SQL queries module.
@@ -111,7 +135,7 @@ const getAllUsers = usersData => {
             : await usersData.getAll();
     };
 };
- 
+
 /**
 * Gets user information found by unique user number.
 * @param module users data SQL queries module.
@@ -176,7 +200,7 @@ const banUser = (usersData) => {
     return async (description, expirationDate, userId, adminId) => {
 
         const user = await usersData.searchBy('user_Id', userId);
-        
+
         if (!user) {
             return {
                 error: serviceErrors.RECORD_NOT_FOUND,
@@ -230,4 +254,5 @@ export default {
     deleteUser,
     banUser,
     removeBan,
+    updateUserPassword
 };

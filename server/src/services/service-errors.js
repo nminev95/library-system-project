@@ -9,4 +9,6 @@ export default {
     INVALID_SIGNIN: 4,
     /** Input is not a number */
     NOT_A_NUMBER: 5,
+
+    NO_MATCH: 6,
 };

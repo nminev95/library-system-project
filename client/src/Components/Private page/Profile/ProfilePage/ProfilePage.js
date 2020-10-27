@@ -5,13 +5,22 @@ import { MDBBtn, MDBIcon, MDBInput } from 'mdbreact';
 const ProfilePage = () => {
     const { user } = useContext(AuthContext);
 
+    const [passwordUpdateMode, setPasswordUpdateMode] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [email, setEmail] = useState('');
     const [userData, setUserData] = useState('');
     const [username, setUsername] = useState('');
-    
+    const [passwordCheck, setPasswordCheck] = useState('')
+    const [newPassword, setNewPassword] = useState('');
+    const [newPasswordRepeat, setNewPasswordRepeat] = useState('');
+    const [fetchPass, setFetchPass] = useState('');
+
     const toggleEditMode = () => {
         setEditMode((editMode) => !editMode)
+    }
+
+    const togglePasswordUpdateMode = () => {
+        setPasswordUpdateMode((passwordUpdateMode) => !passwordUpdateMode)
     }
 
     useEffect(() => {
@@ -26,10 +35,10 @@ const ProfilePage = () => {
                 setUserData(info[0])
                 setUsername(info[0].Username)
                 setEmail(info[0].Email)
+                setFetchPass(info[0].Password)
             })
     }, [])
     
-    console.log(userData)
     const updateUserData = (username, email) => {
         fetch(`http://localhost:4000/users/${user.sub}`, {
             method: 'PUT',
@@ -39,7 +48,7 @@ const ProfilePage = () => {
             },
             body: JSON.stringify({
                 username: username,
-                email: email
+                email: email,
             }),
         })
             .then(r => r.json())
@@ -52,6 +61,27 @@ const ProfilePage = () => {
                 setUsername(username)
                 setEmail(email)
             })
+    }
+
+    const updatePassword = (oldPassword, newPassword) => {
+        fetch(`http://localhost:4000/users/${user.sub}/password`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                oldPassword: oldPassword,
+                newPassword: newPassword
+            }),
+        })
+            .then(r => r.json())
+            .then(result => {
+                if (result.message) {
+                    throw new Error(result.message);
+                }
+            })
+            .catch(err => alert(err.message))
     }
 
     return (
@@ -69,9 +99,9 @@ const ProfilePage = () => {
                     </>
                 ) : (
                         <>
-                            <p ><MDBIcon icon="user-circle" /> Your username: {username}</p>
+                            <p ><MDBIcon icon="user-circle" /> Username: {username}</p>
                             <br></br>
-                            <p> <MDBIcon icon="envelope" /> Your email address: {email}</p>
+                            <p> <MDBIcon icon="envelope" /> Email address: {email}</p>
                             <br></br>
                         </>
                     )
@@ -82,18 +112,31 @@ const ProfilePage = () => {
                 <br></br>
                 <p> <MDBIcon icon="gamepad" /> Current read points: {userData.Points} </p>
                 <br></br>
+                {!passwordUpdateMode && !editMode ? (
+                    <>
+                        <MDBBtn onClick={toggleEditMode}>Edit info</MDBBtn> <MDBBtn onClick={togglePasswordUpdateMode}>Change password</MDBBtn>
+                    </>
+                ) : (null)
+                }
+                {passwordUpdateMode ? (
+                    <>
+                        <h3>Change password</h3>
+                        <MDBInput label="Enter current password" type="password" value={passwordCheck} onChange={(ev) => setPasswordCheck(ev.target.value)} />
+                        <MDBInput label="Enter new password" type="password" value={newPassword} onChange={(ev) => setNewPassword(ev.target.value)} />
+                        <MDBInput label="Confirm new password" type="password" value={newPasswordRepeat} onChange={(ev) => setNewPasswordRepeat(ev.target.value)} />
+                        <MDBBtn onClick={() => updatePassword(passwordCheck, newPassword)}>Update password</MDBBtn> <MDBBtn onClick={togglePasswordUpdateMode}>Cancel</MDBBtn>
+                    </>
+                ) : (null)
+                }
                 {editMode ? (
                     <>
                         <MDBBtn onClick={() => {
                             updateUserData(username, email)
                             toggleEditMode()
-                        }}>Save changes</MDBBtn> <MDBBtn>Change password</MDBBtn>
+                        }}>Save changes</MDBBtn> <MDBBtn onClick={toggleEditMode}>Cancel</MDBBtn>
                     </>
-                ) : (
-                        <>
-                            <MDBBtn onClick={toggleEditMode}>Edit info</MDBBtn> <MDBBtn>Change password</MDBBtn>
-                        </>
-                    )
+                ) : (null)
+
                 }
             </div>
         </div >

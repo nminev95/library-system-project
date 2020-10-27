@@ -34,11 +34,11 @@ usersController
     .put('/:id',
         createValidator(updateUserSchema),
         authMiddleware,
-        roleMiddleware(['user']),
+        roleMiddleware(['user', 'admin']),
         async (req, res) => {
             const { id } = req.params;
             const updateData = req.body;
-            const loggedUser = req.user;
+            const loggedUser = req.user;    
 
             const { error } = await usersService.updateUser(usersData)(+id, updateData, loggedUser);
 
@@ -48,9 +48,27 @@ usersController
                 res.status(409).send({ message: 'Name not available' });
             } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
                 res.status(409).send({ message: 'Users can only change their own usernames!' });
+            } else if (error === serviceErrors.NO_MATCH) {
+                res.status(400).send({ message: 'Password is invalid!'})
             } else {
                 res.status(200).send({ message: 'You have successfully updated your account info!' });
             }
-        });
+        })
+        .put('/:id/password', 
+        authMiddleware,
+        roleMiddleware(['user', 'admin']),
+        async (req, res) => {
+            const { id } = req.params;
+            const updateData = req.body;
+            const loggedUser = req.user;    
+      
+            const { error, user } = await usersService.updateUserPassword(usersData)(+id, updateData, loggedUser);
 
+            if (error === serviceErrors.NO_MATCH) {
+                res.status(400).send({ message: 'Password is invalid!'})
+            } else {
+                res.status(201).send(user)
+            }
+        }) 
+    
 export default usersController;
