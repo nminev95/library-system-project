@@ -19,9 +19,7 @@ const AllReviews = ({ data, update, remove, create, sync, sendLikeOrDislike }) =
 
         )
     }
-
-
-
+    
     return (
         <div id="container-reviews" className="container my-5 z-depth-1" >
             <section className="dark-grey-text">

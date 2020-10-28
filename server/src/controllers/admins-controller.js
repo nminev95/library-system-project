@@ -123,8 +123,8 @@ adminsController
             }
         })
     .delete('/books/:id/reviews/:id',
-        // authMiddleware,
-        // roleMiddleware(['admin']),
+        authMiddleware,
+        roleMiddleware(['admin']),
         async (req, res) => {
             const url = req.originalUrl;
            // const userId = req.user.id;
@@ -140,8 +140,8 @@ adminsController
             }
         })
     .put('/books/:id/reviews/:id',
-        // authMiddleware,
-        // roleMiddleware(['admin']),
+        authMiddleware,
+        roleMiddleware(['admin']),
         async (req, res) => {
             const { error, review } = await booksService.updateReview(booksData)(req);
 

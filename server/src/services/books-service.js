@@ -304,8 +304,18 @@ const createReview = booksData => {
                     book: null,
                 };
             }
+
+            const bookUserReviews = await booksData.getUserReviews(userId, id);
+
+            if (bookUserReviews.length !== 0) {
+                return {
+                    error: serviceErrors.DUPLICATE_RECORD,
+                    book: null,
+                };
+            }
+            
             const _ = await booksData.pushReview(content, id, userId);
-            return { error: null, review: { message: 'Review was successfully published!' } };
+            return { error: null, reviews: { content, id, userId } };
         }
     };
 };

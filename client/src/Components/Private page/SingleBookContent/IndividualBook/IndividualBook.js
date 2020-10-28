@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import IndividualBookDetails from './IndividualBookDetails';
 import { useState, useEffect } from 'react';
 import AllReviews from '../AllReviews/AllReviews';
 
 const IndividualBook = props => {
     const { id } = props.match.params;
-
+    // const LikesDislikesContext = createContext({
+    //     likes: 
+    // })
 
     const [bookData, setBookData] = useState('');
     const [bookReviewsData, setBookReviewsData] = useState([]);
@@ -37,6 +39,8 @@ const IndividualBook = props => {
     }, [bookReviewsData.length]);
 
     const createReview = (reviewData) => {
+        console.log(reviewData)
+        console.log(id)
         fetch(`http://localhost:4000/books/${id}/reviews`, {
             method: 'POST',
             body: JSON.stringify(reviewData),
@@ -46,10 +50,7 @@ const IndividualBook = props => {
             },
         })
             .then((res) => res.json())
-            .then((data) => {
-                console.log(data)
-                setBookReviewsData([...bookReviewsData, data])
-            })
+            .then((data) => setBookReviewsData([...bookReviewsData, data]))
             .catch((err) => console.log(err));
     };
 
@@ -90,37 +91,56 @@ const IndividualBook = props => {
             .catch((error) => (setError(console.error.message)));
     };
 
-const sendLikeOrDislike = (review_id, content) => {
-    fetch(`http://localhost:4000/reviews/${review_id}/vote`, {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer  ${localStorage.getItem("token")}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(content),
-    })
-        .then((res) => res.json())
-          
-        .catch((error) => (setError(console.error.message)));
+    const sendLikeOrDislike = (review_id, content) => {
+        fetch(`http://localhost:4000/reviews/${review_id}/vote`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(content),
+        })
+            .then((res) => res.json())
+
+            .catch((error) => (setError(console.error.message)));
+
+    }
+
+    console.log(bookReviewsData)
+    const mapped = new Map();
+
     
-}
+    bookReviewsData.map((review) => {
+        if (!mapped.has(review.review_id)) {
+            mapped.set(review.review_id, {
+                Author: review.Author,
+                Author_Id: review.Author_Id,
+                Book: review.Book,
+                Dislikes: review.Dislikes,
+                Likes: review.Likes,
+                Review: review.Review,
+                review_id: review.review_id
+            })
+        }
+    })
 
+    const newData = ([...mapped.values()])
 
-    return (
-        <div>
-            <IndividualBookDetails bookData={bookData} />
+        return (
             <div>
-                <AllReviews data={bookReviewsData}
-                
-                    update={updateReview}
-                    remove={removeReview}
-                    sendLikeOrDislike={sendLikeOrDislike}
-                    create={createReview} />
+                <IndividualBookDetails bookData={bookData} />
+                <div>
+                    <AllReviews data={newData}
+
+                        update={updateReview}
+                        remove={removeReview}
+                        sendLikeOrDislike={sendLikeOrDislike}
+                        create={createReview} />
+                </div>
             </div>
-        </div>
 
 
-    )
-}
+        )
+    }
 export default IndividualBook;
 

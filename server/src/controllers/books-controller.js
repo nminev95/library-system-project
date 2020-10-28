@@ -109,7 +109,7 @@ booksController
         })
     .put('/:id/reviews/:id',
         authMiddleware,
-        roleMiddleware(['user']),
+        roleMiddleware(['user', 'admin']),
         validateBanStatusMiddleware(),
         createValidator(updateReviewSchema),
         async (req, res) => {
@@ -131,7 +131,7 @@ booksController
         })
     .delete('/:id/reviews/:id',
         authMiddleware,
-        roleMiddleware(['user']),
+        roleMiddleware(['user', 'admin']),
         validateBanStatusMiddleware(),
         async (req, res) => {
             const url = req.originalUrl;
