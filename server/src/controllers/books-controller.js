@@ -87,7 +87,7 @@ booksController
     // eslint-disable-next-line no-unused-vars
     .post('/:id/reviews',
         authMiddleware,
-        roleMiddleware(['user']),
+        roleMiddleware(['user', 'admin']),
         validateBanStatusMiddleware(),
         createValidator(createReviewSchema),
         async (req, res) => {
