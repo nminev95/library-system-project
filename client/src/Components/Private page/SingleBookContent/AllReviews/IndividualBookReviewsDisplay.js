@@ -6,7 +6,7 @@ import { useAuth } from '../../../Private page/Context/AuthContext';
 
 
 
-const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, author_id, remove, update, id }) => {
+const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, author_id, remove, update, id, sendLikeOrDislike}) => {
     const { user } = useAuth();
     const loggedUser = user.sub;
 
@@ -22,6 +22,17 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, author
         toggleUpdateMode();
     };
 
+    const sendLike = () => {
+        sendLikeOrDislike (id, { vote: "Like" });
+      
+    };
+
+    const sendDislike = () => {
+        sendLikeOrDislike (id, { vote: "Dislike" });
+      
+    };
+
+
     return (
         <div id="review-details" className="pt-2 pb-2" >
             { loggedUser === author_id ? (
@@ -29,7 +40,7 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, author
                     <MDBRow >
                         <MDBCol className="author" md="8" pt="2" > {author}</MDBCol>
                         <MDBCol id="edit-delete-buttons" className="text-right" md="4"  >
-                            
+
 
                             {updateMode ? (
                                 <MDBBtn id="button-check" tag="a" size="sm" color="grey" onClick={saveEdit}>
@@ -53,19 +64,31 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, author
                                 onChange={(ev) => setNewCurrentContent(ev.target.value)}
                             />
                         ) : (
-                                <MDBCol className="text-left" md="8">{currentContent}</MDBCol>
+                                <MDBCol className="text-left" md="10">{currentContent}</MDBCol>
                             )}
-                        <MDBCol className="text-right" md="2">Likes: {likes}</MDBCol>
-                        <MDBCol className="text-right" md="2">Dislikes: {dislikes}</MDBCol>
+                        <MDBCol className="text-right" md="1">
+                            <MDBIcon id="like" icon="thumbs-up" size="lg" onClick={sendLike}/> 
+                            {likes}
+                        </MDBCol>
+                        <MDBCol className="text-right" md="1"> 
+                        <MDBIcon id="dislike" icon="thumbs-down" size="lg" onClick={sendDislike} />
+                        {dislikes}
+                        </MDBCol>
                     </MDBRow>
                 </MDBContainer>
             ) : (
                     <MDBContainer className="block-example border border-grey p-3" className="single-review" >
                         <MDBRow >
                             <MDBCol className="author" md="8" pt="2" > {author}</MDBCol>
-                            <MDBCol className="text-left" md="8">{currentContent}</MDBCol>
-                            <MDBCol className="text-right" md="2">Likes: {likes}</MDBCol>
-                            <MDBCol className="text-right" md="2">Dislikes: {dislikes}</MDBCol>
+                            <MDBCol className="text-left" md="10">{currentContent}</MDBCol>
+                            <MDBCol className="text-right" md="1">
+                                <MDBIcon  id="like" icon="thumbs-up" size="lg" onClick={sendLike} /> 
+                                 {likes}
+                                </MDBCol>
+                            <MDBCol className="text-right" md="1"> 
+                            <MDBIcon id="dislike" icon="thumbs-down" size="lg" onClick={sendDislike} />
+                              {dislikes}
+                             </MDBCol>
                         </MDBRow>
                     </MDBContainer>
                 )}

@@ -17,7 +17,9 @@ reviewsController
         validateBanStatusMiddleware(),
         async (req, res) => {
             const reviewId = req.params.id;
+            console.log(reviewId);
             const vote = req.body.vote;
+            console.log(vote);
             const userId = req.user.id;
 
             const { error, review, author } = await booksService.voteReview(booksData)(+reviewId, +userId, vote);

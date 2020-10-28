@@ -90,6 +90,20 @@ const IndividualBook = props => {
             .catch((error) => (setError(console.error.message)));
     };
 
+const sendLikeOrDislike = (review_id, content) => {
+    fetch(`http://localhost:4000/reviews/${review_id}/vote`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(content),
+    })
+        .then((res) => res.json())
+          
+        .catch((error) => (setError(console.error.message)));
+    
+}
 
 
     return (
@@ -97,8 +111,10 @@ const IndividualBook = props => {
             <IndividualBookDetails bookData={bookData} />
             <div>
                 <AllReviews data={bookReviewsData}
+                
                     update={updateReview}
                     remove={removeReview}
+                    sendLikeOrDislike={sendLikeOrDislike}
                     create={createReview} />
             </div>
         </div>

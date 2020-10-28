@@ -3,7 +3,7 @@ import React from 'react';
 import CreateReview from './CreateReview/CreateReview';
 import IndividualBookReviewsDisplay from './IndividualBookReviewsDisplay';
 
-const AllReviews = ({ data, update, remove, create, sync }) => {
+const AllReviews = ({ data, update, remove, create, sync, sendLikeOrDislike }) => {
     if (data.message) {
 
         return (
@@ -36,6 +36,7 @@ const AllReviews = ({ data, update, remove, create, sync }) => {
                         dislikes={review.Dislikes}
                         update={update}
                         remove={remove}
+                        sendLikeOrDislike={sendLikeOrDislike}
                         key={review.review_id} />)}
                 </MDBCol>
                 <MDBCol className="p-2">

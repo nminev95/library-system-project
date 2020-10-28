@@ -44,4 +44,7 @@ color: rgb(145, 138, 129);
 #button-check:hover, #button-edit:hover, #button-trash:hover {
     opacity: 1;
 }
- 
+
+#like:hover, #dislike:hover {
+color: rgb(32, 143, 100)
+}
