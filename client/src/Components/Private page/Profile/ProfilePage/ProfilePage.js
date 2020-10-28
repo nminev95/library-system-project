@@ -1,6 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, Component } from 'react';
 import { AuthContext } from '../../Context/AuthContext';
-import { MDBBtn, MDBIcon, MDBInput } from 'mdbreact';
+import { MDBBtn, MDBIcon, MDBInput, MDBCollapse } from 'mdbreact';
+import CollapsePage from './CollapseButton/CollapseButton';
+import SingleBorrowedBook from '../BorrowedBooks/SingleBorrowedBook';
 
 const ProfilePage = () => {
     const { user } = useContext(AuthContext);
@@ -13,7 +15,8 @@ const ProfilePage = () => {
     const [passwordCheck, setPasswordCheck] = useState('')
     const [newPassword, setNewPassword] = useState('');
     const [newPasswordRepeat, setNewPasswordRepeat] = useState('');
-    const [fetchPass, setFetchPass] = useState('');
+    const [latestBorrowedBooks, setLatestBorrowedBooks] = useState([]);
+    const [borrowedBooks, setBorrowedBooks] = useState([]);
 
     const toggleEditMode = () => {
         setEditMode((editMode) => !editMode)
@@ -35,10 +38,23 @@ const ProfilePage = () => {
                 setUserData(info[0])
                 setUsername(info[0].Username)
                 setEmail(info[0].Email)
-                setFetchPass(info[0].Password)
             })
     }, [])
-    
+
+    useEffect(() => {
+        fetch(`http://localhost:4000/books/user/books`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setBorrowedBooks(data)
+                setLatestBorrowedBooks(data.slice(data.length - 2, data.length));
+            })
+    }, []);
+
     const updateUserData = (username, email) => {
         fetch(`http://localhost:4000/users/${user.sub}`, {
             method: 'PUT',
@@ -85,61 +101,78 @@ const ProfilePage = () => {
     }
 
     return (
-        <div className="profileInfoContainer">
-            <h1 style={{ margin: "40px" }}>Your profile</h1>
-            <div style={{ margin: "70px" }}>
-                <h3>User details</h3>
-                <br></br>
-                {editMode ? (
-                    <>
-                        <p ><MDBIcon icon="user-circle" /> Enter your new username:</p><MDBInput label="Your new username" value={username} onChange={(ev) => setUsername(ev.target.value)} />
+        <>
+            <div className="profileInfoContainer" style={{ display: "grid", gridTemplateColumns: "50% 50%" }}>
+                <div>
+                    <h1 style={{ margin: "40px" }}>Your profile</h1>
+                    <div style={{ margin: "70px" }}>
+                        <h3>User details</h3>
                         <br></br>
-                        <p> <MDBIcon icon="envelope" /> Enter your new email address:</p><MDBInput label="Your new email" value={email} onChange={(ev) => setEmail(ev.target.value)} />
+                        {editMode ? (
+                            <>
+                                <p ><MDBIcon icon="user-circle" /> Enter your new username:</p><MDBInput label="Your new username" value={username} onChange={(ev) => setUsername(ev.target.value)} />
+                                <br></br>
+                                <p> <MDBIcon icon="envelope" /> Enter your new email address:</p><MDBInput label="Your new email" value={email} onChange={(ev) => setEmail(ev.target.value)} />
+                                <br></br>
+                            </>
+                        ) : (
+                                <>
+                                    <p ><MDBIcon icon="user-circle" /> Username: {username}</p>
+                                    <br></br>
+                                    <p> <MDBIcon icon="envelope" /> Email address: {email}</p>
+                                    <br></br>
+                                </>
+                            )
+                        }
+                        <p> <MDBIcon icon="user-plus" /> Join date: {userData.Joined}</p>
                         <br></br>
-                    </>
-                ) : (
-                        <>
-                            <p ><MDBIcon icon="user-circle" /> Username: {username}</p>
-                            <br></br>
-                            <p> <MDBIcon icon="envelope" /> Email address: {email}</p>
-                            <br></br>
-                        </>
-                    )
-                }
-                <p> <MDBIcon icon="user-plus" /> Join date: {userData.Joined}</p>
-                <br></br>
-                <p> <MDBIcon icon="trophy" /> Current level: {userData.Level} </p>
-                <br></br>
-                <p> <MDBIcon icon="gamepad" /> Current read points: {userData.Points} </p>
-                <br></br>
-                {!passwordUpdateMode && !editMode ? (
-                    <>
-                        <MDBBtn onClick={toggleEditMode}>Edit info</MDBBtn> <MDBBtn onClick={togglePasswordUpdateMode}>Change password</MDBBtn>
-                    </>
-                ) : (null)
-                }
-                {passwordUpdateMode ? (
-                    <>
-                        <h3>Change password</h3>
-                        <MDBInput label="Enter current password" type="password" value={passwordCheck} onChange={(ev) => setPasswordCheck(ev.target.value)} />
-                        <MDBInput label="Enter new password" type="password" value={newPassword} onChange={(ev) => setNewPassword(ev.target.value)} />
-                        <MDBInput label="Confirm new password" type="password" value={newPasswordRepeat} onChange={(ev) => setNewPasswordRepeat(ev.target.value)} />
-                        <MDBBtn onClick={() => updatePassword(passwordCheck, newPassword)}>Update password</MDBBtn> <MDBBtn onClick={togglePasswordUpdateMode}>Cancel</MDBBtn>
-                    </>
-                ) : (null)
-                }
-                {editMode ? (
-                    <>
-                        <MDBBtn onClick={() => {
-                            updateUserData(username, email)
-                            toggleEditMode()
-                        }}>Save changes</MDBBtn> <MDBBtn onClick={toggleEditMode}>Cancel</MDBBtn>
-                    </>
-                ) : (null)
+                        <p> <MDBIcon icon="trophy" /> Current level: {userData.Level} </p>
+                        <br></br>
+                        <p> <MDBIcon icon="gamepad" /> Current read points: {userData.Points} </p>
+                        <br></br>
+                        {!passwordUpdateMode && !editMode ? (
+                            <>
+                                <MDBBtn onClick={toggleEditMode}>Edit info</MDBBtn> <MDBBtn onClick={togglePasswordUpdateMode}>Change password</MDBBtn>
+                            </>
+                        ) : (null)
+                        }
+                        {passwordUpdateMode ? (
+                            <>
+                                <h3>Change password</h3>
+                                <MDBInput label="Enter current password" type="password" value={passwordCheck} onChange={(ev) => setPasswordCheck(ev.target.value)} />
+                                <MDBInput label="Enter new password" type="password" value={newPassword} onChange={(ev) => setNewPassword(ev.target.value)} />
+                                <MDBInput label="Confirm new password" type="password" value={newPasswordRepeat} onChange={(ev) => setNewPasswordRepeat(ev.target.value)} />
+                                <MDBBtn onClick={() => updatePassword(passwordCheck, newPassword)}>Update password</MDBBtn> <MDBBtn onClick={togglePasswordUpdateMode}>Cancel</MDBBtn>
+                            </>
+                        ) : (null)
+                        }
+                        {editMode ? (
+                            <>
+                                <MDBBtn onClick={() => {
+                                    updateUserData(username, email)
+                                    toggleEditMode()
+                                }}>Save changes</MDBBtn> <MDBBtn onClick={toggleEditMode}>Cancel</MDBBtn>
+                            </>
+                        ) : (null)
 
-                }
+                        }
+                    </div>
+                </div>
+                <div>
+                    <h1 style={{ margin: "40px" }}>Borrowed books and history</h1>
+                    <div style={{ margin: "70px" }}>
+                        <h3>Recently borrowed books</h3>
+                        <div style={{ display: "grid", gridTemplateColumns: "50% 50%" }}>
+                            {latestBorrowedBooks.map((book) => <SingleBorrowedBook book={book} key={book.book_Id} />)}
+                        </div>
+                    </div>
+                </div >
             </div>
-        </div >
+            <div style={{textAlign:"center"}}>
+            <CollapsePage books={borrowedBooks} />
+            </div>
+        </>
+
     )
 }
 
