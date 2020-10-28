@@ -13,7 +13,7 @@ const NavBar = () => {
   const [search, setSearch] = useState('');
   const [state, setState] = useState(false)
   const history = useHistory();
-  console.log(user)
+  
   const toggleCollapse = () => {
     setState((prevState) => !prevState);
   }
