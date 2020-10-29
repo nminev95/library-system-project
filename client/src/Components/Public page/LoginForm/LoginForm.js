@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../Private page/Context/AuthContext';
 import { minLen, maxLen, required, regex } from '../../../Validators.js';
 import decode from 'jwt-decode';
-import SweetAlert from 'sweetalert-react';
-// import 'sweetalert-react/node_modules/dist/sweetalert/sweetalert.css'
+import style from '../../../../node_modules/sweetalert-react/node_modules/sweetalert/dist/sweetalert.css'
+import swal from '@sweetalert/with-react'
 
 const LoginForm = () => {
   const { setLoginState } = useContext(AuthContext);
@@ -61,8 +61,15 @@ const LoginForm = () => {
       const data = await fetch('http://localhost:4000/auth/signin', settings);
       const json = await data.json()
       if (json.message) {
-        setInvalidData(json.message)
+        const _ = setInvalidData(json.message)     
       } else {
+        const modal = await swal({
+          title: "Success!",
+          text: "You have logged in successfully!",
+          icon: "success",
+          buttons: false,
+          timer: 1500,
+        })
         localStorage.setItem("token", json.token);
         const user = decode(json.token);
         setLoginState({ isLoggedIn: true, user: user });
@@ -85,12 +92,6 @@ const LoginForm = () => {
                   <strong>Sign in</strong>
                 </h3>
               </div>
-              <SweetAlert
-                show={showModal}
-                title="Demo"
-                text="SweetAlert in React"
-                onConfirm={() => setShowModal((prevState) => !prevState)}
-              />
               <div className="grey-text">
                 {invalidData ? (
                   <>
@@ -146,7 +147,7 @@ const LoginForm = () => {
                 }
               </div>
               <div className="text-center mb-3">
-                <MDBBtn id="main-button" onClick={() => setShowModal((prevState) => !prevState)} > Sign in </MDBBtn>
+                <MDBBtn id="main-button" onClick={() => sendUserData({ username: usernameControl.value, password: passwordControl.value })} > Sign in </MDBBtn>
               </div>
             </MDBCardBody>
             <MDBModalFooter className="mx-5 pt-3 mb-1">
