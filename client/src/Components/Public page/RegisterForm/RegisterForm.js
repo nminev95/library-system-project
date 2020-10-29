@@ -19,7 +19,7 @@ const LoginForm = () => {
 
     const handleSubmit = () => {
         if (password !== confirmPassword) {
-        return alert('Passwords don\'t match!');
+            return alert('Passwords don\'t match!');
         }
     }
 
@@ -44,46 +44,51 @@ const LoginForm = () => {
         <MDBContainer className="registerContainer">
             <MDBRow className="registerRow">
                 <MDBCol className="registerCard" md="6">
-                    <form>
-                        <p className="h5 text-center mb-4">Sign up</p>
-                        <div className="grey-text">
-                            <MDBInput label="Your name" icon="user" group type="text" validate error="wrong"
-                                success="right"
-                                value={username}
-                                onChange={(event) => setUsername(event.target.value)}
-                            />
-                            <MDBInput label="Your email" icon="envelope" group type="email" validate error="wrong"
-                                success="right"
-                                value={email}
-                                onChange={(event) => setEmail(event.target.value)}
-                            />
-                            <MDBInput label="Your password" icon="lock" group type="password" validate
-                                error="wrong" success="right"
-                                value={password}
-                                onChange={(event) => setPassword(event.target.value)}
-                            />
-                            <MDBInput label="Confirm your password" icon="exclamation-triangle" group type="password" validate 
-                                value={confirmPassword}
-                                onChange={(event) => setConfirmPassword(event.target.value)}
-                            />
-                        </div>
-                        <div className="text-center">
-                            <MDBBtn id="main-button" onClick={() => {
-                                sendUserData({username, password, email})
-                                }}>Register</MDBBtn>
-                        </div>
-                        <div className="row my-3 d-flex justify-content-center">
-                           
-                            <MDBModalFooter className="mx-5 pt-3 mb-1">
-                                <p className="font-small grey-text d-flex justify-content-end">
-                                    Already have an account?
+                    <MDBCard>
+                        <MDBCardBody className="mx-4">
+                            <form>
+                                <p className="h5 text-center mb-4">Sign up</p>
+                                <div className="grey-text">
+                                    <MDBInput label="Your name" icon="user" group type="text" validate error="wrong"
+                                        success="right"
+                                        value={username}
+                                        onChange={(event) => setUsername(event.target.value)}
+                                    />
+                                    <MDBInput label="Your email" icon="envelope" group type="email" validate error="wrong"
+                                        success="right"
+                                        value={email}
+                                        onChange={(event) => setEmail(event.target.value)}
+                                    />
+                                    <MDBInput label="Your password" icon="lock" group type="password" validate
+                                        error="wrong" success="right"
+                                        value={password}
+                                        onChange={(event) => setPassword(event.target.value)}
+                                    />
+                                    <MDBInput label="Confirm your password" icon="exclamation-triangle" group type="password" validate
+                                        value={confirmPassword}
+                                        onChange={(event) => setConfirmPassword(event.target.value)}
+                                    />
+                                </div>
+                                <div className="text-center">
+                                    <MDBBtn id="main-button" onClick={() => {
+                                        sendUserData({ username, password, email })
+                                    }}>Register</MDBBtn>
+                                </div>
+                                <div className="row my-3 d-flex justify-content-center">
+
+                                    <MDBModalFooter className="mx-5 pt-3 mb-1">
+                                        <p className="font-small grey-text d-flex justify-content-end">
+                                            Already have an account?
                                     <Link to="/auth/signin">
-                                        <a href="#!" className="blue-text ml-1">Sign In</a>
-                                    </Link>
-                                </p>
-                            </MDBModalFooter>
-                        </div>
-                    </form>
+                                                <a href="#!" className="blue-text ml-1">Sign In</a>
+                                            </Link>
+                                        </p>
+                                    </MDBModalFooter>
+                                </div>
+                            </form>
+                        </MDBCardBody>
+
+                    </MDBCard>
                 </MDBCol>
             </MDBRow>
         </MDBContainer>

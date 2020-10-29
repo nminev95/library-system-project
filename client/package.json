@@ -30,7 +30,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-star-rating-component": "^1.4.1",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "sweetalert-react": "^0.4.11"
   },
   "scripts": {
     "start": "react-scripts start",
