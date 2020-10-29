@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './RegisterForm.css';
+import TextField from '@material-ui/core/TextField';
 import { Link } from 'react-router-dom';
 import 'mdbreact/dist/css/mdb.css'
 import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBInput, MDBBtn, MDBIcon, MDBModalFooter } from 'mdbreact';
@@ -9,8 +10,10 @@ import {
     faFacebook,
 } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import ValidationTextFields from './register';
 
-const LoginForm = () => {
+const LoginForm = () => {  
+    
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -41,7 +44,9 @@ const LoginForm = () => {
     }
 
     return (
+        
         <MDBContainer className="registerContainer">
+            <ValidationTextFields/>
             <MDBRow className="registerRow">
                 <MDBCol className="registerCard" md="6">
                     <MDBCard>

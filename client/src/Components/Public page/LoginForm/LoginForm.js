@@ -17,7 +17,7 @@ const LoginForm = () => {
   const [usernameControl, setUsernameControl] = useState({
     value: '',
     valid: false,
-    validators: [required, minLen(5), maxLen(20)],
+    validators: [required],
   });
   const [passwordControl, setPasswordControl] = useState({
     value: '',
@@ -61,7 +61,13 @@ const LoginForm = () => {
       const data = await fetch('http://localhost:4000/auth/signin', settings);
       const json = await data.json()
       if (json.message) {
-        const _ = setInvalidData(json.message)     
+        const _ = setInvalidData(json.message)   
+        const modal = await swal({
+          title: "Oops!",
+          text: "Looks like you have enter an invalid username/password!",
+          icon: "error",
+          button: "Try again"
+        })  
       } else {
         const modal = await swal({
           title: "Success!",
@@ -101,11 +107,13 @@ const LoginForm = () => {
                       label="Your username"
                       group
                       icon="user"
+                      error="Whoops!"
                       type="text"
                       value={usernameControl.value}
                       onChange={onInputChange}
                       onFocus={() => setInvalidData(false)}
                     />
+                    <p style={{color:"#FF0000"}}>Username is required.</p>
                     <MDBInput
                       style={{ borderBottom: "1px solid #FF0000" }}
                       name="password"
@@ -118,7 +126,8 @@ const LoginForm = () => {
                       value={passwordControl.value}
                       onChange={onInputChange}
                     />
-                    <p style={{ color: "#FF0000", textAlign: "center" }}>Invalid username/password.</p>
+                    <p style={{color:"#FF0000"}}>Password is required.</p>
+
                   </>
                 ) : (
                     <>
