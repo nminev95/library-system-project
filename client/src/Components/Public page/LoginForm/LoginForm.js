@@ -6,14 +6,48 @@ import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { AuthContext } from '../../Private page/Context/AuthContext';
+import { minLen, maxLen, required, regex }  from '../../../Validators.js';
+
 import decode from 'jwt-decode';
 
-
 const LoginForm = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const { setLoginState } = useContext(AuthContext);
   const history = useHistory();
+  const [usernameControl, setUsernameControl] = useState({
+    value: '',
+    valid: false,
+    validators: [required, minLen(5), maxLen(20)],
+  });
+
+  console.log(usernameControl.validators)
+  const [passwordControl, setPasswordControl] = useState({
+    value: '',
+    valid: false,
+    validators: [
+      (value) => value.trim().length >= 1,
+      (value) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,30}$/.test(value),
+    ]
+  });
+
+  const validate = (value, validators) => {
+    return validators.every((validator) => validator(value));
+  }
+
+  const onInputChange = (ev) => {
+    const { value, name } = ev.target;
+
+    if (name === "username") {
+      const copyControl = { ...usernameControl }
+      copyControl.value = value;
+      copyControl.valid = validate(value, copyControl.validators)
+      setUsernameControl(copyControl);
+    } else if (name === 'password') {
+      const copyControl = { ...passwordControl }
+      copyControl.value = value;
+      copyControl.valid = validate(value, passwordControl.validators)
+      setPasswordControl(copyControl);
+    }
+  }
 
   const sendUserData = async (userObject) => {
 
@@ -41,6 +75,7 @@ const LoginForm = () => {
 
 
   return (
+
     <MDBContainer className="loginContainer">
       <MDBRow className='loginRow'>
         <MDBCol md="6">
@@ -52,27 +87,27 @@ const LoginForm = () => {
                 </h3>
               </div>
               <MDBInput
+                name="username"
                 label="Your username"
                 group
                 icon="user"
                 type="text"
-                validate
-                error="wrong"
-                success="right"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                required
+                value={usernameControl.value}
+                onChange={onInputChange}
               />
+              {!usernameControl.valid && <div>Invalid username!</div>}
               <MDBInput
+                name="password"
                 label="Your password"
                 group
                 icon="lock"
                 type="password"
                 validate
                 containerClass="mb-0"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
+                value={passwordControl.value}
+                onChange={onInputChange}
               />
+              {!passwordControl.valid ? <div>Invalid username!</div> : null}
               <p className="font-small blue-text d-flex justify-content-end pb-3">
                 Forgot
                           <a href="#!" className="blue-text ml-1">
@@ -81,7 +116,7 @@ const LoginForm = () => {
                           </a>
               </p>
               <div className="text-center mb-3">
-                <MDBBtn id="main-button" onClick={() => sendUserData({ username, password })} > Sign in </MDBBtn>
+                <MDBBtn id="main-button" onClick={() => sendUserData()} > Sign in </MDBBtn>
               </div>
               <p className="font-small dark-grey-text text-right d-flex justify-content-center mb-3 pt-2">
 
