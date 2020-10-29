@@ -13,7 +13,7 @@ const NavBar = () => {
   const [search, setSearch] = useState('');
   const [state, setState] = useState(false)
   const history = useHistory();
-  
+
   const toggleCollapse = () => {
     setState((prevState) => !prevState);
   }
@@ -74,6 +74,11 @@ const NavBar = () => {
                       <MDBIcon icon="user" className="d-md-inline  " />
                     </MDBDropdownToggle>
                     <MDBDropdownMenu className="drop-container right basic">
+                      {user.role === 'admin' ? (
+                        <Link to="/admin/dashboard">
+                          <MDBDropdownItem href="#!">Admin panel</MDBDropdownItem>
+                        </Link>
+                      ) : (null)}
                       <Link to="/profile">
                         <MDBDropdownItem href="#!">Profile</MDBDropdownItem>
                       </Link>
