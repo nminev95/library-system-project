@@ -80,18 +80,10 @@ const IndividualBookDetails = ({ bookData }) => {
 
                         <div id="buttons" className="text-center p-5">
                             {borrowMode && bookData.Status === "Free" ?
-                                <>
-                                    <MDBBtn id="main-button" onClick={borrowBoook}> Borrow </MDBBtn>
-                                </>
-                                :
-                                <>
-                                    {borrower === loggedUser ?
-                                        <>
-                                            <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>
-                                        </> :
-                                        <div>The book has been borrowed by another user! :) </div>
-                                    }
-                                </>
+                                   <MDBBtn id="main-button" onClick={borrowBoook}> Borrow </MDBBtn> :
+                                   <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>
+   
+                
                             }
                         </div>
 
