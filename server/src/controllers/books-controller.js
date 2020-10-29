@@ -154,9 +154,10 @@ booksController
         roleMiddleware(['admin', 'user']),
         validateBanStatusMiddleware(),
         async (req, res) => {
-            const bookId = req.params.id;
-            const rating = req.body.rating;
+            const bookId = req.params.id; 
+            const rating = req.body.rating;        
             const userId = req.user.id;
+           
 
             const { error, rate } = await booksService.rateBook(booksData)(+bookId, +userId, +rating);
 
@@ -199,7 +200,6 @@ booksController
         async (req, res) => {
             const id = req.params.id;
             const user_Id = req.user.id;
-            console.log(id, user_Id);
 
             const { error } = await booksService.returnABook(booksData)(+id, +user_Id);
 

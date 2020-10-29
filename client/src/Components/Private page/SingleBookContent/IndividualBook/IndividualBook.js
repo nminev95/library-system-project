@@ -3,6 +3,7 @@ import IndividualBookDetails from './IndividualBookDetails';
 import { useState, useEffect } from 'react';
 import AllReviews from '../AllReviews/AllReviews';
 
+
 const IndividualBook = props => {
     const { id } = props.match.params;
     // const LikesDislikesContext = createContext({
@@ -12,6 +13,7 @@ const IndividualBook = props => {
     const [bookData, setBookData] = useState('');
     const [bookReviewsData, setBookReviewsData] = useState([]);
     const [error, setError] = useState(null);
+    
 
     const updateReviews = (records) => {
         setBookReviewsData(records)
@@ -106,7 +108,7 @@ const IndividualBook = props => {
 
     }
 
-    console.log(bookReviewsData)
+   
     const mapped = new Map();
 
     

@@ -4,6 +4,7 @@ import './IndividualBook.css';
 import 'mdbreact/dist/css/mdb.css'
 import { MDBBtn } from 'mdbreact';
 import { useAuth } from '../../../Private page/Context/AuthContext';
+import BeautyStars from "beauty-stars";
 
 
 
@@ -11,8 +12,14 @@ const IndividualBookDetails = ({ bookData }) => {
     const { user } = useAuth();
     const loggedUser = user.sub;
     const bookId = bookData.id;
+    console.log(bookId);
     const borrower = bookData.Borrower;
+
     const [borrowMode, setModeBorrow] = useState(true);
+    const [ratingValue, setRatingValue] = useState(null);
+    console.log(ratingValue)
+    const [error, setError] = useState('');
+
     const toggleBorrowMode = () => {
         setModeBorrow((prevState) => !prevState);
     };
@@ -51,6 +58,18 @@ const IndividualBookDetails = ({ bookData }) => {
         }
     }
 
+    const sendRating = (bookId, ratingValue) => {
+        fetch(`http://localhost:4000/books/${bookId}/rate`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ rating: ratingValue }),
+        })
+            .then((res) => res.json())
+            .catch((error) => (setError(console.error.message)));
+    };
 
     return (
 
@@ -69,7 +88,14 @@ const IndividualBookDetails = ({ bookData }) => {
                             <div> Written by: {bookData.Author}</div>
                         </div>
                         <div className="p-1 text-center text-justify ">
-                            <div>{bookData.Rating}</div>
+                            <div className="p-1 text-center text-justify">
+                                <BeautyStars
+                                    value={bookData.Rating}
+                                    onChange={(value) => 
+                                    (setRatingValue(value), sendRating(bookId, value))
+                                }
+                            />
+                            </div>
                         </div>
                         <div className="p-3 text-center text-justify bold ">
                             <div>Status: {bookData.Status}</div>
@@ -80,10 +106,10 @@ const IndividualBookDetails = ({ bookData }) => {
 
                         <div id="buttons" className="text-center p-5">
                             {borrowMode && bookData.Status === "Free" ?
-                                   <MDBBtn id="main-button" onClick={borrowBoook}> Borrow </MDBBtn> :
-                                   <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>
-   
-                
+                                <MDBBtn id="main-button" onClick={borrowBoook}> Borrow </MDBBtn> :
+                                <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>
+
+
                             }
                         </div>
 
