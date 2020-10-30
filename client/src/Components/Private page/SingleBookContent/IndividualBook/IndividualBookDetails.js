@@ -5,10 +5,13 @@ import 'mdbreact/dist/css/mdb.css'
 import { MDBBtn } from 'mdbreact';
 import { useAuth } from '../../../Private page/Context/AuthContext';
 import ReactStars from "react-rating-stars-component";
+import style from '../../../../../node_modules/sweetalert-react/node_modules/sweetalert/dist/sweetalert.css'
+import swal from '@sweetalert/with-react'
 
 
 const IndividualBookDetails = ({ bookData, setData }) => {
     const { user } = useAuth();
+
     const loggedUser = user.sub;
     const bookId = bookData.id;
 
@@ -16,6 +19,7 @@ const IndividualBookDetails = ({ bookData, setData }) => {
     const rating = bookData.Rating;
     console.log(rating);
     const [error, setError] = useState('');
+    const [invalidVoidMsg, setInvalidVoidMsg] = useState(null)
 
     const borrowBoook = async () => {
 
@@ -67,9 +71,20 @@ const IndividualBookDetails = ({ bookData, setData }) => {
         };
         try {
             const data = await fetch(`http://localhost:4000/books/${bookId}/rate`, settings);
-            const updatedData = await data.json();
-            console.log(updatedData.book[0]);
-            setData(updatedData.book[0])
+            
+            const json = await data.json()
+            console.log(json.message);
+            if (json.message) {
+              const modal = await swal({
+                title: "Oops!",
+                text: `${json.message}`,
+                icon: "error",
+                button: "Ok"
+              })}
+
+            const newData = json.book[0];   
+            setData(newData)
+
         } catch (error) {
             return error.message;
         }
