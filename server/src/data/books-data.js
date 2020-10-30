@@ -96,7 +96,7 @@ const borrowedByUser = async(user_Id) =>{
     return await pool.query(sql, [user_Id]);
 };
 
-const getPageResult = async (offset) => {
+const getPageResult = async (limit, offset) => {
     const sql = `
             SELECT
             b.book_Id AS id,
@@ -124,11 +124,17 @@ const getPageResult = async (offset) => {
             br.rating_Id = rr.rating_Id
         GROUP BY 
             IFNULL(b.book_Id, b.description)
-        LIMIT 5
-        OFFSET ${offset}
+        LIMIT ? OFFSET ?;
         `;
 
-    return await pool.query(sql, [offset]);
+    return await pool.query(sql, [limit, offset]);
+};
+
+const getBooksCount = async () => {
+    const sql = `
+        SELECT COUNT(*) as count FROM books 
+    `;
+    return await pool.query(sql);
 };
 
 /** 
@@ -797,4 +803,5 @@ export default {
     getPageResult,
     getReviewsInDatabase,
     borrowedByUser,
+    getBooksCount
 };

@@ -98,6 +98,24 @@ const getBookById = booksData => {
     };
 };
 
+const getPage = booksData => {
+    return async (pageNumber) => {
+        const limit = 9;
+        const offset = (pageNumber - 1) * limit;
+
+        const page = await booksData.getPageResult(limit, offset);     
+        const [{ count }] = await booksData.getBooksCount();
+
+        return {
+            books: page,
+            count: count,
+            currentPage: pageNumber,
+            hasNext: (offset + limit) < count,
+            hasPrevious: pageNumber > 1
+        };
+    }
+}
+
 /**
 * Gets all revies found in the database.
 * @param module books data SQL queries module.
@@ -691,4 +709,5 @@ export default {
     voteReview,
     getAllReviews,
     getBorrowedBooks,
+    getPage
 };

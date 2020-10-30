@@ -13,11 +13,36 @@ const booksController = express.Router();
 booksController
     //get all books
     .get('/',
-        // authMiddleware,
-        // roleMiddleware(['admin', 'user']),
+        authMiddleware,
+        roleMiddleware(['admin', 'user']),
+        async (req, res) => {
+            const page = +req.query.page;
+            //const { error, books } = await booksService.getAllBooks(booksData)(req.query);
+            const { error, books } = await booksService.getPage(booksData)(page)
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'No books found!' });
+            } else {
+                res.status(200).send(await booksService.getPage(booksData)(page));
+            }
+        })
+        .get('/latest',
+        authMiddleware,
+        roleMiddleware(['admin', 'user']),
         async (req, res) => {
             const { error, books } = await booksService.getAllBooks(booksData)(req.query);
-
+            // const { error, books } = await booksService.getPage(booksData)(page)
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'No books found!' });
+            } else {
+                res.status(200).send(books);
+            }
+        })
+        .get('/top',
+        authMiddleware,
+        roleMiddleware(['admin', 'user']),
+        async (req, res) => {
+            const { error, books } = await booksService.getAllBooks(booksData)(req.query);
+            // const { error, books } = await booksService.getPage(booksData)(page)
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'No books found!' });
             } else {
