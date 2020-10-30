@@ -4,8 +4,7 @@ import './IndividualBook.css';
 import 'mdbreact/dist/css/mdb.css'
 import { MDBBtn } from 'mdbreact';
 import { useAuth } from '../../../Private page/Context/AuthContext';
-import BeautyStars from "beauty-stars";
-
+import ReactStars from "react-rating-stars-component";
 
 
 const IndividualBookDetails = ({ bookData }) => {
@@ -14,10 +13,13 @@ const IndividualBookDetails = ({ bookData }) => {
     const bookId = bookData.id;
     console.log(bookId);
     const borrower = bookData.Borrower;
-
+    const rating = ((typeof(bookData.Rating)));
+    
+    
+    console.log(bookData)
     const [borrowMode, setModeBorrow] = useState(true);
-    const [ratingValue, setRatingValue] = useState(null);
-    console.log(ratingValue)
+    const [ratingValue, setRatingValue] = useState(rating);
+    console.log(rating)
     const [error, setError] = useState('');
 
     const toggleBorrowMode = () => {
@@ -71,6 +73,15 @@ const IndividualBookDetails = ({ bookData }) => {
             .catch((error) => (setError(console.error.message)));
     };
 
+    const thirdExample = {
+        size: 40,
+        count: 5,
+        isHalf: true,
+        value: ratingValue,
+        color: "grey",
+        activeColor: "yellow",
+        onChange: (value) => (setRatingValue(value), sendRating(bookId, value))};
+    
     return (
 
         <div id="book-details" className="container my-5 z-depth-1">
@@ -89,12 +100,14 @@ const IndividualBookDetails = ({ bookData }) => {
                         </div>
                         <div className="p-1 text-center text-justify ">
                             <div className="p-1 text-center text-justify">
-                                <BeautyStars
-                                    value={bookData.Rating}
-                                    onChange={(value) => 
-                                    (setRatingValue(value), sendRating(bookId, value))
-                                }
-                            />
+                                <ReactStars {...thirdExample}
+                                    
+
+                                //     value={bookData.Rating}
+                                //     onChange={(value) => 
+                                //     (setRatingValue(value), sendRating(bookId, value))
+                                // }
+                                />
                             </div>
                         </div>
                         <div className="p-3 text-center text-justify bold ">

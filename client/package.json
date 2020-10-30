@@ -28,6 +28,7 @@
     "react-icons": "^3.11.0",
     "react-materialize": "^3.9.3",
     "react-nice-dates": "^3.0.7",
+    "react-rating-stars-component": "^2.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-star-rating-component": "^1.4.1",
