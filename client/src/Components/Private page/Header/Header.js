@@ -7,6 +7,7 @@ import 'mdbreact/dist/css/mdb.css';
 import { BrowserRouter as Router, Link, useHistory, useLocation } from 'react-router-dom';
 import { MDBFormInline, MDBNavbar, MDBNavbarBrand, MDBNavbarToggler, MDBIcon, MDBBtn, MDBCollapse, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from 'mdbreact';
 import { AuthContext } from '../Context/AuthContext';
+import swal from 'sweetalert';
 
 const NavBar = () => {
   const { isLoggedIn, setLoginState, user } = useContext(AuthContext);
@@ -19,9 +20,30 @@ const NavBar = () => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setLoginState(false);
-    history.push('/')
+
+    fetch('http://localhost:4000/signout', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message) {
+          swal({
+            title: "Sorry to see you go! :(",
+            text: "You have logged out successfully!",
+            icon: "success",
+            buttons: false,
+            timer: 1500,
+          })
+        }
+      })
+    setTimeout(() => {
+      localStorage.removeItem("token");
+      setLoginState(false);
+    }, 1500)
   }
 
   const url = `/search?query=${search}`
