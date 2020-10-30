@@ -771,6 +771,13 @@ const getUserVoteForBook = async (reviewId, userId) => {
     return await pool.query(sql, [reviewId, userId]);
 };
 
+const getBookGenres = async () => {
+    const sql = `
+    select genre from books group by genre`
+
+    return await pool.query(sql);
+}
+
 export default {
     getReviews,
     getById,
@@ -805,5 +812,6 @@ export default {
     getPageResult,
     getReviewsInDatabase,
     borrowedByUser,
-    getBooksCount
+    getBooksCount,
+    getBookGenres
 };

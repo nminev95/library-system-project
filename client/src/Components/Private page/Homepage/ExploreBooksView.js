@@ -12,6 +12,8 @@ const HomepageLogged = (props) => {
     const [stateData, setStateData] = useState([]);
     const [search, setSearch] = useState('');
     const { page, query } = useCustomQueryParams();
+    const [genres, setGenres] = useState([]);
+
     const url = `http://localhost:4000/books?page=${page}`
     useEffect(() => {
         fetch(url, {
@@ -25,11 +27,23 @@ const HomepageLogged = (props) => {
             .then(data => setStateData(data))
     }, [url]);
 
+    useEffect(() => {
+        fetch('http://localhost:4000/books/genres', {
+            mode: 'cors',
+            headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(res => res.json())
+            .then(data => setGenres(data))
+    },[]);
+    
     return (
         <div>
             <div style={{ display: "grid", gridTemplateColumns: "15% 85%", background: "#EDEDEE" }}>
                 <div>
-                    <SideDrawer />
+                    <SideDrawer genres={genres}/>
                 </div>
                 <div>
                     {stateData.books && <Books books={stateData.books} />}

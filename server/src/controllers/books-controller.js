@@ -25,7 +25,19 @@ booksController
                 res.status(200).send(await booksService.getPage(booksData)(page, req.query));
             }
         })
-        .get('/latest',
+    .get('/genres',
+        authMiddleware,
+        roleMiddleware(['admin', 'user']),
+        async (req, res) => {
+
+            const { error, genres } = await booksService.getGenres(booksData)()
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'No genres found!' });
+            } else {
+                res.status(200).send(genres);
+            }
+        })
+    .get('/latest',
         authMiddleware,
         roleMiddleware(['admin', 'user']),
         async (req, res) => {
@@ -37,7 +49,7 @@ booksController
                 res.status(200).send(books);
             }
         })
-        .get('/top',
+    .get('/top',
         authMiddleware,
         roleMiddleware(['admin', 'user']),
         async (req, res) => {
@@ -68,7 +80,7 @@ booksController
         // roleMiddleware(['admin', 'user']),
         async (req, res) => {
             const page = req.params.id;
-           
+
             const { error, books } = await booksService.getAllBooks(booksData)(req.query, +page);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
@@ -117,8 +129,8 @@ booksController
         createValidator(createReviewSchema),
         async (req, res) => {
             const { id } = req.params;
-            const { content } = req.body;      
-            const userId = req.user.id;      
+            const { content } = req.body;
+            const userId = req.user.id;
             const role = req.user.role;
 
             const { error, reviews } = await booksService.createReview(booksData)(+id, +userId, content, role);
@@ -139,8 +151,8 @@ booksController
         createValidator(updateReviewSchema),
         async (req, res) => {
             const { content } = req.body;
-            const { id } = req.params;          
-            const userId = req.user.id;       
+            const { id } = req.params;
+            const userId = req.user.id;
             const role = req.user.role;
             const { error, review } = await booksService.updateReview(booksData)(+id, content, +userId, role);
 
@@ -179,10 +191,10 @@ booksController
         roleMiddleware(['admin', 'user']),
         validateBanStatusMiddleware(),
         async (req, res) => {
-            const bookId = req.params.id; 
-            const rating = req.body.rating;        
+            const bookId = req.params.id;
+            const rating = req.body.rating;
             const userId = req.user.id;
-           
+
 
             const { error, rate } = await booksService.rateBook(booksData)(+bookId, +userId, +rating);
 
@@ -196,7 +208,7 @@ booksController
                 res.status(400).send({ message: 'You have already rated this book! You can update your rating if you have changed your mind!' });
             } else {
                 const { book } = await booksService.getBookById(booksData)(+bookId);
-                res.status(201).send({book});
+                res.status(201).send({ book });
             }
         })
     //borrow a book
@@ -208,8 +220,8 @@ booksController
             const id = req.params.id;
             const user_Id = req.user.id;
 
-            const { error} = await booksService.borrowABook(booksData)(+user_Id, +id);
-           
+            const { error } = await booksService.borrowABook(booksData)(+user_Id, +id);
+
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'Book not found!' });
@@ -238,7 +250,7 @@ booksController
             } else {
                 const { book } = await booksService.getBookById(booksData)(+id);
                 const _ = await gamificationService.addUserPoints(gamificationData)(user_Id);
-                res.status(200).send({book});
+                res.status(200).send({ book });
             }
         });
 

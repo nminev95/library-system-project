@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
 import { useLocation } from 'react-router-dom';
 import './Footer.css';
+import AuthContext from "../Context/AuthContext";
 
 const Footer = () => {
-  const path = useLocation().pathname
-
+  const path = useLocation().pathname;
+  const { user } = useContext(AuthContext);
   return (
     <>
-      {path.includes('admin') ?
+      {path.includes('admin') || !user ?
         (<MDBFooter style={{display:"none"}}/>) 
         : (
         <MDBFooter id="footerDiv" color="grey darken-3" className="font-small lighten-3 pt-4 ">

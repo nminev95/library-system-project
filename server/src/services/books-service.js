@@ -117,6 +117,20 @@ const getPage = booksData => {
     }
 }
 
+const getGenres = booksData => {
+    return async () => {
+        const genres = await booksData.getBookGenres();
+
+        if (genres.length === 0) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                book: null,
+            };
+        }
+
+        return { error: null, genres: genres }
+    }
+}
 /**
 * Gets all revies found in the database.
 * @param module books data SQL queries module.
@@ -710,5 +724,6 @@ export default {
     voteReview,
     getAllReviews,
     getBorrowedBooks,
-    getPage
+    getPage,
+    getGenres
 };
