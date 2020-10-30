@@ -10,22 +10,16 @@ import ReactStars from "react-rating-stars-component";
 const IndividualBookDetails = ({ bookData, setData }) => {
     const { user } = useAuth();
     const loggedUser = user.sub;
+    console.log(loggedUser);
     const bookId = bookData.id;
-    console.log(bookId);
-    const borrower = bookData.Borrower;
-    const rating =bookData.Rating;
-    
-    
-    console.log(bookData)
-    const [borrowMode, setModeBorrow] = useState(true);
-console.log(rating) //ЛОГВА 
-    const [ratingValue, setRatingValue] = useState(rating);
-    console.log(ratingValue) //НЕ ЛОГВА
-    const [error, setError] = useState('');
 
-    const toggleBorrowMode = () => {
-        setModeBorrow((prevState) => !prevState);
-    };
+    const borrower = bookData.Borrower;
+    console.log(borrower);
+    const rating = bookData.Rating;
+
+    const [borrowMode, setModeBorrow] = useState(true);
+    const [ratingValue, setRatingValue] = useState(rating);
+    const [error, setError] = useState('');
 
     const borrowBoook = async () => {
 
@@ -40,7 +34,6 @@ console.log(rating) //ЛОГВА
             const data = await fetch(`http://localhost:4000/books/${bookId}`, ids);
             const updatedData = await data.json();
             setData(updatedData.book[0])
-            toggleBorrowMode();
         } catch (error) {
             return error.message;
         }
@@ -60,7 +53,7 @@ console.log(rating) //ЛОГВА
             const updatedData = await data.json();
             console.log(updatedData.book[0]);
             setData(updatedData.book[0])
-            toggleBorrowMode();
+            // toggleBorrowMode();
         } catch (error) {
             return error.message;
         }
@@ -86,8 +79,9 @@ console.log(rating) //ЛОГВА
         value: ratingValue,
         color: "grey",
         activeColor: "yellow",
-        onChange: (value) => (setRatingValue(value), sendRating(bookId, value))};
-    
+        onChange: (value) => (setRatingValue(value), sendRating(bookId, value))
+    };
+
     return (
 
         <div id="book-details" className="container my-5 z-depth-1">
@@ -118,12 +112,12 @@ console.log(rating) //ЛОГВА
                         </div>
 
                         <div id="buttons" className="text-center p-5">
-                            {borrowMode && bookData.Status === "Free" ?
-                                <MDBBtn id="main-button" onClick={borrowBoook}> Borrow </MDBBtn> :
-                                <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>
+                            {bookData.Status === "Free" &&
+                                (<MDBBtn id="main-button" onClick={borrowBoook}> Borrow </MDBBtn>)}
 
+                            { bookData.Status === "Borrowed" && loggedUser === borrower && (
+                                <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>)}
 
-                            }
                         </div>
 
                     </div>
