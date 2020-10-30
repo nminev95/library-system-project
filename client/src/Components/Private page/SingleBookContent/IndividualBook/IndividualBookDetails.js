@@ -11,16 +11,16 @@ const IndividualBookDetails = ({ bookData, setData }) => {
     const { user } = useAuth();
     const loggedUser = user.sub;
     const bookId = bookData.id;
-    // console.log(bookId);
+    console.log(bookId);
     const borrower = bookData.Borrower;
     const rating =bookData.Rating;
     
     
-    // console.log(bookData)
+    console.log(bookData)
     const [borrowMode, setModeBorrow] = useState(true);
-// console.log(rating) //ЛОГВА 
-    const [ratingValue, setRatingValue] = useState(4);
-    // console.log(ratingValue) //НЕ ЛОГВА
+console.log(rating) //ЛОГВА 
+    const [ratingValue, setRatingValue] = useState(rating);
+    console.log(ratingValue) //НЕ ЛОГВА
     const [error, setError] = useState('');
 
     const toggleBorrowMode = () => {

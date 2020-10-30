@@ -206,8 +206,10 @@ const getReviewsInDatabase = async (value) => {
             reviews_have_votes rv
         ON 
             rv.review_Id = r.review_Id
-        WHERE 
+            WHERE 
             book_Id = ?
+        GROUP BY 
+            r.review_id
         `;
 
     return await pool.query(sql, [value]);

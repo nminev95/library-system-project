@@ -10,7 +10,7 @@ const IndividualBook = props => {
     //     likes: 
     // })
 
-    const [bookData, setBookData] = useState('');
+    const [bookData, setBookData] = useState(null);
     const [bookReviewsData, setBookReviewsData] = useState([]);
     const [error, setError] = useState(null);
     
@@ -108,31 +108,11 @@ const IndividualBook = props => {
 
     }
 
-   
-    const mapped = new Map();
-
-    
-    bookReviewsData.map((review) => {
-        if (!mapped.has(review.review_id)) {
-            mapped.set(review.review_id, {
-                Author: review.Author,
-                Author_Id: review.Author_Id,
-                Book: review.Book,
-                Dislikes: review.Dislikes,
-                Likes: review.Likes,
-                Review: review.Review,
-                review_id: review.review_id
-            })
-        }
-    })
-
-    const newData = ([...mapped.values()])
-
         return (
             <div>
-                <IndividualBookDetails bookData={bookData} setData={setBookData} />
+              { bookData && < IndividualBookDetails  bookData={bookData} setData={setBookData} />}
                 <div>
-                    <AllReviews data={newData}
+                    <AllReviews data={bookReviewsData}
 
                         update={updateReview}
                         remove={removeReview}
