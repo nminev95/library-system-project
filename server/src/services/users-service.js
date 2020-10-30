@@ -60,8 +60,7 @@ const createUser = usersData => {
                 user: null,
             };
         }
-
-
+       
         const passwordHash = await bcrypt.hash(password, 10);
         const user = await usersData.create(username, passwordHash, email, DEFAULT_USER_ROLE);
 

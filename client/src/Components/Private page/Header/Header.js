@@ -66,7 +66,7 @@ const NavBar = () => {
                   <MDBNavLink to="/home" className="font-weight-bolder">Home</MDBNavLink>
                 </MDBNavItem>
                 <MDBNavItem  >
-                  <MDBNavLink to="/books" className="font-weight-bolder">All books</MDBNavLink>
+                  <MDBNavLink to="/books?page=1" className="font-weight-bolder">All books</MDBNavLink>
                 </MDBNavItem>
               </MDBNavbarNav>
               <MDBNavbarNav right>

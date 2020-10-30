@@ -104,33 +104,31 @@ const ValidationTextFields = () => {
         const userData = Object.values(form).reduce((data, input) => {
             return { ...data, [input.name]: input.value };
         }, {});
-
+        console.log(userData)
         fetch('http://localhost:4000/users', {
             method: 'POST',
             body: JSON.stringify(userData),
             headers: {
-                'content-type': 'application/json',
+                'Content-Type': 'application/json',
             },
         })
             .then(res => res.json())
             .then(result => {
-                if (result.message === 'Name not available') {
+                 if (result.message === 'Name not available') {
                     swal({
                         title: "Oops!",
                         text: "Looks like the username you have entered is already taken! Please try a different one.",
                         icon: "error",
                         button: "Okay"
                     })
-                }
-                if (result.message === 'Passwords don\'t match') {
+                } else if (result.message === 'Passwords don\'t match') {
                     swal({
                         title: "Oops!",
                         text: "Looks like passwords don't match. Please try again.",
                         icon: "error",
                         button: "Okay"
                     })
-                }
-                swal({
+                } else if (!result.message) { swal({
                     title: "Success!",
                     text: "Account created successfully! Click on the button to procced to login page.",
                     icon: "success",
@@ -138,6 +136,7 @@ const ValidationTextFields = () => {
                 }).then(function() {
                     history.push('/auth/signin')
                 });
+            }
             }) 
         
     }

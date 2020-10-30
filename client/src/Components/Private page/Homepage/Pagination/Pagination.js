@@ -1,28 +1,21 @@
 import React, { useState } from "react";
+import { MDBBtn } from 'mdbreact';
 import { Link } from 'react-router-dom';
 import './Pagination.css'
 
-const Pagination = ({ paginate, pages, currentPage }) => {
+const Pagination = ({ stateData }) => {
 
 
     return (
-        <nav>
-            <div id="navDiv">
-                <ul className="pagination">
-                    <button id="prev" onClick={() => paginate(+(currentPage) - 1)}>Previous</button>
-                    {pages.map(number => {
-                        return (
-                            <li className="pageNum" key={number}>
-                                <a onClick={() => paginate(number)} className="pageLink">
-                                    {number}
-                                </a>
-                            </li>
-                        )
-                    })}
-                    <button id="next" onClick={() => paginate(+(currentPage) + 1)}>Next</button>
-                </ul>
-            </div>
-        </nav>
+        <div style={{textAlign: "center", marginBottom:"40px"}}>
+        {stateData.hasPrevious ?
+            <Link to={`books?page=${stateData.currentPage - 1}`}><MDBBtn>Previous page</MDBBtn></Link>
+            : null}
+        Page {stateData.currentPage}
+        {stateData.hasNext ?
+            <Link to={`/books?page=${stateData.currentPage + 1}`}><MDBBtn>Next page</MDBBtn></Link>
+            : null}
+    </div>
     )
 }
 
