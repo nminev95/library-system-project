@@ -130,7 +130,7 @@ const IndividualBook = props => {
 
         return (
             <div>
-                <IndividualBookDetails bookData={bookData} />
+                <IndividualBookDetails bookData={bookData} setData={setBookData} />
                 <div>
                     <AllReviews data={newData}
 

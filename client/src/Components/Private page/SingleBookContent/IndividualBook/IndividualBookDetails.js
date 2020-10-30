@@ -7,19 +7,20 @@ import { useAuth } from '../../../Private page/Context/AuthContext';
 import ReactStars from "react-rating-stars-component";
 
 
-const IndividualBookDetails = ({ bookData }) => {
+const IndividualBookDetails = ({ bookData, setData }) => {
     const { user } = useAuth();
     const loggedUser = user.sub;
     const bookId = bookData.id;
-    console.log(bookId);
+    // console.log(bookId);
     const borrower = bookData.Borrower;
-    const rating = ((typeof(bookData.Rating)));
+    const rating =bookData.Rating;
     
     
-    console.log(bookData)
+    // console.log(bookData)
     const [borrowMode, setModeBorrow] = useState(true);
-    const [ratingValue, setRatingValue] = useState(rating);
-    console.log(rating)
+// console.log(rating) //ЛОГВА 
+    const [ratingValue, setRatingValue] = useState(4);
+    // console.log(ratingValue) //НЕ ЛОГВА
     const [error, setError] = useState('');
 
     const toggleBorrowMode = () => {
@@ -37,6 +38,8 @@ const IndividualBookDetails = ({ bookData }) => {
         };
         try {
             const data = await fetch(`http://localhost:4000/books/${bookId}`, ids);
+            const updatedData = await data.json();
+            setData(updatedData.book[0])
             toggleBorrowMode();
         } catch (error) {
             return error.message;
@@ -54,6 +57,9 @@ const IndividualBookDetails = ({ bookData }) => {
         };
         try {
             const data = await fetch(`http://localhost:4000/books/${bookId}`, settings);
+            const updatedData = await data.json();
+            console.log(updatedData.book[0]);
+            setData(updatedData.book[0])
             toggleBorrowMode();
         } catch (error) {
             return error.message;
@@ -101,12 +107,6 @@ const IndividualBookDetails = ({ bookData }) => {
                         <div className="p-1 text-center text-justify ">
                             <div className="p-1 text-center text-justify">
                                 <ReactStars {...thirdExample}
-                                    
-
-                                //     value={bookData.Rating}
-                                //     onChange={(value) => 
-                                //     (setRatingValue(value), sendRating(bookId, value))
-                                // }
                                 />
                             </div>
                         </div>

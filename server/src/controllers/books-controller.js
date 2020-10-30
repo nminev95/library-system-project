@@ -182,14 +182,16 @@ booksController
             const id = req.params.id;
             const user_Id = req.user.id;
 
-            const { error } = await booksService.borrowABook(booksData)(+user_Id, +id);
+            const { error} = await booksService.borrowABook(booksData)(+user_Id, +id);
+           
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'Book not found!' });
             } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
                 res.status(404).send({ message: 'The book is already borrowed or unavailable!' });
             } else {
-                res.status(200).send({ message: 'You have borrowed the book successfully!' });
+                const { book } = await booksService.getBookById(booksData)(+id);
+                res.status(200).send({ book });
             }
         })
     //return a book 
@@ -208,8 +210,9 @@ booksController
             } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
                 res.status(400).send({ message: 'Book was either borrowed by another user or is not borrowed at all!!' });
             } else {
+                const { book } = await booksService.getBookById(booksData)(+id);
                 const _ = await gamificationService.addUserPoints(gamificationData)(user_Id);
-                res.status(200).send({ message: 'You have returned the book successfully!' });
+                res.status(200).send({book});
             }
         });
 
