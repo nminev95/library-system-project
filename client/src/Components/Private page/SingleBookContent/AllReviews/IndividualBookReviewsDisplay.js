@@ -65,7 +65,8 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, author
                             </MDBBtn>
                         </MDBCol>
                     ) : (null)}
-                    {updateMode ? (<input className="grey"
+                    {updateMode ? 
+                    (<input className="grey"
                         value={currentContent}
                         onChange={(ev) => setNewCurrentContent(ev.target.value)}
                     />
