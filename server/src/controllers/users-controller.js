@@ -27,7 +27,10 @@ usersController
             const { error } = await usersService.createUser(usersData)(createData);
             if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(409).send({ message: 'Name not available' });
-            } else {
+            } else if (error === serviceErrors.NO_MATCH) {
+                res.status(409).send({ message: 'Passwords don\'t match' });
+            }
+            else {
                 res.status(201).send({ message: `Account name ${createData.username} has been created!` });
             }
         })

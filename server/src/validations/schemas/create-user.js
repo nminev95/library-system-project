@@ -21,6 +21,17 @@ export const createUserSchema = {
 
         return null;
     },
+    passwordConfirm: value => {
+        if (!value) {
+            return 'Password is required';
+        }
+        
+        if (typeof value !== 'string' || value.trim().length < 3 || value.trim().length > 25) {
+            return 'Password should be a string in range [3..25]';
+        }
+
+        return null;
+    },
     email: value => {
         if (!value) {
             return 'Email is required';
