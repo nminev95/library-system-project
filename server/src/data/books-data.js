@@ -88,7 +88,7 @@ const getById = async (value) => {
     return await pool.query(sql, [value, value]);
 };
 
-const borrowedByUser = async(user_Id) =>{
+const borrowedByUser = async (user_Id) => {
     const sql = `
     SELECT *
     FROM books
@@ -96,7 +96,7 @@ const borrowedByUser = async(user_Id) =>{
     return await pool.query(sql, [user_Id]);
 };
 
-const getPageResult = async (limit, offset) => {
+const getPageResult = async (limit, offset, searched) => {
     const sql = `
             SELECT
             b.book_Id AS id,
@@ -122,12 +122,14 @@ const getPageResult = async (limit, offset) => {
             book_ratings rr 
         ON 
             br.rating_Id = rr.rating_Id
+        WHERE   
+            (? IS NULL OR title LIKE '%${searched}%')
         GROUP BY 
             IFNULL(b.book_Id, b.description)
         LIMIT ? OFFSET ?;
         `;
 
-    return await pool.query(sql, [limit, offset]);
+    return await pool.query(sql, [searched, limit, offset]);
 };
 
 const getBooksCount = async () => {
@@ -182,18 +184,18 @@ const getReviewsInDatabase = async (value) => {
             ON 
             rv.review_Id = r.review_Id
             `;
-            
-            return await pool.query(sql, [value]);
-        };
-        
-        /** 
-         * Gets all book's reviews info from the database found by unique book number.
-         * @async
-         * @param {number} id - The book's id in the database to search by.
-         * @returns {Promise<object>} Promise with the book's reviews data if found in the database.
-         */
-        const getReviews = async (value) => {
-            const sql = `
+
+    return await pool.query(sql, [value]);
+};
+
+/** 
+ * Gets all book's reviews info from the database found by unique book number.
+ * @async
+ * @param {number} id - The book's id in the database to search by.
+ * @returns {Promise<object>} Promise with the book's reviews data if found in the database.
+ */
+const getReviews = async (value) => {
+    const sql = `
             SELECT 
             r.review_Id as review_id, 
             r.content as Review,
@@ -343,7 +345,7 @@ const pushReview = async (content, id, userId) => {
 * @param {number}  id - The unique book number.
 * @returns {Promise<object>}
 */
-const updateBookStatusToBorrowed = async ( user_id, book_id) => {
+const updateBookStatusToBorrowed = async (user_id, book_id) => {
     const sql = `
         UPDATE books SET
           borrowedStatus_Id = (SELECT status_Id FROM status WHERE type = 'Borrowed'),

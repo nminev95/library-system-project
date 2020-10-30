@@ -99,11 +99,12 @@ const getBookById = booksData => {
 };
 
 const getPage = booksData => {
-    return async (pageNumber) => {
+    return async (pageNumber, query) => {
+        const search = query.search || null;
+
         const limit = 9;
         const offset = (pageNumber - 1) * limit;
-
-        const page = await booksData.getPageResult(limit, offset);     
+        const page = await booksData.getPageResult(limit, offset, search);     
         const [{ count }] = await booksData.getBooksCount();
 
         return {

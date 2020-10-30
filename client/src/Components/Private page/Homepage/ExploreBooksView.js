@@ -24,24 +24,18 @@ const HomepageLogged = (props) => {
             .then(res => res.json())
             .then(data => setStateData(data))
     }, [url]);
-    // console.log(stateData)
-
-
-    // useEffect(() => {
-    //     // const id = Math.ceil(Math.random() * 3)
-    //     fetch(`http://localhost:4000/books/2`)
-    //         .then(res => res.json())
-    //         .then(data => setBook(data[0]))
-    // }, []);
 
     return (
         <div>
-            {/* {stateData.books && <BooksCarousel books={stateData.books} />}   */}
-            {/* <div style={{display:"grid", gridTemplateColumns: "10% 80%"}}> */}
-            {stateData.books && <Books books={stateData.books} />}
-            <Pagination stateData={stateData} />
-            {/* </div>  */}
-            {/* <Pagination paginate={paginate} pages={pages} currentPage={page} /> */}
+            <div style={{ display: "grid", gridTemplateColumns: "15% 85%", background: "#EDEDEE" }}>
+                <div>
+                    <SideDrawer />
+                </div>
+                <div>
+                    {stateData.books && <Books books={stateData.books} />}
+                    <Pagination stateData={stateData} />
+                </div>
+            </div>
         </div>
     )
 }

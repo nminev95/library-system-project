@@ -17,12 +17,12 @@ booksController
         roleMiddleware(['admin', 'user']),
         async (req, res) => {
             const page = +req.query.page;
-            //const { error, books } = await booksService.getAllBooks(booksData)(req.query);
-            const { error, books } = await booksService.getPage(booksData)(page)
+
+            const { error, books } = await booksService.getPage(booksData)(page, req.query)
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'No books found!' });
             } else {
-                res.status(200).send(await booksService.getPage(booksData)(page));
+                res.status(200).send(await booksService.getPage(booksData)(page, req.query));
             }
         })
         .get('/latest',
