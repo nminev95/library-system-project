@@ -104,8 +104,6 @@ const NavBar = () => {
                       <Link to="/profile">
                         <MDBDropdownItem href="#!">Profile</MDBDropdownItem>
                       </Link>
-                      <MDBDropdownItem href="/profile/borrowed">Borrowed books</MDBDropdownItem>
-                      <MDBDropdownItem href="#!">Settings</MDBDropdownItem>
                       <MDBDropdownItem href="#!" onClick={() => handleLogout()}>Logout</MDBDropdownItem>
                     </MDBDropdownMenu>
                   </MDBDropdown>
