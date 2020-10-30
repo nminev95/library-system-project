@@ -41,8 +41,6 @@ const IndividualBook = props => {
     }, [bookReviewsData.length]);
 
     const createReview = (reviewData) => {
-        console.log(reviewData)
-        console.log(id)
         fetch(`http://localhost:4000/books/${id}/reviews`, {
             method: 'POST',
             body: JSON.stringify(reviewData),
