@@ -10,15 +10,11 @@ import ReactStars from "react-rating-stars-component";
 const IndividualBookDetails = ({ bookData, setData }) => {
     const { user } = useAuth();
     const loggedUser = user.sub;
-    console.log(loggedUser);
     const bookId = bookData.id;
 
     const borrower = bookData.Borrower;
-    console.log(borrower);
     const rating = bookData.Rating;
-
-    const [borrowMode, setModeBorrow] = useState(true);
-    const [ratingValue, setRatingValue] = useState(rating);
+    console.log(rating);
     const [error, setError] = useState('');
 
     const borrowBoook = async () => {
@@ -51,35 +47,42 @@ const IndividualBookDetails = ({ bookData, setData }) => {
         try {
             const data = await fetch(`http://localhost:4000/books/${bookId}`, settings);
             const updatedData = await data.json();
-            console.log(updatedData.book[0]);
             setData(updatedData.book[0])
-            // toggleBorrowMode();
         } catch (error) {
             return error.message;
         }
-    }
+    };
 
-    const sendRating = (bookId, ratingValue) => {
-        fetch(`http://localhost:4000/books/${bookId}/rate`, {
+
+
+    const sendRating = async (bookId, ratingValue) => {
+
+        const settings = {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer  ${localStorage.getItem("token")}`,
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ rating: ratingValue }),
-        })
-            .then((res) => res.json())
-            .catch((error) => (setError(console.error.message)));
+            body: JSON.stringify({ rating: ratingValue })
+        };
+        try {
+            const data = await fetch(`http://localhost:4000/books/${bookId}/rate`, settings);
+            const updatedData = await data.json();
+            console.log(updatedData.book[0]);
+            setData(updatedData.book[0])
+        } catch (error) {
+            return error.message;
+        }
     };
 
-    const thirdExample = {
+    const ratingStars = {
         size: 40,
         count: 5,
         isHalf: true,
-        value: ratingValue,
+        value: rating,
         color: "grey",
         activeColor: "yellow",
-        onChange: (value) => (setRatingValue(value), sendRating(bookId, value))
+        onChange: (value) => ( sendRating(bookId, value))
     };
 
     return (
@@ -100,7 +103,7 @@ const IndividualBookDetails = ({ bookData, setData }) => {
                         </div>
                         <div className="p-1 text-center text-justify ">
                             <div className="p-1 text-center text-justify">
-                                <ReactStars {...thirdExample}
+                                <ReactStars {...ratingStars}
                                 />
                             </div>
                         </div>
