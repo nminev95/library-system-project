@@ -3,11 +3,13 @@ import { MDBBtn, MDBContainer, MDBDataTableV5 } from 'mdbreact';
 import Loader from '../../Utils/Loader/Loader';
 import './AdminUsers.css'
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 
 const AdminUsers = () => {
     const [currentUser, setCurrentUser] = useState('');
     const [loading, setLoading] = useState(false);
     const [records, setRecords] = useState([]);
+    const [confirmState, setConfirmState] = useState(false);
     const [columns, setColumns] = useState([
         {
             label: '#',
@@ -69,21 +71,40 @@ const AdminUsers = () => {
                     record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
                         deleteUser(record.id)
                     }}>Delete</MDBBtn>
-                    
+
                 })
                 return data;
             })
             .then(result => setRecords(result))
             .finally(setLoading(false));
-        }, [records.length]);
+    }, [records.length]);
 
     const deleteUser = (id) => {
+
         const settings = {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
             },
         };
+
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Poof! Your imaginary file has been deleted!", {
+                        icon: "success",
+                    });
+                    setConfirmState((prevState) => !prevState);
+                }
+            })
+    
+        if (confirmState) {
         fetch(`http://localhost:4000/admin/users/${id}`, settings)
             .then((response) => response.json())
             .then(() => {
@@ -93,6 +114,9 @@ const AdminUsers = () => {
 
                 setRecords(updatedRecords)
             })
+        } else {
+            return;
+        }
     }
 
     const loader = () => {

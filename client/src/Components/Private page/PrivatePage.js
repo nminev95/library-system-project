@@ -36,9 +36,8 @@ const PrivatePage = () => {
                     <Route exact path='/profile/borrowed' component={ProfileBorrowedBooks} />
                     <Route path="/profile" component={ProfilePage} />
                     <Route path='/search' component={SearchResultPage} />
-                    <Redirect from="/home" to="/books" />
-                    <Redirect exact from="/auth/signin" to="/books" />
-                    <Redirect exact from="/users" to="/books" />
+                    <Redirect exact from="/auth/signin" to="/home" />
+                    <Redirect exact from="/users" to="/home"/>
                 </Switch>
             </>
         )

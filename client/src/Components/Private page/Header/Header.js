@@ -5,7 +5,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 import { BrowserRouter as Router, Link, useHistory, useLocation } from 'react-router-dom';
-import { MDBFormInline, MDBNavbar, MDBNavbarBrand, MDBNavbarToggler, MDBIcon, MDBBtn, MDBCollapse, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from 'mdbreact';
+import { MDBFormInline, MDBNavbar, MDBNavbarBrand, MDBRow, MDBNavbarToggler, MDBIcon, MDBBtn, MDBCollapse, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from 'mdbreact';
 import { AuthContext } from '../Context/AuthContext';
 import swal from 'sweetalert';
 
@@ -48,8 +48,9 @@ const NavBar = () => {
 
   const url = `/search?query=${search}`
   const path = useLocation().pathname
+  const fullPath = useLocation().search
 
-  if (path.includes('admin')) {
+  if (path.includes('admin') || fullPath.includes('page')) {
     return null;
   } else {
     return (
@@ -70,45 +71,49 @@ const NavBar = () => {
                 </MDBNavItem>
               </MDBNavbarNav>
               <MDBNavbarNav right>
-                <MDBFormInline>
-                  <input
-                    className="form-control mr-sm-2"
-                    type="text"
-                    placeholder="Search"
-                    aria-label="Search"
-                    value={search}
-                    onChange={(ev) => setSearch(ev.target.value)}
-                    onClick={() => setSearch('')}
-                  />
-                  <Link to={url}>
-                    <MDBBtn gradient="aqua"
-                      rounded size="sm"
-                      type="submit"
-                      className="mr-auto"
-                    ><MDBIcon icon="search"></MDBIcon>
+            <MDBRow>
+
+              <MDBFormInline>
+
+                <input
+                  className="form-control mr-sm-2"
+                  type="text"
+                  placeholder="Search"
+                  aria-label="Search"
+                  value={search}
+                  onChange={(ev) => setSearch(ev.target.value)}
+                  onClick={() => setSearch('')}
+                />
+                <Link to={url}>
+                  <MDBBtn gradient="aqua"
+                    rounded size="sm"
+                    type="submit"
+                    className="mr-auto"
+                  ><MDBIcon icon="search"></MDBIcon>
               Search
               </MDBBtn>
-                  </Link>
-                </MDBFormInline>
-                <MDBNavItem className="profile">
-                  <MDBDropdown>
-                    <MDBDropdownToggle nav caret >
-                      <MDBIcon icon="user" className="d-md-inline  " />
-                    </MDBDropdownToggle>
-                    <MDBDropdownMenu className="drop-container right basic">
-                      {user.role === 'admin' ? (
-                        <Link to="/admin/dashboard">
-                          <MDBDropdownItem href="#!">Admin panel</MDBDropdownItem>
-                        </Link>
-                      ) : (null)}
-                      <Link to="/profile">
-                        <MDBDropdownItem href="#!">Profile</MDBDropdownItem>
+                </Link>
+              </MDBFormInline>
+              <MDBNavItem className="profile" style={{ color: "gray", marginTop: "5px", marginRight: "20px", marginLeft: "10px" }}>
+                <MDBDropdown>
+                  <MDBDropdownToggle nav caret>
+                    <MDBIcon icon="user" className="mr-1" />Profile
+               </MDBDropdownToggle>
+                  <MDBDropdownMenu className="dropdown-default" right>
+                    {user.role === 'admin' ? (
+                      <Link to="/admin/dashboard">
+                        <MDBDropdownItem href="#!">Admin panel</MDBDropdownItem>
                       </Link>
-                      <MDBDropdownItem href="#!" onClick={() => handleLogout()}>Logout</MDBDropdownItem>
-                    </MDBDropdownMenu>
-                  </MDBDropdown>
-                </MDBNavItem>
-              </MDBNavbarNav>
+                    ) : (null)}
+                    <Link to="/profile">
+                    <MDBDropdownItem style={{ padding: '10px' }} href="#!">My account</MDBDropdownItem>
+                    </Link>
+                    <MDBDropdownItem style={{ padding: '10px' }} onClick={() => handleLogout()} href="#!">Log out</MDBDropdownItem>
+                  </MDBDropdownMenu>
+                </MDBDropdown>
+              </MDBNavItem>
+            </MDBRow>
+          </MDBNavbarNav>
             </MDBCollapse>
           </MDBNavbar>
         ) : (
