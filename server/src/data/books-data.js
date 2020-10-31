@@ -134,11 +134,13 @@ const getPageResult = async (limit, offset, searched, genre) => {
     return await pool.query(sql, [searched, genre, limit, offset]);
 };
 
-const getBooksCount = async () => {
+const getBooksCount = async (genre) => {
     const sql = `
         SELECT COUNT(*) as count FROM books 
+        WHERE   
+        (? IS NULL OR genre LIKE '%${genre}%')
     `;
-    return await pool.query(sql);
+    return await pool.query(sql, [genre]);
 };
 
 /** 
