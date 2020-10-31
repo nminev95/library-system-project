@@ -18,8 +18,7 @@ const IndividualBookDetails = ({ bookData, setData }) => {
     const borrower = bookData.Borrower;
     const rating = bookData.Rating;
     console.log(rating);
-    const [error, setError] = useState('');
-    const [invalidVoidMsg, setInvalidVoidMsg] = useState(null)
+
 
     const borrowBoook = async () => {
 
@@ -71,18 +70,19 @@ const IndividualBookDetails = ({ bookData, setData }) => {
         };
         try {
             const data = await fetch(`http://localhost:4000/books/${bookId}/rate`, settings);
-            
-            const json = await data.json()
-            console.log(json.message);
-            if (json.message) {
-              const modal = await swal({
-                title: "Oops!",
-                text: `${json.message}`,
-                icon: "error",
-                button: "Ok"
-              })}
 
-            const newData = json.book[0];   
+            const json = await data.json()
+            if (json.message) {
+                const modal = await swal({
+                    title: "Oops!",
+                    text: `${json.message}`,
+                    icon: "error",
+                    button: "Ok"
+                })
+            }
+
+            const newData = json.book[0];
+            console.log(newData);
             setData(newData)
 
         } catch (error) {
@@ -90,15 +90,55 @@ const IndividualBookDetails = ({ bookData, setData }) => {
         }
     };
 
-    const ratingStars = {
-        size: 40,
-        count: 5,
-        isHalf: false,
-        value: rating,
-        color: "grey",
-        activeColor: "yellow",
-        onChange: (value) => ( sendRating(bookId, value))
-    };
+
+    // const onPick = (bookId, value) => {sendRating(bookId, value)}
+       
+    //   const MoodButton = ({ rating, onClick }) => (
+    //     <button 
+    //       data-rating={rating}
+    //       className="star-btn" 
+    //       onClick={() => onClick(rating)}
+    //     />
+    //   )
+       
+    //   const popUp = ()=> swal({
+    //     text: "How was your experience getting help with this issue?",
+    //     buttons: {
+    //       cancel: "Close",
+    //     },
+    //     content: (
+    //       <div>
+    //         <MoodButton 
+    //           rating={1} 
+    //           onClick={onPick}
+    //         />
+    //         <MoodButton 
+    //           rating={2} 
+    //           onClick={onPick}
+    //         />
+    //         <MoodButton 
+    //           rating={3} 
+    //           onClick={onPick}
+    //         />
+    //       </div>
+    //     )
+    //   })
+
+
+
+
+
+    
+
+    // const ratingStars = {
+    //     size: 40,
+    //     count: 5,
+    //     isHalf: false,
+    //     value: rating,
+    //     color: "grey",
+    //     activeColor: "yellow",
+    //     onChange: (value) => (sendRating(bookId, value))
+    // };
 
     return (
 
@@ -118,7 +158,15 @@ const IndividualBookDetails = ({ bookData, setData }) => {
                         </div>
                         <div className="p-1 text-center text-justify ">
                             <div className="p-1 text-center text-justify">
-                                <ReactStars {...ratingStars}
+                                <ReactStars
+                                    size={40}
+                                    count={5}
+                                    isHalf={false}
+                                    value={bookData.Rating}
+                                    color={"grey"}
+                                    activeColor={"yellow"}
+                                    edit={false}
+                                    // onChange={(value) => (sendRating(bookId, value))}
                                 />
                             </div>
                         </div>
@@ -133,10 +181,12 @@ const IndividualBookDetails = ({ bookData, setData }) => {
                             {bookData.Status === "Free" &&
                                 (<MDBBtn id="main-button" onClick={borrowBoook}> Borrow </MDBBtn>)}
 
-                            { bookData.Status === "Borrowed" && loggedUser === borrower && (
+                            {bookData.Status === "Borrowed" && loggedUser === borrower && (
                                 <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>)}
-
+                            
+                            {/* <MDBBtn id="main-button" onClick={popUp}> Rate </MDBBtn> */}
                         </div>
+                       
 
                     </div>
                 </div>
@@ -149,3 +199,9 @@ const IndividualBookDetails = ({ bookData, setData }) => {
 };
 
 export default IndividualBookDetails;
+
+
+
+
+
+ 

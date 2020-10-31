@@ -19,8 +19,6 @@ const AllReviews = ({ data, update, remove, create, sync, sendLikeOrDislike }) =
 
         )
     }
-
-    console.log(data);
     
     return (
         <div id="container-reviews" className="container my-5 z-depth-1" >
