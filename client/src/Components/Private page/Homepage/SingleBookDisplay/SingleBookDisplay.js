@@ -8,7 +8,7 @@ const SingleBookDisplay = ({book, history}) => {
 
     return (
         <MDBCol xl="3" className="cardBook">
-            <MDBCard className="border-2">
+            <MDBCard>
                 <MDBView cascade className="d-flex justify-content-center">
                     <MDBCardImage id="bookImageContainer"
                         hover

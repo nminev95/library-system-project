@@ -74,6 +74,9 @@ function SideDrawer(props) {
     satire: false,
     horror: false,
     autobiography: false,
+    free: false,
+    borrowed: false,
+    unlisted: false,
   })
   const history = useHistory();
   const url = `/books?search=${search}&page=1`
@@ -81,14 +84,29 @@ function SideDrawer(props) {
     setState((prevState) => !prevState);
   }
 
+ 
   const handleChange = (event) => {
+    const statuses = ['free', 'borrowed', 'unlisted']
+    const currentUrl = location.pathname + location.search;
     setState({ ...state, [event.target.name]: event.target.checked });
+    console.log(currentUrl)
 
-    if (event.target.checked) {
-      history.push(`/books?page=1&genre=${event.target.name}`)
+    if (statuses.includes(event.target.name) && event.target.checked) {
+      history.push(`${currentUrl}&status=${event.target.name}`)
     }
-    if (!event.target.checked) {
-      history.push(`/books?page=1`);
+
+    if (!(statuses.includes(event.target.name) && event.target.checked)) {
+      history.push(`${currentUrl}&genre=${event.target.name}`)
+    } 
+
+    if (statuses.includes(event.target.name) && !(event.target.checked)) {
+      const newUrl = currentUrl.replace(`&status=${event.target.name}`, '')
+      history.push(newUrl)
+    }
+
+    if (!(statuses.includes(event.target.name)) && !(event.target.checked)) {
+      const newUrl = currentUrl.replace(`&genre=${event.target.name}`, '')
+      history.push(newUrl)
     }
   };
 
@@ -138,7 +156,7 @@ function SideDrawer(props) {
         <Container>
           <ListItem>
             <FormControlLabel
-              control={<Checkbox checked={state.horror || location.search.includes('horror')} onChange={handleChange} name='horror' color="primary" />}
+              control={<Checkbox checked={state.horror || location.search.includes('horror')} onChange={handleChange} name='horror'  color="primary" />}
               label='Horror'
             />
           </ListItem>
@@ -178,12 +196,33 @@ function SideDrawer(props) {
       </List>
       <Divider />
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+        <ListItem style={{ fontSize: "20px", fontWeight: '400' }}>
+          <ListItemIcon><MenuBookIcon /><p style={{ marginLeft: "10px" }}>Status</p></ListItemIcon>
+        </ListItem>
+        <Container>
+          <ListItem>
+            <FormControlLabel
+              control={<Checkbox checked={state.free || location.search.includes('free')} onChange={handleChange} name='free'  color="primary" />}
+              label='Free'
+            />
           </ListItem>
-        ))}
+        </Container>
+        <Container>
+          <ListItem>
+            <FormControlLabel
+              control={<Checkbox checked={state.borrowed || location.search.includes('borrowed')} onChange={handleChange} name='borrowed' color="primary" />}
+              label='Borrowed'
+            />
+          </ListItem>
+        </Container>
+        <Container>
+          <ListItem>
+            <FormControlLabel
+              control={<Checkbox checked={state.unlisted || location.search.includes('unlisted')} onChange={handleChange} name='unlisted' color="primary" />}
+              label='Unlisted'
+            />
+          </ListItem>
+        </Container>
       </List>
     </div>
   );
