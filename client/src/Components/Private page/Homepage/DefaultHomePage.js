@@ -44,8 +44,7 @@ const DefaultHomePage = (props) => {
                 setLatestBooks(data.slice(data.length - 6, data.length))
             })
     }, []);
-    console.log(topBooks)
-    console.log(latestBooks)
+   
     return (
         <div style={{textAlign:"center"}}>
             {topBooks && <BooksCarousel books={topBooks} />}  
