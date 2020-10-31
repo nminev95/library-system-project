@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react'
 import './IndividualBook.css';
 import 'mdbreact/dist/css/mdb.css'
-import { MDBBtn } from 'mdbreact';
+import { MDBBtn, } from 'mdbreact';
 import { useAuth } from '../../../Private page/Context/AuthContext';
 import ReactStars from "react-rating-stars-component";
 import style from '../../../../../node_modules/sweetalert-react/node_modules/sweetalert/dist/sweetalert.css'
@@ -89,50 +89,42 @@ const IndividualBookDetails = ({ bookData, setData }) => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:4000/books/${bookId}/history`, { 
-            mode: 'cors', 
+        fetch(`http://localhost:4000/books/${bookId}/history`, {
+            mode: 'cors',
             headers: {
                 'Authorization': `Bearer  ${localStorage.getItem("token")}`,
-            }, })
+            },
+        })
             .then(res => res.json())
             .then(data => setBookHistory(data))
             .catch((error) => (setError(console.error.message)));
     }, []);
 
 
-console.log(bookHistory);
-    // const onPick = (bookId, value) => {sendRating(bookId, value)}
-       
-    //   const MoodButton = ({ rating, onClick }) => (
-    //     <button 
-    //       data-rating={rating}
-    //       className="star-btn" 
-    //       onClick={() => onClick(rating)}
-    //     />
-    //   )
-       
-    //   const popUp = ()=> swal({
-    //     text: "How was your experience getting help with this issue?",
-    //     buttons: {
-    //       cancel: "Close",
-    //     },
-    //     content: (
-    //       <div>
-    //         <MoodButton 
-    //           rating={1} 
-    //           onClick={onPick}
-    //         />
-    //         <MoodButton 
-    //           rating={2} 
-    //           onClick={onPick}
-    //         />
-    //         <MoodButton 
-    //           rating={3} 
-    //           onClick={onPick}
-    //         />
-    //       </div>
-    //     )
-    //   })
+    console.log(bookHistory);
+
+    const example = {
+        size: 40,
+        count: 5,
+        isHalf: false,
+        value: 0,
+        color: "grey",
+        activeColor: "yellow",
+        onChange: newValue => (sendRating(bookId, newValue))
+    };
+
+
+    const popUp = () => swal({
+        title: "Please, provide your rating value",
+        buttons: {
+            cancel: "Close",
+        },
+        content: (
+            <div>
+                <ReactStars {...example} />
+            </div>
+        )
+    })
 
 
     return (
@@ -161,7 +153,6 @@ console.log(bookHistory);
                                     color={"grey"}
                                     activeColor={"yellow"}
                                     edit={false}
-                                    // onChange={(value) => (sendRating(bookId, value))}
                                 />
                             </div>
                         </div>
@@ -178,10 +169,10 @@ console.log(bookHistory);
 
                             {bookData.Status === "Borrowed" && loggedUser === borrower && (
                                 <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>)}
-                            {bookHistory &&  (
-                            <MDBBtn id="main-button" onClick={returnBoook}> Rate </MDBBtn>)}
+                            {bookHistory && (
+                                <MDBBtn id="main-button" onClick={popUp}> Rate </MDBBtn>)}
                         </div>
-                       
+
 
                     </div>
                 </div>
@@ -199,4 +190,4 @@ export default IndividualBookDetails;
 
 
 
- 
+
