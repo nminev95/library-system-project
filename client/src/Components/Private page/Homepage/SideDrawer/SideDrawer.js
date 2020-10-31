@@ -63,7 +63,6 @@ function SideDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const location = useLocation();
-  console.log(location)
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const genres = props.genres;
   const { isLoggedIn, setLoginState, user } = useContext(AuthContext);
@@ -87,7 +86,6 @@ function SideDrawer(props) {
 
     if (event.target.checked) {
       history.push(`/books?page=1&genre=${event.target.name}`)
-      // props.updateBooks(`http://localhost:4000/books?page=${props.page}&genre=${event.target.name}`)
     }
     if (!event.target.checked) {
       history.push(`/books?page=1`);

@@ -106,7 +106,7 @@ const getPage = booksData => {
         const limit = 9;
         const offset = (pageNumber - 1) * limit;
         const page = await booksData.getPageResult(limit, offset, search, genre);     
-        const [{ count }] = await booksData.getBooksCount();
+        const [{ count }] = await booksData.getBooksCount(genre);
 
         return {
             books: page,
