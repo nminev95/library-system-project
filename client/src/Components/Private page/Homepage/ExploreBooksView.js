@@ -56,7 +56,7 @@ const HomepageLogged = (props) => {
                 </div>
                 <div>
                     {stateData.books && <Books books={stateData.books} />}
-                    <Pagination stateData={stateData} />
+                    <Pagination stateData={stateData} updateBooks={updateUrl}/>
                 </div>
             </div>
         </div>
