@@ -137,7 +137,7 @@ booksController
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'Book not found!' });
             } else if (error === serviceErrors.DUPLICATE_RECORD) {
-                res.status(400).send({ message: 'You may review each book only once!' });
+                res.status(400).send({ message: 'You may review each book only once, but you can edit the existing one! ' });
             } else {
                 const _ = await gamificationService.addUserPoints(gamificationData)(userId);
                 res.status(200).send(reviews);
