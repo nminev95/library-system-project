@@ -30,7 +30,7 @@ booksController
         roleMiddleware(['admin', 'user']),
         async (req, res) => {
 
-            const { error, genres } = await booksService.getGenres(booksData)()
+            const { error, genres } = await booksService.getGenres(booksData)();
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'No genres found!' });
             } else {
