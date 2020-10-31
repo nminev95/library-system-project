@@ -1,9 +1,10 @@
 import React, { useState, Fragment } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-import { MDBBtn, MDBModalFooter } from 'mdbreact';
+import { MDBBtn, MDBMask, MDBCard, MDBContainer, MDBRow, MDBCol, MDBModalFooter, MDBView } from 'mdbreact';
 import { Link, useHistory } from 'react-router-dom';
 import swal from '@sweetalert/with-react'
+import { makeStyles } from '@material-ui/core/styles';
+import image from '../../../register.jpg'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -114,7 +115,7 @@ const ValidationTextFields = () => {
         })
             .then(res => res.json())
             .then(result => {
-                 if (result.message === 'Name not available') {
+                if (result.message === 'Name not available') {
                     swal({
                         title: "Oops!",
                         text: "Looks like the username you have entered is already taken! Please try a different one.",
@@ -128,17 +129,18 @@ const ValidationTextFields = () => {
                         icon: "error",
                         button: "Okay"
                     })
-                } else if (!result.message) { swal({
-                    title: "Success!",
-                    text: "Account created successfully! Click on the button to procced to login page.",
-                    icon: "success",
-                    button: "Login"
-                }).then(function() {
-                    history.push('/auth/signin')
-                });
-            }
-            }) 
-        
+                } else if (!result.message) {
+                    swal({
+                        title: "Success!",
+                        text: "Account created successfully! Click on the button to procced to login page.",
+                        icon: "success",
+                        button: "Login"
+                    }).then(function () {
+                        history.push('/auth/signin')
+                    });
+                }
+            })
+
     }
 
 
@@ -187,25 +189,35 @@ const ValidationTextFields = () => {
     });
 
     return (
-        <div style={{ textAlign: "center" }}>
-            <h3 style={{ marginBottom: "40px" }}>Create an account</h3>
-            <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
-                {formView}
-                <div className="text-center">
-                    <MDBBtn type="submit" style={{ marginTop: "30px" }} id="main-button">Register</MDBBtn>
-                </div>
-                <div className="row my-3 d-flex justify-content-center">
-                    <MDBModalFooter className="mx-5 pt-3 mb-1">
-                        <p className="font-small grey-text d-flex justify-content-end">
-                            Already have an account?
+        <MDBView src={image}>
+            <MDBMask overlay="stylish-light" className="flex-center flex-column text-white text-center">
+      
+               
+                            <MDBCard style={{ background: "rgb(220,220,220,0.2)", padding:"60px" }}>
+                                <div style={{ textAlign: "center" }}>
+                                    <h3 style={{ marginBottom: "40px" }}>Create an account</h3>
+                                    <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
+                                        {formView}
+                                        <div className="text-center">
+                                            <MDBBtn type="submit" style={{ marginTop: "30px" }} id="main-button">Register</MDBBtn>
+                                        </div>
+                                        <div className="row my-3 d-flex justify-content-center">
+                                            <MDBModalFooter className="mx-5 pt-3 mb-1">
+                                                <p className="font-small grey-text d-flex justify-content-end">
+                                                    Already have an account?
               <Link to="/auth/signin">
-                                <a href="#!" className="blue-text ml-1">Sign In</a>
-                            </Link>
-                        </p>
-                    </MDBModalFooter>
-                </div>
-            </form>
-        </div>
+                                                        <a href="#!" className="blue-text ml-1">Sign In</a>
+                                                    </Link>
+                                                </p>
+                                            </MDBModalFooter>
+                                        </div>
+                                    </form>
+                                </div>
+                            </MDBCard>
+                  
+        
+            </MDBMask>
+        </MDBView>
     );
 }
 

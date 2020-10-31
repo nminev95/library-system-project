@@ -22,6 +22,7 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Container } from '@material-ui/core';
+import swal from 'sweetalert';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -79,8 +80,6 @@ function SideDrawer(props) {
     setState((prevState) => !prevState);
   }
 
-  const [toggleState, setToggleState] = useState(true);
-console.log(props.filter)
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
 
@@ -106,13 +105,13 @@ console.log(props.filter)
       .then(res => res.json())
       .then(data => {
         if (data.message) {
-          // swal({
-          //   title: "Sorry to see you go! :(",
-          //   text: "You have logged out successfully!",
-          //   icon: "success",
-          //   buttons: false,
-          //   timer: 1500,
-          // })
+          swal({
+            title: "Sorry to see you go! :(",
+            text: "You have logged out successfully!",
+            icon: "success",
+            buttons: false,
+            timer: 1500,
+          })
         }
       })
     setTimeout(() => {
@@ -231,8 +230,10 @@ console.log(props.filter)
                         <MDBDropdownItem href="#!">Admin panel</MDBDropdownItem>
                       </Link>
                     ) : (null)}
+                    <Link to="/profile">
                     <MDBDropdownItem style={{ padding: '10px' }} href="#!">My account</MDBDropdownItem>
-                    <MDBDropdownItem style={{ padding: '10px' }} href="#!">Log out</MDBDropdownItem>
+                    </Link>
+                    <MDBDropdownItem style={{ padding: '10px' }} onClick={() => handleLogout()} href="#!">Log out</MDBDropdownItem>
                   </MDBDropdownMenu>
                 </MDBDropdown>
               </MDBNavItem>

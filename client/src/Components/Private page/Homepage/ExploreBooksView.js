@@ -56,7 +56,7 @@ const HomepageLogged = (props) => {
                 </div>
                 <div>
                     {stateData.books && <Books books={stateData.books} />}
-                    <Pagination stateData={stateData} genre={genre} />
+                    <Pagination stateData={stateData} />
                 </div>
             </div>
         </div>
