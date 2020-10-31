@@ -102,11 +102,11 @@ const getPage = booksData => {
     return async (pageNumber, query) => {
         const search = query.search || null;
         const genre = query.genre || null;
-
+        
         const limit = 9;
         const offset = (pageNumber - 1) * limit;
         const page = await booksData.getPageResult(limit, offset, search, genre);     
-        const [{ count }] = await booksData.getBooksCount(genre);
+        const [{ count }] = await booksData.getBooksCount(genre, search);
 
         return {
             books: page,

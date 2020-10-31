@@ -76,7 +76,7 @@ function SideDrawer(props) {
     autobiography: false,
   })
   const history = useHistory();
-
+  const url = `/books?search=${search}&page=1`
   const toggleCollapse = (ev) => {
     setState((prevState) => !prevState);
   }
@@ -118,9 +118,6 @@ function SideDrawer(props) {
       setLoginState(false);
     }, 1500)
   }
-
-  const url = `/search?query=${search}`
-  const path = useLocation().pathname
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
