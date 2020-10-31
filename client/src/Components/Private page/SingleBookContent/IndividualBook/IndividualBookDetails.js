@@ -93,7 +93,7 @@ const IndividualBookDetails = ({ bookData, setData }) => {
     const ratingStars = {
         size: 40,
         count: 5,
-        isHalf: true,
+        isHalf: false,
         value: rating,
         color: "grey",
         activeColor: "yellow",

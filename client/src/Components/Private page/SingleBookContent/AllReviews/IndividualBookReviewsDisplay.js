@@ -66,10 +66,16 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, author
                         </MDBCol>
                     ) : (null)}
                     {updateMode ? 
-                    (<input className="grey"
+                     
+                     ( <MDBCol className="edit-field" md="10" pt="2" >
+                         <div class="md-form">
+                         <input type="text" id="form1" class="form-control"
+                   
                         value={currentContent}
                         onChange={(ev) => setNewCurrentContent(ev.target.value)}
                     />
+                    </div>
+                    </MDBCol>
                     ) : (
                             <MDBCol className="text-left" md="10">{currentContent}</MDBCol>
                         )}

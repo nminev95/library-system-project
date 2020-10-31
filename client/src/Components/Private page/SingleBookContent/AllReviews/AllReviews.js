@@ -19,6 +19,8 @@ const AllReviews = ({ data, update, remove, create, sync, sendLikeOrDislike }) =
 
         )
     }
+
+    console.log(data);
     
     return (
         <div id="container-reviews" className="container my-5 z-depth-1" >
@@ -26,7 +28,6 @@ const AllReviews = ({ data, update, remove, create, sync, sendLikeOrDislike }) =
                 <h4 className="p-3 white-text" > Reviews </h4>
                 <MDBCol className="reviewRow">
                     {data.map((review) => <IndividualBookReviewsDisplay
-                        id={review.review_id}
                         author={review.Author}
                         author_id={review.Author_Id}
                         content={review.Review}
@@ -35,6 +36,7 @@ const AllReviews = ({ data, update, remove, create, sync, sendLikeOrDislike }) =
                         update={update}
                         remove={remove}
                         sendLikeOrDislike={sendLikeOrDislike}
+                        id={review.review_id}
                         key={review.review_id} />)}
                 </MDBCol>
                 <MDBCol className="p-2">
