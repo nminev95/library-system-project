@@ -96,7 +96,7 @@ const borrowedByUser = async (user_Id) => {
     return await pool.query(sql, [user_Id]);
 };
 
-const getPageResult = async (limit, offset, searched) => {
+const getPageResult = async (limit, offset, searched, genre) => {
     const sql = `
             SELECT
             b.book_Id AS id,
@@ -124,12 +124,14 @@ const getPageResult = async (limit, offset, searched) => {
             br.rating_Id = rr.rating_Id
         WHERE   
             (? IS NULL OR title LIKE '%${searched}%')
+        AND 
+            (? IS NULL OR genre LIKE '%${genre}%')
         GROUP BY 
             IFNULL(b.book_Id, b.description)
         LIMIT ? OFFSET ?;
         `;
 
-    return await pool.query(sql, [searched, limit, offset]);
+    return await pool.query(sql, [searched, genre, limit, offset]);
 };
 
 const getBooksCount = async () => {

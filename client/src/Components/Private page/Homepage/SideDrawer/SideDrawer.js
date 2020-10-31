@@ -80,9 +80,18 @@ function SideDrawer(props) {
   }
 
   const [toggleState, setToggleState] = useState(true);
-
+console.log(props.filter)
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
+
+    if (event.target.checked) {
+      props.updateBooks(`http://localhost:4000/books?page=${props.page}&genre=${event.target.name}`)
+      history.push(`/books?page=1&genre=${event.target.name}`)
+    }
+    if (!event.target.checked) {
+      props.updateBooks(`http://localhost:4000/books?page=${props.page}`);
+      history.push(`/books?page=1`);
+    }
   };
 
   const handleLogout = () => {

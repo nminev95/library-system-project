@@ -13,10 +13,19 @@ const HomepageLogged = (props) => {
     const [search, setSearch] = useState('');
     const { page, query } = useCustomQueryParams();
     const [genres, setGenres] = useState([]);
+    const [currentURL, setCurrentURL] = useState(`http://localhost:4000/books?page=${page}`);
+    const [genre, setGenre] = useState('');
 
-    const url = `http://localhost:4000/books?page=${page}`
+    const updateUrl = (url) => {
+        setCurrentURL(url)
+    }   
+
+    const getGenre = (genre) => {
+        setGenre(genre);
+    }
+
     useEffect(() => {
-        fetch(url, {
+        fetch(currentURL, {
             mode: 'cors',
             headers: {
                 'Authorization': `Bearer  ${localStorage.getItem("token")}`,
@@ -25,7 +34,7 @@ const HomepageLogged = (props) => {
         })
             .then(res => res.json())
             .then(data => setStateData(data))
-    }, [url]);
+    }, [currentURL]);
 
     useEffect(() => {
         fetch('http://localhost:4000/books/genres', {
@@ -38,16 +47,16 @@ const HomepageLogged = (props) => {
             .then(res => res.json())
             .then(data => setGenres(data))
     },[]);
-    
+ 
     return (
         <div>
             <div style={{ display: "grid", gridTemplateColumns: "15% 85%", background: "#EDEDEE" }}>
                 <div>
-                    <SideDrawer genres={genres}/>
+                    <SideDrawer genres={genres} page={page} setGenre={getGenre} updateBooks={updateUrl}/>
                 </div>
                 <div>
                     {stateData.books && <Books books={stateData.books} />}
-                    <Pagination stateData={stateData} />
+                    <Pagination stateData={stateData} genre={genre} />
                 </div>
             </div>
         </div>
