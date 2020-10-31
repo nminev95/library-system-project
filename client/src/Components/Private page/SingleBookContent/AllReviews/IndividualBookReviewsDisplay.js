@@ -29,19 +29,19 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, author
     const sendLike = () => {
         setHasVoted(true);
         sendLikeOrDislike(id, { vote: "Like" });
-        setLikesNumber((likesNumber) => likesNumber + 1)
-        if (hasVoted) {
-            setDislikesNumber((dislikesNumber) => dislikesNumber - 1)
-        }
+        // setLikesNumber((likesNumber) => likesNumber + 1)
+        // if (hasVoted) {
+        //     setDislikesNumber((dislikesNumber) => dislikesNumber - 1)
+        // }
     };
 
     const sendDislike = () => {
         setHasVoted(true);
         sendLikeOrDislike(id, { vote: "Dislike" });
-        setDislikesNumber((dislikesNumber) => dislikesNumber + 1)
-        if (hasVoted) {
-            setLikesNumber((likesNumber) => likesNumber - 1)
-        }
+        // setDislikesNumber((dislikesNumber) => dislikesNumber + 1)
+        // if (hasVoted) {
+        //     setLikesNumber((likesNumber) => likesNumber - 1)
+        // }
     };
     
     return (

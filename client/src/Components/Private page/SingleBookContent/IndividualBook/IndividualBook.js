@@ -123,7 +123,8 @@ const IndividualBook = props => {
         try {
             const data = await fetch(`http://localhost:4000/reviews/${review_id}/vote`, ids);
             const updatedData = await data.json();
-            setBookData(updatedData.book[0])
+            // const bookData = (updatedData);
+            // console.log(bookData);
         } catch (error) {
             return error.message;
         }

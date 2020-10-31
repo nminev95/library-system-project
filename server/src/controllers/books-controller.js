@@ -213,7 +213,6 @@ booksController
 
 
             const { error, rate } = await booksService.rateBook(booksData)(+bookId, +userId, +rating);
-            const { book } = await booksService.getBookById(booksData)(+bookId);
 
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(409).send({ message: 'Book not found!' });
@@ -224,8 +223,8 @@ booksController
             } else if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(400).send({ message: 'You have already rated this book with the same value! You can update your rating if you have changed your mind!' });
             } else {
-               
-                res.status(201).send({ book });
+                
+                res.status(201).send(rate);
             }
         })
     //borrow a book

@@ -592,6 +592,7 @@ const rateBook = booksData => {
 
         const existingRating = await booksData.getUserRatingsForBook(bookId, userId);
 
+
         if (existingRating.length === 0) {
             const _ = await booksData.insertRating(bookId, rating, userId);
             return {
@@ -635,6 +636,7 @@ const voteReview = booksData => {
         }
         const authorId = +(review[0].user_Id);
         const existingVote = await booksData.getUserVoteForBook(reviewId, userId);
+        
 
         if (existingVote.length === 0) {
             const _ = await booksData.insertVote(reviewId, vote, userId);
