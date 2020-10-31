@@ -15,7 +15,7 @@ const IndividualBook = props => {
     const [bookData, setBookData] = useState(null);
     const [bookReviewsData, setBookReviewsData] = useState([]);
     const [error, setError] = useState(null);
-    
+
 
     const updateReviews = (records) => {
         setBookReviewsData(records)
@@ -56,17 +56,19 @@ const IndividualBook = props => {
                 'Content-Type': 'application/json',
             },
         })
-            .then((res) =>(res.json()))
-            .then((data) =>{ 
+            .then((res) => (res.json()))
+            .then((data) => {
                 if (data.message) {
-                    const modal =  swal({
-                      title: "Oops!",
-                      text: `${data.message}`,
-                      icon: "error",
-                      button: "Ok"
-                    })}
-                    if(!bookReviewsData.length) setBookReviewsData([data]);
-                    setBookReviewsData([...bookReviewsData, data])})
+                    const modal = swal({
+                        title: "Oops!",
+                        text: `${data.message}`,
+                        icon: "error",
+                        button: "Ok"
+                    })
+                }
+                if (!bookReviewsData.length) setBookReviewsData([data]);
+                setBookReviewsData([...bookReviewsData, data])
+            })
             .catch((err) => console.log(err));
     };
 
@@ -107,36 +109,42 @@ const IndividualBook = props => {
             .catch((error) => (setError(console.error.message)));
     };
 
-    const sendLikeOrDislike = (review_id, content) => {
-        fetch(`http://localhost:4000/reviews/${review_id}/vote`, {
+
+    const sendLikeOrDislike = async  (review_id, content) => {
+
+        const ids = {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer  ${localStorage.getItem("token")}`,
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(content),
-        })
-            .then((res) => res.json())
-
-            .catch((error) => (setError(console.error.message)));
-
+        };
+        try {
+            const data = await fetch(`http://localhost:4000/reviews/${review_id}/vote`, ids);
+            const updatedData = await data.json();
+            setBookData(updatedData.book[0])
+        } catch (error) {
+            return error.message;
+        }
     }
 
-        return (
+
+    return (
+        <div>
+            { bookData && < IndividualBookDetails bookData={bookData} setData={setBookData} />}
             <div>
-              { bookData && < IndividualBookDetails  bookData={bookData} setData={setBookData} />}
-                <div>
-                    <AllReviews data={bookReviewsData}
+                <AllReviews data={bookReviewsData}
 
-                        update={updateReview}
-                        remove={removeReview}
-                        sendLikeOrDislike={sendLikeOrDislike}
-                        create={createReview} />
-                </div>
+                    update={updateReview}
+                    remove={removeReview}
+                    sendLikeOrDislike={sendLikeOrDislike}
+                    create={createReview} />
             </div>
+        </div>
 
 
-        )
-    }
+    )
+}
 export default IndividualBook;
 
