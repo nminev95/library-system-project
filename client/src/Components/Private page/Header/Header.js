@@ -46,7 +46,7 @@ const NavBar = () => {
     }, 1500)
   }
 
-  const url = `/search?query=${search}`
+  const url = `/books?search=${search}&page=1`
   const path = useLocation().pathname
   const fullPath = useLocation().search
 

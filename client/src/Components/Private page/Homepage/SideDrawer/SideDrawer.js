@@ -76,7 +76,7 @@ function SideDrawer(props) {
     autobiography: false,
   })
   const history = useHistory();
-
+  const url = `/books?search=${search}&page=1`
   const toggleCollapse = (ev) => {
     setState((prevState) => !prevState);
   }
@@ -119,21 +119,22 @@ function SideDrawer(props) {
     }, 1500)
   }
 
-  const url = `/search?query=${search}`
-  const path = useLocation().pathname
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} />
+      <div className={classes.toolbar} style={{ textAlign: "center" }}>
+        <Link to="/home">
+          <MDBBtn style={{ marginTop: "13px" }}>Return to homepage</MDBBtn>
+        </Link>
+      </div>
       <Divider />
       <List>
-        <ListItem>
-          <ListItemIcon><MenuBookIcon /></ListItemIcon>Genre
-      </ListItem>
+        <ListItem style={{ fontSize: "20px", fontWeight: '400' }}>
+          <ListItemIcon><MenuBookIcon /><p style={{ marginLeft: "10px" }}>Genre</p></ListItemIcon>
+        </ListItem>
         <Container>
           <ListItem>
             <FormControlLabel
@@ -145,7 +146,7 @@ function SideDrawer(props) {
         <Container>
           <ListItem>
             <FormControlLabel
-              control={<Checkbox checked={state.fantasy  || location.search.includes('fantasy')} onChange={handleChange} name='fantasy' color="primary" />}
+              control={<Checkbox checked={state.fantasy || location.search.includes('fantasy')} onChange={handleChange} name='fantasy' color="primary" />}
               label='Fantasy'
             />
           </ListItem>
@@ -153,7 +154,7 @@ function SideDrawer(props) {
         <Container>
           <ListItem>
             <FormControlLabel
-              control={<Checkbox checked={state.autobiography  || location.search.includes('autobiography')} onChange={handleChange} name='autobiography' color="primary" />}
+              control={<Checkbox checked={state.autobiography || location.search.includes('autobiography')} onChange={handleChange} name='autobiography' color="primary" />}
               label='Autobiography'
             />
           </ListItem>
@@ -230,7 +231,7 @@ function SideDrawer(props) {
                       </Link>
                     ) : (null)}
                     <Link to="/profile">
-                    <MDBDropdownItem style={{ padding: '10px' }} href="#!">My account</MDBDropdownItem>
+                      <MDBDropdownItem style={{ padding: '10px' }} href="#!">My account</MDBDropdownItem>
                     </Link>
                     <MDBDropdownItem style={{ padding: '10px' }} onClick={() => handleLogout()} href="#!">Log out</MDBDropdownItem>
                   </MDBDropdownMenu>

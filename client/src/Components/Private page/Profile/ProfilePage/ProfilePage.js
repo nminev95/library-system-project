@@ -17,6 +17,7 @@ const ProfilePage = () => {
     const [newPasswordRepeat, setNewPasswordRepeat] = useState('');
     const [latestBorrowedBooks, setLatestBorrowedBooks] = useState([]);
     const [borrowedBooks, setBorrowedBooks] = useState([]);
+    const [error, setError] = useState('');
 
     const toggleEditMode = () => {
         setEditMode((editMode) => !editMode)
@@ -50,8 +51,13 @@ const ProfilePage = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                setBorrowedBooks(data)
-                setLatestBorrowedBooks(data.slice(data.length - 2, data.length));
+                if (data.message) {
+                    setError(data.message)
+                    console.log(data.message)
+                } else {
+                    setBorrowedBooks(data)
+                    setLatestBorrowedBooks(data.slice(data.length - 2, data.length));
+                }
             })
     }, []);
 
@@ -102,33 +108,41 @@ const ProfilePage = () => {
 
     return (
         <>
-            <div className="profileInfoContainer" style={{ display: "grid", gridTemplateColumns: "50% 50%" }}>
+            <div className="profileInfoContainer" style={{ display: "grid", gridTemplateColumns: "50% 50%", marginTop: "70px" }}>
                 <div>
                     <h1 style={{ margin: "40px" }}>Your profile</h1>
-                    <div style={{ margin: "70px" }}>
+                    <div style={{ margin: "70px", fontSize: "22px" }}>
                         <h3>User details</h3>
+                        <br></br>
                         <br></br>
                         {editMode ? (
                             <>
                                 <p ><MDBIcon icon="user-circle" /> Enter your new username:</p><MDBInput label="Your new username" value={username} onChange={(ev) => setUsername(ev.target.value)} />
                                 <br></br>
+                                <br></br>
                                 <p> <MDBIcon icon="envelope" /> Enter your new email address:</p><MDBInput label="Your new email" value={email} onChange={(ev) => setEmail(ev.target.value)} />
+                                <br></br>
                                 <br></br>
                             </>
                         ) : (
                                 <>
                                     <p ><MDBIcon icon="user-circle" /> Username: {username}</p>
                                     <br></br>
+                                    <br></br>
                                     <p> <MDBIcon icon="envelope" /> Email address: {email}</p>
+                                    <br></br>
                                     <br></br>
                                 </>
                             )
                         }
                         <p> <MDBIcon icon="user-plus" /> Join date: {userData.Joined}</p>
                         <br></br>
+                        <br></br>
                         <p> <MDBIcon icon="trophy" /> Current level: {userData.Level} </p>
                         <br></br>
+                        <br></br>
                         <p> <MDBIcon icon="gamepad" /> Current read points: {userData.Points} </p>
+                        <br></br>
                         <br></br>
                         {!passwordUpdateMode && !editMode ? (
                             <>
@@ -163,13 +177,16 @@ const ProfilePage = () => {
                     <div style={{ margin: "70px" }}>
                         <h3>Recently borrowed books</h3>
                         <div style={{ display: "grid", gridTemplateColumns: "50% 50%" }}>
-                            {latestBorrowedBooks.map((book) => <SingleBorrowedBook book={book} key={book.book_Id} />)}
+                            {latestBorrowedBooks.length !== 0 ? (
+                                latestBorrowedBooks.map((book) => <SingleBorrowedBook book={book} key={book.book_Id} />)
+                            ) : (<h4 style={{marginTop: "20px", color:"gray"}}>You haven't borrowed any books recently.</h4>)
+                            }
                         </div>
                     </div>
                 </div >
             </div>
-            <div style={{textAlign:"center"}}>
-            <CollapsePage books={borrowedBooks} />
+            <div style={{ textAlign: "center" }}>
+                <CollapsePage books={borrowedBooks}  />
             </div>
         </>
 
