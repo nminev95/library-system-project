@@ -105,7 +105,7 @@ const getPage = booksData => {
 
         const limit = 9;
         const offset = (pageNumber - 1) * limit;
-        const page = await booksData.getPageResult(limit, offset, search, genre);     
+        const page = await booksData.getPageResult(limit, offset, search, genre);
         const [{ count }] = await booksData.getBooksCount();
 
         return {
@@ -113,10 +113,10 @@ const getPage = booksData => {
             count: count,
             currentPage: pageNumber,
             hasNext: (offset + limit) < count,
-            hasPrevious: pageNumber > 1
+            hasPrevious: pageNumber > 1,
         };
-    }
-}
+    };
+};
 
 const getGenres = booksData => {
     return async () => {
@@ -129,9 +129,9 @@ const getGenres = booksData => {
             };
         }
 
-        return { error: null, genres: genres }
-    }
-}
+        return { error: null, genres: genres };
+    };
+};
 /**
 * Gets all revies found in the database.
 * @param module books data SQL queries module.
@@ -328,7 +328,7 @@ const createReview = booksData => {
                 };
             }
             const reviews = await booksData.pushReview(content, id, userId);
-            return { error: null, reviews: {content, id, userId} };
+            return { error: null, reviews: { content, id, userId } };
         } else {
             const book = await booksData.getById(+id);
 
@@ -347,7 +347,7 @@ const createReview = booksData => {
                     book: null,
                 };
             }
-            
+
             const _ = await booksData.pushReview(content, id, userId);
             return { error: null, reviews: { content, id, userId } };
         }
@@ -367,7 +367,7 @@ const createReview = booksData => {
 */
 const borrowABook = booksData => {
     return async (userID, bookID) => {
-        
+
         const book = await booksData.getById(+bookID);
 
         if (book.length === 0) {
@@ -377,7 +377,7 @@ const borrowABook = booksData => {
             };
         }
         const bookStatus = (book[0].Status);
-        
+
 
         if (bookStatus === 'Unlisted' || bookStatus === 'Borrowed') {
             return {
@@ -404,7 +404,7 @@ const borrowABook = booksData => {
 */
 const returnABook = booksData => {
     return async (bookId, userId) => {
-        
+
 
         const bookInfo = await booksData.getById(+bookId);
 
@@ -447,7 +447,7 @@ const returnABook = booksData => {
 */
 const updateReview = booksData => {
     return async (reviewId, content, userId, role) => {
-      
+
 
         if (role === 'user') {
             const foundReview = await booksData.getReview(reviewId);
@@ -493,8 +493,8 @@ const updateReview = booksData => {
 
             return { error: null, review: { message: 'Review was successfully updated!' } };
         }
-        };
     };
+};
 
 /**
 * Deletes review from the database.
@@ -667,7 +667,7 @@ const mapReviewsAndRating = async (data) => {
     const map = new Map();
 
     for (const book of data) {
-        const { id, Title, Author, Description,Borrower, Genre, Year, Cover, Status, Review_Id, Review, ReviewAuthor, Rating, TimesBorrowed } = book;
+        const { id, Title, Author, Description, Borrower, Genre, Year, Cover, Status, Review_Id, Review, ReviewAuthor, Rating, TimesBorrowed } = book;
         const likes = await booksData.getReviewLikes(Review_Id);
         const dislikes = await booksData.getReviewDislikes(Review_Id);
 
@@ -699,7 +699,7 @@ const mapReviewsAndRating = async (data) => {
             });
             if (map.get(id).Rating === null) {
                 map.set(id, {
-                    id, Title, Author, Description, Borrower,  Genre, Year, Cover, Status, TimesBorrowed, Reviews: 'No reviews for this book yet.', Rating: 'Be the first person to rate this book!',
+                    id, Title, Author, Description, Borrower, Genre, Year, Cover, Status, TimesBorrowed, Reviews: 'No reviews for this book yet.', Rating: 'Be the first person to rate this book!',
                 });
             }
         }
@@ -707,6 +707,32 @@ const mapReviewsAndRating = async (data) => {
 
     return map.values();
 };
+
+const getUserHistory = booksData => {
+    return async (bookId, userId) => {
+        const book = await booksData.getById(bookId);
+
+        if (book.length === 0) {
+            return {
+                error: serviceErrors.RECORD_NOT_FOUND,
+                history: null,
+            };
+        }
+
+        const history = await booksData.getReadHistory(userId);
+
+        if (!(history.some(el => (+(el.book_Id) === bookId)))) {
+            return {
+                error: serviceErrors.OPERATION_NOT_PERMITTED,
+                history: null,
+            };
+  
+        } else {
+            return { error: null, history: true };
+        }
+    };
+};
+
 
 export default {
     getAllBooks,
@@ -726,5 +752,6 @@ export default {
     getAllReviews,
     getBorrowedBooks,
     getPage,
-    getGenres
+    getGenres,
+    getUserHistory,
 };
