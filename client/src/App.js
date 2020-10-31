@@ -55,9 +55,7 @@ function App() {
           </div>
           <Footer />
         </AuthContext.Provider>
-
       </Router>
-
     </>
   );
 }
