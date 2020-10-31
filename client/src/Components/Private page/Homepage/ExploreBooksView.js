@@ -5,7 +5,7 @@ import Pagination from './Pagination/Pagination';
 import BooksCarousel from './RandomBook/BooksCarousel';
 import SideDrawer from './SideDrawer/SideDrawer';
 import { useCustomQueryParams } from '../../Utils/Loader/CustomHooks/useCustomQueryParams';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { MDBBtn } from 'mdbreact';
 
 const HomepageLogged = (props) => {
@@ -15,7 +15,8 @@ const HomepageLogged = (props) => {
     const [genres, setGenres] = useState([]);
     const [currentURL, setCurrentURL] = useState(`http://localhost:4000/books?page=${page}`);
     const [genre, setGenre] = useState('');
-
+    const history = useHistory();
+  
     const updateUrl = (url) => {
         setCurrentURL(url)
     }   
@@ -25,7 +26,7 @@ const HomepageLogged = (props) => {
     }
 
     useEffect(() => {
-        fetch(currentURL, {
+        fetch(`http://localhost:4000/books${history.location.search}`, {
             mode: 'cors',
             headers: {
                 'Authorization': `Bearer  ${localStorage.getItem("token")}`,
@@ -34,7 +35,7 @@ const HomepageLogged = (props) => {
         })
             .then(res => res.json())
             .then(data => setStateData(data))
-    }, [currentURL]);
+    }, [history.location.search]);
 
     useEffect(() => {
         fetch('http://localhost:4000/books/genres', {
@@ -56,7 +57,7 @@ const HomepageLogged = (props) => {
                 </div>
                 <div>
                     {stateData.books && <Books books={stateData.books} />}
-                    <Pagination stateData={stateData} updateBooks={updateUrl}/>
+                    <Pagination stateData={stateData} updateBooks={updateUrl} genre={genre}/>
                 </div>
             </div>
         </div>

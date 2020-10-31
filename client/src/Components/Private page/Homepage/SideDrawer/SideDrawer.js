@@ -62,6 +62,8 @@ function SideDrawer(props) {
   const { window } = props;
   const classes = useStyles();
   const theme = useTheme();
+  const location = useLocation();
+  console.log(location)
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const genres = props.genres;
   const { isLoggedIn, setLoginState, user } = useContext(AuthContext);
@@ -84,11 +86,10 @@ function SideDrawer(props) {
     setState({ ...state, [event.target.name]: event.target.checked });
 
     if (event.target.checked) {
-      props.updateBooks(`http://localhost:4000/books?page=${props.page}&genre=${event.target.name}`)
       history.push(`/books?page=1&genre=${event.target.name}`)
+      // props.updateBooks(`http://localhost:4000/books?page=${props.page}&genre=${event.target.name}`)
     }
     if (!event.target.checked) {
-      props.updateBooks(`http://localhost:4000/books?page=${props.page}`);
       history.push(`/books?page=1`);
     }
   };
@@ -138,7 +139,7 @@ function SideDrawer(props) {
         <Container>
           <ListItem>
             <FormControlLabel
-              control={<Checkbox checked={state.horror} onChange={handleChange} name='horror' color="primary" />}
+              control={<Checkbox checked={state.horror || location.search.includes('horror')} onChange={handleChange} name='horror' color="primary" />}
               label='Horror'
             />
           </ListItem>
@@ -146,7 +147,7 @@ function SideDrawer(props) {
         <Container>
           <ListItem>
             <FormControlLabel
-              control={<Checkbox checked={state.fantasy} onChange={handleChange} name='fantasy' color="primary" />}
+              control={<Checkbox checked={state.fantasy  || location.search.includes('fantasy')} onChange={handleChange} name='fantasy' color="primary" />}
               label='Fantasy'
             />
           </ListItem>
@@ -154,7 +155,7 @@ function SideDrawer(props) {
         <Container>
           <ListItem>
             <FormControlLabel
-              control={<Checkbox checked={state.autobiography} onChange={handleChange} name='autobiography' color="primary" />}
+              control={<Checkbox checked={state.autobiography  || location.search.includes('autobiography')} onChange={handleChange} name='autobiography' color="primary" />}
               label='Autobiography'
             />
           </ListItem>
@@ -162,7 +163,7 @@ function SideDrawer(props) {
         <Container>
           <ListItem>
             <FormControlLabel
-              control={<Checkbox checked={state.tragedy} onChange={handleChange} name='tragedy' color="primary" />}
+              control={<Checkbox checked={state.tragedy || location.search.includes('tragedy')} onChange={handleChange} name='tragedy' color="primary" />}
               label='Tragedy'
             />
           </ListItem>
@@ -170,7 +171,7 @@ function SideDrawer(props) {
         <Container>
           <ListItem>
             <FormControlLabel
-              control={<Checkbox checked={state.satire} onChange={handleChange} name='satire' color="primary" />}
+              control={<Checkbox checked={state.satire || location.search.includes('satire')} onChange={handleChange} name='satire' color="primary" />}
               label='Satire'
             />
           </ListItem>
