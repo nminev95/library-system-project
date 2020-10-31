@@ -119,6 +119,23 @@ booksController
                 res.status(200).send(reviews);
             }
         })
+
+        .get('/:id/history',
+        authMiddleware,
+        roleMiddleware(['admin', 'user']),
+        validateBanStatusMiddleware(),
+        async (req, res) => {
+            const { id } = req.params;
+            const userId = req.user.id;
+            const { error, history } = await booksService.getUserHistory(booksData)(+id, userId);
+
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                res.status(404).send({ message: 'Book not found!' });
+            } else {
+                res.status(200).send(history);
+            }
+        })
+
     //post a review
     // eslint-disable-next-line no-unused-vars
     .post('/:id/reviews',

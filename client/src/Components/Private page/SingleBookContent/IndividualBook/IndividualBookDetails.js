@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './IndividualBook.css';
 import 'mdbreact/dist/css/mdb.css'
 import { MDBBtn } from 'mdbreact';
@@ -11,14 +11,11 @@ import swal from '@sweetalert/with-react'
 
 const IndividualBookDetails = ({ bookData, setData }) => {
     const { user } = useAuth();
-
     const loggedUser = user.sub;
     const bookId = bookData.id;
-
     const borrower = bookData.Borrower;
-    const rating = bookData.Rating;
-    console.log(rating);
-
+    const [error, setError] = useState(null);
+    const [bookHistory, setBookHistory] = useState(false);
 
     const borrowBoook = async () => {
 
@@ -91,6 +88,19 @@ const IndividualBookDetails = ({ bookData, setData }) => {
     };
 
 
+    useEffect(() => {
+        fetch(`http://localhost:4000/books/${bookId}/history`, { 
+            mode: 'cors', 
+            headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+            }, })
+            .then(res => res.json())
+            .then(data => setBookHistory(data))
+            .catch((error) => (setError(console.error.message)));
+    }, []);
+
+
+console.log(bookHistory);
     // const onPick = (bookId, value) => {sendRating(bookId, value)}
        
     //   const MoodButton = ({ rating, onClick }) => (
@@ -124,21 +134,6 @@ const IndividualBookDetails = ({ bookData, setData }) => {
     //     )
     //   })
 
-
-
-
-
-    
-
-    // const ratingStars = {
-    //     size: 40,
-    //     count: 5,
-    //     isHalf: false,
-    //     value: rating,
-    //     color: "grey",
-    //     activeColor: "yellow",
-    //     onChange: (value) => (sendRating(bookId, value))
-    // };
 
     return (
 
@@ -183,8 +178,8 @@ const IndividualBookDetails = ({ bookData, setData }) => {
 
                             {bookData.Status === "Borrowed" && loggedUser === borrower && (
                                 <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>)}
-                            
-                            {/* <MDBBtn id="main-button" onClick={popUp}> Rate </MDBBtn> */}
+                            {bookHistory &&  (
+                            <MDBBtn id="main-button" onClick={returnBoook}> Rate </MDBBtn>)}
                         </div>
                        
 

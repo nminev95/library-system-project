@@ -121,7 +121,7 @@ const updateUserPassword = usersData => {
             };
         } else {
             const passwordHash = await bcrypt.hash(userUpdate.newPassword, 10);
-            const _ = await usersData.updatePass(passwordHash, id)
+            const _ = await usersData.updatePass(passwordHash, id);
         }
 
         return { error: null, user: 'Password was updated successfully!' };
@@ -261,5 +261,5 @@ export default {
     deleteUser,
     banUser,
     removeBan,
-    updateUserPassword
+    updateUserPassword,
 };
