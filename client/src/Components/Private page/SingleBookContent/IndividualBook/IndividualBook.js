@@ -65,7 +65,8 @@ const IndividualBook = props => {
                       icon: "error",
                       button: "Ok"
                     })}
-                setBookReviewsData([...bookReviewsData, data])})
+                    if(!bookReviewsData.length) setBookReviewsData([data]);
+                    setBookReviewsData([...bookReviewsData, data])})
             .catch((err) => console.log(err));
     };
 
