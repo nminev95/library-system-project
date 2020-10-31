@@ -17,10 +17,12 @@ reviewsController
         validateBanStatusMiddleware(),
         async (req, res) => {
             const reviewId = req.params.id;
+            const bookId = req.params.id;
             const vote = req.body.vote;     
             const userId = req.user.id;
+
             const { error, review, author } = await booksService.voteReview(booksData)(+reviewId, +userId, vote);
-            
+            const { book } = await booksService.getBookById(booksData)(+bookId);
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 return res.status(409).send({ message: 'Review not found!' });
             }
@@ -28,7 +30,7 @@ reviewsController
             if (review.message === 'Your vote is saved!') {
                 gamificationService.addUserPoints(gamificationData)(author);
             }
-            res.status(201).send(review);
+            res.status(201).send({book});
 
         });
 

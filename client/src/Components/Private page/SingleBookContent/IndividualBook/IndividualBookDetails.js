@@ -101,9 +101,7 @@ const IndividualBookDetails = ({ bookData, setData }) => {
     }, []);
 
 
-    console.log(bookHistory);
-
-    const example = {
+    const stars = {
         size: 40,
         count: 5,
         isHalf: false,
@@ -121,7 +119,7 @@ const IndividualBookDetails = ({ bookData, setData }) => {
         },
         content: (
             <div>
-                <ReactStars {...example} />
+                <ReactStars {...stars} />
             </div>
         )
     })

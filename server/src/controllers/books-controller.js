@@ -223,8 +223,8 @@ booksController
             } else if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(400).send({ message: 'You have already rated this book with the same value! You can update your rating if you have changed your mind!' });
             } else {
-                const { book } = await booksService.getBookById(booksData)(+bookId);
-                res.status(201).send({ book });
+                
+                res.status(201).send(rate);
             }
         })
     //borrow a book
