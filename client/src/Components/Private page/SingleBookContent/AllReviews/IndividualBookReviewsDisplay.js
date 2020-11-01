@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../IndividualBook/IndividualBook.css';
 import 'mdbreact/dist/css/mdb.css';
 import { MDBRow, MDBContainer, MDBCol, MDBBtn, MDBIcon } from 'mdbreact';
@@ -16,8 +16,23 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, author
     const [likesNumber, setLikesNumber] = useState(likes);
     const [dislikesNumber, setDislikesNumber] = useState(dislikes);
     const [hasVoted, setHasVoted] = useState(null);
+    const [error, setError] = useState(null);
     const maxLikes = likes + 1;
     const maxDislikes = dislikes + 1;
+
+
+    useEffect(() => {
+        fetch(`http://localhost:4000/reviews/${id}/user/vote`, {
+            mode: 'cors',
+            headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+            },
+        })
+            .then(res => res.json())
+            .then(data => setHasVoted(data))
+            .catch((error) => (setError(console.error.message)));
+    }, []);
+
 
     const toggleUpdateMode = () => {
         setModeUpdate((prevState) => !prevState);

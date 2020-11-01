@@ -101,6 +101,8 @@ const IndividualBookDetails = ({ bookData, setData }) => {
     }, []);
 
 
+    
+
     const stars = {
         size: 40,
         count: 5,
