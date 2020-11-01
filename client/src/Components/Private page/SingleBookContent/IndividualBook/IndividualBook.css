@@ -38,6 +38,9 @@ color: rgb(145, 138, 129);
 }
 #button-check, #button-edit, #button-trash {
     opacity: 0.5;
+justify-content: center;
+    padding-right: 20px;
+    padding-left: 25px;
     
 }
 
@@ -54,4 +57,8 @@ color: rgb(32, 143, 100)
 }
 .undefined react-stars{
     align-content: center;
+}
+#edit-delete-buttons{
+    padding-right: 5px;
+    padding-left: 6px;
 }
