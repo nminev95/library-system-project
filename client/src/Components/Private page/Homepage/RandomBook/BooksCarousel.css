@@ -6,6 +6,10 @@
     justify-content: center;
 }
 
+.view.carrouselRow {
+    min-height: 760px;
+}
+
 #bookInfo {
     display: grid;
     justify-content: center;

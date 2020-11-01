@@ -7,7 +7,6 @@ import TextField from '@material-ui/core/TextField';
 
 const ProfilePage = () => {
     const { user } = useContext(AuthContext);
-
     const [passwordUpdateMode, setPasswordUpdateMode] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [email, setEmail] = useState('');

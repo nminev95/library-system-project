@@ -81,6 +81,7 @@ function SideDrawer(props) {
     borrowed: false,
     unlisted: false,
   })
+
   const history = useHistory();
   const url = `/books?search=${search}&page=1`
   const toggleCollapse = (ev) => {
@@ -111,7 +112,11 @@ function SideDrawer(props) {
       history.push(newUrl)
     }
   };
+  // const genreList = ['fantasy', 'history','tragedy','satire','horror','autobiography'];
 
+  // const disableRest = (name, listArray) => {
+
+  // }
   const handleLogout = () => {
 
     fetch('http://localhost:4000/signout', {

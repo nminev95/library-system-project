@@ -132,7 +132,7 @@ const IndividualBook = props => {
 
 
     return (
-        <div>
+        <div style={{marginTop: "100px"}}>
             { bookData && < IndividualBookDetails bookData={bookData} setData={setBookData} />}
             <div>
                 <AllReviews data={bookReviewsData}

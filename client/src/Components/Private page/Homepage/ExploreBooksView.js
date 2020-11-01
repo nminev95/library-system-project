@@ -10,20 +10,9 @@ import { MDBBtn } from 'mdbreact';
 
 const HomepageLogged = (props) => {
     const [stateData, setStateData] = useState([]);
-    const [search, setSearch] = useState('');
-    const { page, query } = useCustomQueryParams();
+    const { page } = useCustomQueryParams();
     const [genres, setGenres] = useState([]);
-    const [currentURL, setCurrentURL] = useState(`http://localhost:4000/books?page=${page}`);
-    const [genre, setGenre] = useState('');
     const history = useHistory();
-  
-    const updateUrl = (url) => {
-        setCurrentURL(url)
-    }   
-
-    const getGenre = (genre) => {
-        setGenre(genre);
-    }
 
     useEffect(() => {
         fetch(`http://localhost:4000/books${history.location.search}`, {
@@ -53,11 +42,11 @@ const HomepageLogged = (props) => {
         <div>
             <div style={{ display: "grid", gridTemplateColumns: "15% 85%", background: "#EDEDEE" }}>
                 <div>
-                    <SideDrawer genres={genres} page={page} setGenre={getGenre} updateBooks={updateUrl}/>
+                    <SideDrawer genres={genres} page={page}/>
                 </div>
                 <div>
                     {stateData.books && <Books books={stateData.books} />}
-                    <Pagination stateData={stateData} updateBooks={updateUrl} genre={genre}/>
+                    <Pagination stateData={stateData}/>
                 </div>
             </div>
         </div>

@@ -9,6 +9,7 @@ const BooksCarousel = ({ books }) => {
         
         <MDBContainer style={{ width: "100%", maxWidth: "100%", padding: "0", background: "lightgray" }}>
             <MDBCarousel
+                style={{height:"720px"}}
                 activeItem={1}
                 length={3}
                 showControls={true}

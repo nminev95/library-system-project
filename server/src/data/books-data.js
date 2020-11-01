@@ -16,6 +16,7 @@ const getAllBasicInfo = async () => {
             b.year as Year,
             b.imageUrl as Cover,
             s.type as Status,
+            (SELECT COUNT(*) FROM users_history WHERE book_Id = b.book_Id) as TimesBorrowed,
             ROUND(AVG(rr.rating_value), 2) as Rating
         from 
             books b
