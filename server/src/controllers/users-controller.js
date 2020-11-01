@@ -15,9 +15,9 @@ usersController
         const { id } = req.params;
         const loggedUser = req.user;
 
-        const { error, user } = await usersService.getUserById(usersData)(+id, loggedUser);
+        const { user } = await usersService.getUserById(usersData)(+id, loggedUser);
 
-        res.status(200).send(user)
+        res.status(200).send(user);
     })
     .post('/',
         createValidator(createUserSchema),
@@ -51,7 +51,7 @@ usersController
             } else if (error === serviceErrors.OPERATION_NOT_PERMITTED) {
                 res.status(409).send({ message: 'Users can only change their own usernames!' });
             } else if (error === serviceErrors.NO_MATCH) {
-                res.status(400).send({ message: 'Password is invalid!'})
+                res.status(400).send({ message: 'Password is invalid!'});
             } else {
                 res.status(200).send({ message: 'You have successfully updated your account info!' });
             }
@@ -67,10 +67,10 @@ usersController
             const { error, user } = await usersService.updateUserPassword(usersData)(+id, updateData, loggedUser);
 
             if (error === serviceErrors.NO_MATCH) {
-                res.status(400).send({ message: 'Password is invalid!'})
+                res.status(400).send({ message: 'Password is invalid!'});
             } else {
-                res.status(201).send(user)
+                res.status(201).send(user);
             }
-        }) 
+        });
     
 export default usersController;

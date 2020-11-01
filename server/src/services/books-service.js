@@ -647,6 +647,7 @@ const voteReview = booksData => {
         }
         const authorId = +(review[0].user_Id);
         const existingVote = await booksData.getUserVoteForBook(reviewId, userId);
+        console.log(existingVote);
 
 
         if (existingVote.length === 0) {
@@ -746,6 +747,19 @@ const getUserHistory = booksData => {
     };
 };
 
+const getUserVote = booksData => {
+    return async (reviewId, userId) => {
+    
+
+        const existingVote = await booksData.getUserVoteForBook(reviewId, userId);
+
+        if (existingVote.length === 0) {
+            return { error: null, vote: null  };
+        } else {
+            return { error: null, vote: true };
+        }
+    };
+};
 
 export default {
     getAllBooks,
@@ -767,4 +781,5 @@ export default {
     getPage,
     getGenres,
     getUserHistory,
+    getUserVote,
 };

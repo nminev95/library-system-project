@@ -11,18 +11,36 @@ const reviewsController = express.Router();
 
 reviewsController
 
+
+.get('/:id/user/vote',
+        authMiddleware,
+        roleMiddleware(['admin', 'user']),
+        validateBanStatusMiddleware(),
+        async (req, res) => {
+            const reviewId = req.params.id;    
+            const userId = req.user.id;
+
+            const { error, vote } = await booksService.getUserVote(booksData)(+reviewId, +userId);
+
+            if (error === serviceErrors.RECORD_NOT_FOUND) {
+                return res.status(409).send({ message: 'Review not found!' });
+            } else {
+                return res.status(200).send({vote});
+            }
+               
+
+        })
+
     .put('/:id/vote',
         authMiddleware,
         roleMiddleware(['admin', 'user']),
         validateBanStatusMiddleware(),
         async (req, res) => {
             const reviewId = req.params.id;
-            const bookId = req.params.id;
             const vote = req.body.vote;     
             const userId = req.user.id;
 
             const { error, review, author } = await booksService.voteReview(booksData)(+reviewId, +userId, vote);
-            const { book } = await booksService.getBookById(booksData)(+bookId);
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 return res.status(409).send({ message: 'Review not found!' });
             }
@@ -30,7 +48,7 @@ reviewsController
             if (review.message === 'Your vote is saved!') {
                 gamificationService.addUserPoints(gamificationData)(author);
             }
-            res.status(201).send({book});
+            res.status(201).send({review});
 
         });
 
