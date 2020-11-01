@@ -17,8 +17,8 @@ reviewsController
         roleMiddleware(['admin', 'user']),
         validateBanStatusMiddleware(),
         async (req, res) => {
-            const reviewId = req.params.id;    
-            const userId = req.user.id;
+            const reviewId = req.params.id;             
+            const userId = req.user.id;    
 
             const { error, vote } = await booksService.getUserVote(booksData)(+reviewId, +userId);
 
@@ -28,7 +28,6 @@ reviewsController
                 return res.status(200).send({vote});
             }
                
-
         })
 
     .put('/:id/vote',
