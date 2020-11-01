@@ -97,7 +97,7 @@ const IndividualBookDetails = ({ bookData, setData }) => {
             .then(res => res.json())
             .then(data => setBookHistory(data))
             .catch((error) => (setError(console.error.message)));
-    }, []);
+    }, [bookData]);
 
 
 

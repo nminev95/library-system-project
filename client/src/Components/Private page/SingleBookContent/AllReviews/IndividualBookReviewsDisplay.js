@@ -29,9 +29,9 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, author
             },
         })
             .then(res => res.json())
-            .then(data => setHasVoted(data))
+            .then(data => setHasVoted(data.vote))
             .catch((error) => (setError(console.error.message)));
-    }, []);
+    }, [likesNumber, dislikesNumber]);
 
 
     const toggleUpdateMode = () => {

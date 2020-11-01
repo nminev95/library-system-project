@@ -61,7 +61,7 @@ const createUser = usersData => {
                 user: null,
             };
         }
-       
+
         const passwordHash = await bcrypt.hash(password, 10);
         const user = await usersData.create(username, passwordHash, email, DEFAULT_USER_ROLE);
 
@@ -120,10 +120,11 @@ const updateUserPassword = usersData => {
                 error: serviceErrors.NO_MATCH,
                 user: null,
             };
-        } else {
-            const passwordHash = await bcrypt.hash(userUpdate.newPassword, 10);
-            const _ = await usersData.updatePass(passwordHash, id);
         }
+
+        const passwordHash = await bcrypt.hash(userUpdate.newPassword, 10);
+        const _ = await usersData.updatePass(passwordHash, id);
+
 
         return { error: null, user: 'Password was updated successfully!' };
     };

@@ -107,6 +107,17 @@ const ProfilePage = () => {
     }
 
     const updatePassword = (oldPassword, newPassword) => {
+
+        if (newPassword !== newPasswordRepeat) {
+            swal({
+                title: "Oops!",
+                text: "Looks like the new passwords don't match",
+                icon: "error",
+                button: "Try again",
+              });
+            return;
+        }
+
         fetch(`http://localhost:4000/users/${user.sub}/password`, {
             method: 'PUT',
             headers: {
@@ -120,13 +131,25 @@ const ProfilePage = () => {
         })
             .then(r => r.json())
             .then(result => {
-                if (result.message) {
-                    throw new Error(result.message);
-                }
+                if (result.message === 'Password is invalid!') {
+                    swal({
+                        title: "Oops!",
+                        text: "Looks like you have entered an invalid password.",
+                        icon: "error",
+                        button: "Try again",
+                      });
+                } else {
+                    swal({
+                        title: "Success!",
+                        text: "Password updated successfully!",
+                        icon: "success",
+                        button: "Continue",
+                      });
+                    }
             })
-            .catch(err => alert(err.message))
+         
     }
-    console.log(isValidUsername)
+
     return (
         <>
             <div className="profileInfoContainer" style={{ display: "grid", gridTemplateColumns: "50% 50%", marginTop: "70px" }}>
@@ -209,6 +232,8 @@ const ProfilePage = () => {
                             <>
                                 <MDBBtn onClick={() => {
                                     if (username.trim().length >= 4 && emailRegex.test(email)) {
+                                        setIsValidEmail(true);
+                                        setIsValidUsername(true);
                                         updateUserData(username, email)
                                         toggleEditMode()
                                     } else {
