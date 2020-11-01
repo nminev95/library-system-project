@@ -15,7 +15,9 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, author
     const [updateMode, setModeUpdate] = useState(false);
     const [likesNumber, setLikesNumber] = useState(likes);
     const [dislikesNumber, setDislikesNumber] = useState(dislikes);
-    const [hasVoted, setHasVoted] = useState(false);
+    const [hasVoted, setHasVoted] = useState(null);
+    const maxLikes = likes + 1;
+    const maxDislikes = dislikes + 1;
 
     const toggleUpdateMode = () => {
         setModeUpdate((prevState) => !prevState);
@@ -27,21 +29,25 @@ const IndividualBookReviewsDisplay = ({ content, likes, dislikes, author, author
     };
 
     const sendLike = () => {
-        setHasVoted(true);
+        if (likesNumber >= maxLikes) {
+            return;
+        }
         sendLikeOrDislike(id, { vote: "Like" });
-        // setLikesNumber((likesNumber) => likesNumber + 1)
-        // if (hasVoted) {
-        //     setDislikesNumber((dislikesNumber) => dislikesNumber - 1)
-        // }
+        setLikesNumber((likesNumber) => likesNumber + 1)
+        if (hasVoted) {
+            setDislikesNumber((dislikesNumber) => dislikesNumber - 1)
+        }
     };
 
     const sendDislike = () => {
-        setHasVoted(true);
+        if (dislikesNumber >= maxDislikes) {
+            return;
+        }
         sendLikeOrDislike(id, { vote: "Dislike" });
-        // setDislikesNumber((dislikesNumber) => dislikesNumber + 1)
-        // if (hasVoted) {
-        //     setLikesNumber((likesNumber) => likesNumber - 1)
-        // }
+        setDislikesNumber((dislikesNumber) => dislikesNumber + 1)
+        if (hasVoted) {
+            setLikesNumber((likesNumber) => likesNumber - 1)
+        }
     };
     
     return (
