@@ -26,7 +26,7 @@ export const updateBookSchema = {
             return null;
         }
 
-        if (typeof value !== 'string' || value.trim().length < 15 || value.trim().length > 45) {
+        if (typeof value !== 'string' || value.trim().length < 15 || value.trim().length > 445) {
             return 'Description should be a string in range [15..45]';
         }
 

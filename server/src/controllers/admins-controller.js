@@ -162,8 +162,11 @@ adminsController
         authMiddleware,
         roleMiddleware(['admin']),
         async (req, res) => {
-            const { error, review } = await booksService.updateReview(booksData)(req);
-
+            const { content } = req.body;
+            const { id } = req.params;
+            const userId = req.user.id;
+            const role = req.user.role;
+            const { error, review } = await booksService.updateReview(booksData)(+id, content, userId, role);
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(409).send({ message: 'Book/review not found!' });
             } else {

@@ -492,7 +492,7 @@ const updateReview = booksData => {
             return { error: null, review: { message: 'Review was successfully updated!' } };
         } else {
             const foundReview = await booksData.getReview(reviewId);
-
+            
             if (foundReview.length === 0) {
                 return {
                     error: serviceErrors.RECORD_NOT_FOUND,

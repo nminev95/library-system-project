@@ -10,7 +10,7 @@ const CarouselItem = ({ book, count }) => {
         <MDBCarouselItem itemId={count}>
             <MDBView className="carrouselRow">
                 <div className="sliderImageContainer">
-                    <img src={book.Cover} />
+                    <img style={{inlineSize:"-webkit-fill-available"}}src={book.Cover} />
                 </div>
                 <div className="sliderTextContainer">
                     <h1>{book.Title}</h1>
