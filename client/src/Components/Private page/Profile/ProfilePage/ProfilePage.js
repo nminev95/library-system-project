@@ -18,6 +18,9 @@ const ProfilePage = () => {
     const [latestBorrowedBooks, setLatestBorrowedBooks] = useState([]);
     const [borrowedBooks, setBorrowedBooks] = useState([]);
     const [error, setError] = useState('');
+    const [isValidUsername, setIsValidUsername] = useState(true);
+    const [isValidEmail, setIsValidEmail] = useState(true);
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
     const toggleEditMode = () => {
         setEditMode((editMode) => !editMode)
@@ -62,6 +65,16 @@ const ProfilePage = () => {
     }, []);
 
     const updateUserData = (username, email) => {
+        if (username.trim().length < 4) {
+            setIsValidUsername(false);
+            return;
+        }
+
+        if (!emailRegex.test(email)) {
+            setIsValidEmail(false);
+            return;
+        }
+
         fetch(`http://localhost:4000/users/${user.sub}`, {
             method: 'PUT',
             headers: {
@@ -105,7 +118,7 @@ const ProfilePage = () => {
             })
             .catch(err => alert(err.message))
     }
-
+    console.log(isValidUsername)
     return (
         <>
             <div className="profileInfoContainer" style={{ display: "grid", gridTemplateColumns: "50% 50%", marginTop: "70px" }}>
@@ -116,19 +129,59 @@ const ProfilePage = () => {
                         <br></br>
                         <br></br>
                         {editMode ? (
-                            <>
+                            isValidUsername ? (
+                                <>
                                 <p ><MDBIcon icon="user-circle" /> Enter your new username:</p><TextField style={{width: "400px"}} label="Your new username" name="username" type="text" value={username} onChange={(ev) => setUsername(ev.target.value)} />
                                 <br></br>
                                 <br></br>
-                                <p> <MDBIcon icon="envelope" /> Enter your new email address:</p><TextField style={{width: "400px"}} label="Your new email" name="email" type="text" value={email} onChange={(ev) => setEmail(ev.target.value)} />
+                                </>
+                            ) : (
+                                <>
+                                <p ><MDBIcon icon="user-circle" /> Enter your new username:</p><TextField style={{width: "400px"}} label="Your new username" name="username" type="text" helperText="New username must be between 4 and 20 characters long." error value={username} onChange={(ev) => setUsername(ev.target.value)} />
                                 <br></br>
                                 <br></br>
-                            </>
+                                </>
+                            )
+                            // <>
+                            //     <p ><MDBIcon icon="user-circle" /> Enter your new username:</p><TextField style={{width: "400px"}} label="Your new username" name="username" type="text" value={username} onChange={(ev) => setUsername(ev.target.value)} />
+                            //     <br></br>
+                            //     <br></br>
+                            //     <p> <MDBIcon icon="envelope" /> Enter your new email address:</p><TextField style={{width: "400px"}} label="Your new email" name="email" type="text" value={email} onChange={(ev) => setEmail(ev.target.value)} />
+                            //     <br></br>
+                            //     <br></br>
+                            // </>
                         ) : (
                                 <>
                                     <p ><MDBIcon icon="user-circle" /> Username: {username}</p>
                                     <br></br>
                                     <br></br>
+                                </>
+                            )
+                        }
+                         {editMode ? (
+                            isValidEmail ? (
+                                <>
+                                <p ><MDBIcon icon="envelope" /> Enter your new email address:</p><TextField style={{width: "400px"}} label="Your new email" name="email" type="text" value={email} onChange={(ev) => setEmail(ev.target.value)} />
+                                <br></br>
+                                <br></br>
+                                </>
+                            ) : (
+                                <>
+                                <p ><MDBIcon icon="envelope" /> Enter your new email address:</p><TextField style={{width: "400px"}} label="Your new email" name="email" type="text" error helperText="Email must be a valid email address." value={email} onChange={(ev) => setEmail(ev.target.value)} />
+                                <br></br>
+                                <br></br>
+                                </>
+                            )
+                            // <>
+                            //     <p ><MDBIcon icon="user-circle" /> Enter your new username:</p><TextField style={{width: "400px"}} label="Your new username" name="username" type="text" value={username} onChange={(ev) => setUsername(ev.target.value)} />
+                            //     <br></br>
+                            //     <br></br>
+                            //     <p> <MDBIcon icon="envelope" /> Enter your new email address:</p><TextField style={{width: "400px"}} label="Your new email" name="email" type="text" value={email} onChange={(ev) => setEmail(ev.target.value)} />
+                            //     <br></br>
+                            //     <br></br>
+                            // </>
+                        ) : (
+                                <>
                                     <p> <MDBIcon icon="envelope" /> Email address: {email}</p>
                                     <br></br>
                                     <br></br>
@@ -163,8 +216,13 @@ const ProfilePage = () => {
                         {editMode ? (
                             <>
                                 <MDBBtn onClick={() => {
-                                    updateUserData(username, email)
-                                    toggleEditMode()
+                                    if (username.trim().length >= 4 && emailRegex.test(email)) {
+                                        updateUserData(username, email)
+                                        toggleEditMode()
+                                    } else {
+                                        updateUserData(username, email)
+
+                                    }
                                 }}>Save changes</MDBBtn> <MDBBtn onClick={toggleEditMode}>Cancel</MDBBtn>
                             </>
                         ) : (null)
