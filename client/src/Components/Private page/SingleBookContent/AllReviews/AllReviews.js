@@ -23,7 +23,9 @@ const AllReviews = ({ data, update, remove, create, sync, sendLikeOrDislike }) =
     return (
         <div id="container-reviews" className="container my-5 z-depth-1" >
             <section className="dark-grey-text">
-                <h4 className="p-3 white-text" > Reviews </h4>
+                <h4 className="p-3 white-text" > Reviews... <span> <i class="fas fa-pen fa-xs"></i></span> </h4>
+
+             
                 <MDBCol className="reviewRow">
                     {data.map((review) => <IndividualBookReviewsDisplay
                         author={review.Author}

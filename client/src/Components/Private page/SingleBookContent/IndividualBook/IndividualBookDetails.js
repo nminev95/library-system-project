@@ -140,7 +140,9 @@ const IndividualBookDetails = ({ bookData, setData }) => {
                             <h4 className="font-weight-bold text-center">{bookData.Title}</h4>
                         </div>
                         <div className="p-4 text-center text-justify ">
-                            <div> Written by: {bookData.Author}</div>
+                            <div> 
+                                <i class="fas fa-pen-nib"></i>
+                                <span className="font-weight-bolder" > Written by:</span>  {bookData.Author}</div>
                         </div>
                         <div className="p-1 text-center text-justify ">
                             <div className="p-1 text-center text-justify" style={{display: 'flex', justifyContent: 'center'}}>
@@ -156,7 +158,8 @@ const IndividualBookDetails = ({ bookData, setData }) => {
                             </div>
                         </div>
                         <div className="p-3 text-center text-justify bold ">
-                            <div>Status: {bookData.Status}</div>
+                            <div>
+                            <span className="font-weight-bolder" > Status:</span>  {bookData.Status}</div>
                         </div>
                         <div className="p-4">
                             <p className="text-center text-justify" >{bookData.Description}</p>
