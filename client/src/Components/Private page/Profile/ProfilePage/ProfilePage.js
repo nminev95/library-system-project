@@ -4,6 +4,7 @@ import { MDBBtn, MDBIcon, MDBInput, MDBCollapse } from 'mdbreact';
 import CollapsePage from './CollapseButton/CollapseButton';
 import SingleBorrowedBook from '../BorrowedBooks/SingleBorrowedBook';
 import TextField from '@material-ui/core/TextField';
+import swal from 'sweetalert';
 
 const ProfilePage = () => {
     const { user } = useContext(AuthContext);
@@ -93,6 +94,13 @@ const ProfilePage = () => {
                 }
             })
             .then(() => {
+                swal({
+                    title: "Success!",
+                    text: "Your account info was updated successfully!",
+                    icon: "success",
+                    buttons: false,
+                    timer: 1500,
+                })
                 setUsername(username)
                 setEmail(email)
             })
@@ -142,14 +150,6 @@ const ProfilePage = () => {
                                 <br></br>
                                 </>
                             )
-                            // <>
-                            //     <p ><MDBIcon icon="user-circle" /> Enter your new username:</p><TextField style={{width: "400px"}} label="Your new username" name="username" type="text" value={username} onChange={(ev) => setUsername(ev.target.value)} />
-                            //     <br></br>
-                            //     <br></br>
-                            //     <p> <MDBIcon icon="envelope" /> Enter your new email address:</p><TextField style={{width: "400px"}} label="Your new email" name="email" type="text" value={email} onChange={(ev) => setEmail(ev.target.value)} />
-                            //     <br></br>
-                            //     <br></br>
-                            // </>
                         ) : (
                                 <>
                                     <p ><MDBIcon icon="user-circle" /> Username: {username}</p>
@@ -172,14 +172,6 @@ const ProfilePage = () => {
                                 <br></br>
                                 </>
                             )
-                            // <>
-                            //     <p ><MDBIcon icon="user-circle" /> Enter your new username:</p><TextField style={{width: "400px"}} label="Your new username" name="username" type="text" value={username} onChange={(ev) => setUsername(ev.target.value)} />
-                            //     <br></br>
-                            //     <br></br>
-                            //     <p> <MDBIcon icon="envelope" /> Enter your new email address:</p><TextField style={{width: "400px"}} label="Your new email" name="email" type="text" value={email} onChange={(ev) => setEmail(ev.target.value)} />
-                            //     <br></br>
-                            //     <br></br>
-                            // </>
                         ) : (
                                 <>
                                     <p> <MDBIcon icon="envelope" /> Email address: {email}</p>

@@ -68,7 +68,13 @@ const AdminBooks = () => {
 
     useEffect(() => {
         setLoading(true)
-        fetch(`http://localhost:4000/books`)
+        fetch(`http://localhost:4000/books/latest`, {
+            mode: 'cors',
+            headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+            }
+        })
             .then(res => res.json())
             .then(data => {
                 data.map((record) => {
