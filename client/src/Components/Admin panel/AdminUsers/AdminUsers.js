@@ -10,6 +10,7 @@ const AdminUsers = () => {
     const [loading, setLoading] = useState(false);
     const [records, setRecords] = useState([]);
     const [confirmState, setConfirmState] = useState(false);
+    const [allBanned, setAllBanned] = useState([]);
     const [columns, setColumns] = useState([
         {
             label: '#',
@@ -56,6 +57,23 @@ const AdminUsers = () => {
 
     useEffect(() => {
         setLoading(true);
+        fetch(`http://localhost:4000/admin/bans`, {
+            mode: 'cors',
+            headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(res => res.json())
+            .then(data => setAllBanned(data))
+    }, [allBanned.length])
+
+    const bannedIds = [];
+    allBanned.forEach((object) => bannedIds.push(object.user_Id))
+    console.log(bannedIds)
+
+    useEffect(() => {
+        setLoading(true);
         fetch(`http://localhost:4000/admin/users`, {
             mode: 'cors',
             headers: {
@@ -66,14 +84,18 @@ const AdminUsers = () => {
             .then(res => res.json())
             .then(data => {
                 data.map((record) => {
-                    record.Button1 = <Link to={{
-                        pathname: "users/ban",
-                        state: {
-                            id: record.id
-                        }
-                    }}><MDBBtn color="default" rounded size="sm" onClick={() => {
-                        setCurrentUser(record.id)
-                    }}>Ban</MDBBtn></Link>
+                    if (bannedIds.includes(+record.id)) {
+                        record.Button1 = <MDBBtn color="default" rounded size="sm" onClick={() => handleDeleteBan(record.id)}>Unban</MDBBtn>
+                    } else {
+                        record.Button1 = <Link to={{
+                            pathname: "users/ban",
+                            state: {
+                                id: record.id
+                            }
+                        }}><MDBBtn color="default" rounded size="sm" onClick={() => {
+                            setCurrentUser(record.id)
+                        }}>Ban</MDBBtn></Link>
+                    }
                     record.Button2 = <MDBBtn color="default" rounded size="sm" onClick={() => {
                         deleteUser(record.id)
                     }}>Delete</MDBBtn>
@@ -83,7 +105,27 @@ const AdminUsers = () => {
             })
             .then(result => setRecords(result))
             .finally(setLoading(false));
-    }, [records.length]);
+    }, [records.length, allBanned]);
+
+    const handleDeleteBan = (id) => {
+        const settings = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+            },
+        };
+
+        fetch(`http://localhost:4000/admin/users/${id}/banstatus`, settings)
+            .then((response) => response.json())
+            .then(() => {
+                const index = allBanned.findIndex((record) => +record === +id);
+                const updatedRecords = allBanned.slice();
+                updatedRecords.splice(index, 1);
+
+                setAllBanned(updatedRecords)
+            })
+    }
 
     const deleteUser = (id) => {
 
@@ -110,17 +152,17 @@ const AdminUsers = () => {
                     setConfirmState((prevState) => !prevState);
                 }
             })
-    
-        if (confirmState) {
-        fetch(`http://localhost:4000/admin/users/${id}`, settings)
-            .then((response) => response.json())
-            .then(() => {
-                const index = records.findIndex((record) => record.id === id);
-                const updatedRecords = records.slice();
-                updatedRecords.splice(index, 1);
 
-                setRecords(updatedRecords)
-            })
+        if (confirmState) {
+            fetch(`http://localhost:4000/admin/users/${id}`, settings)
+                .then((response) => response.json())
+                .then(() => {
+                    const index = records.findIndex((record) => record.id === id);
+                    const updatedRecords = records.slice();
+                    updatedRecords.splice(index, 1);
+
+                    setRecords(updatedRecords)
+                })
         } else {
             return;
         }

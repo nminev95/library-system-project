@@ -180,6 +180,13 @@ const sendBannedUserData = async (description, expirationDate, userId) => {
     return await pool.query(sql, [description, expirationDate, userId]);
 };
 
+const getUsersBans = async () => {
+    const sql = `
+    SELECT user_Id from ban_status
+    `;
+
+    return await pool.query(sql);
+} 
 const getExpDate = async (id) => {
     const sql = 'SELECT DATEDIFF((SELECT expirationDate FROM ban_status WHERE user_Id = ?), (SELECT NOW())) as dateDiff';
 
@@ -200,6 +207,12 @@ const deleteBan = async (banStatusId) => {
     return await pool.query(sql, [banStatusId]);
 };
 
+const deleteBanByUser = async (id) => {
+    const sql = 'DELETE FROM ban_status WHERE user_Id = ?';
+
+    return await pool.query(sql, [id]);
+}
+
 export default {
     getAll,
     create,
@@ -211,5 +224,7 @@ export default {
     sendBannedUserData,
     getExpDate,
     deleteBan,
-    updatePass
+    updatePass,
+    getUsersBans,
+    deleteBanByUser
 };

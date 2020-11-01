@@ -46,8 +46,7 @@ adminsController
         authMiddleware,
         roleMiddleware(['admin']),
         async (req, res) => {
-            const { search } = req.query;
-            const bans = await usersService.getAllBans(usersData)(search);
+            const bans = await usersService.getAllBans(usersData)();
 
             res.status(200).send(bans);
         })
@@ -88,6 +87,17 @@ adminsController
             } else {
                 res.status(200).send({ message: 'User was deleted successfully!' });
             }
+        })
+    .delete('/users/:id/banstatus',
+        authMiddleware,
+        roleMiddleware(['admin']),
+        async (req, res) => {
+            const { id } = req.params;
+
+            const result = await usersService.banDelete(usersData)(+id);
+
+
+            res.status(200).send({ message: 'Ban was deleted successfully!' })
         })
     .post('/books',
         authMiddleware,
