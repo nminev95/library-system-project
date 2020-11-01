@@ -2,6 +2,7 @@
 import serviceErrors from './service-errors.js';
 import bcrypt from 'bcrypt';
 import { DEFAULT_USER_ROLE } from './../config.js';
+import usersData from '../data/users-data.js';
 
 /**
 * Signing in the user.
@@ -143,6 +144,13 @@ const getAllUsers = usersData => {
     };
 };
 
+const getAllBans = (usersData) => {
+    return async () => {
+        const bans = await usersData.getUsersBans();
+
+        return bans;
+    }
+}
 /**
 * Gets user information found by unique user number.
 * @param module users data SQL queries module.
@@ -252,6 +260,23 @@ const removeBan = (usersData) => {
     };
 };
 
+/**
+* Removes user ban records. 
+* @param module books data SQL queries module.
+* @callback 
+* @async
+* @param {object} user information -  All the available user information.
+* @return {Promise<object>}
+*/
+const banDelete = (usersData) => {
+    return async (userId) => {
+        const status = await usersData.getBanStatus(userId);
+        const remove = await usersData.deleteBanByUser(userId);
+
+        return remove;
+    };
+};
+
 export default {
     signInUser,
     createUser,
@@ -262,4 +287,6 @@ export default {
     banUser,
     removeBan,
     updateUserPassword,
+    getAllBans,
+    banDelete
 };

@@ -53,9 +53,9 @@ export default function SortBooks() {
                     <MenuItem value='title=asc' name="titleAsc">Alphabetically, A-Z</MenuItem>
                     <MenuItem value='title=desc' name="titleDesc">Alphabetically, Z-A</MenuItem>
                     <ListSubheader>By rating</ListSubheader>
-                    <MenuItem value='rating=asc' name="ratingAsc">Highest to lowest</MenuItem>
-                    <MenuItem value='rating=desc' name="ratingDesc">Lowest to highest</MenuItem>
-                </Select>
+                    <MenuItem value='rating=asc' name="ratingAsc">Lowest to highest</MenuItem>
+                    <MenuItem value='rating=desc' name="ratingDesc">Highest to lowest</MenuItem>
+                </Select>                    
             </FormControl>
         </div>
     );
