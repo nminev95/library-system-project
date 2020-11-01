@@ -8,7 +8,7 @@ import { minLen, maxLen, required, regex } from '../../../Validators.js';
 import decode from 'jwt-decode';
 import style from '../../../../node_modules/sweetalert-react/node_modules/sweetalert/dist/sweetalert.css'
 import swal from '@sweetalert/with-react'
-import image from '../../../login.jpg'
+import image from '../../../test2-min.png'
 import { TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -102,11 +102,11 @@ const LoginForm = () => {
   return (
 
     <MDBView src={image}>
-      <MDBMask overlay="stylish-light" className="flex-center flex-column text-white text-center">
+      <MDBMask  className="flex-center flex-column text-white text-center">
         <MDBContainer className="loginContainer">
           <MDBRow className='loginRow'>
             <MDBCol md="6">
-              <MDBCard style={{ background: "rgb(220,220,220,0.2)" }}>
+              <MDBCard style={{ background: "rgb(220,220,220,0.4)" }}>
                 <MDBCardBody className="mx-4">
                   <div className="text-center">
                     <h3 className="dark-grey-text mb-5">

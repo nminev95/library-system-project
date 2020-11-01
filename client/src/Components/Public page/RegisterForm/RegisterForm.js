@@ -4,7 +4,8 @@ import { MDBBtn, MDBMask, MDBCard, MDBContainer, MDBRow, MDBCol, MDBModalFooter,
 import { Link, useHistory } from 'react-router-dom';
 import swal from '@sweetalert/with-react'
 import { makeStyles } from '@material-ui/core/styles';
-import image from '../../../register.jpg'
+// import image from '../../../register.jpg'
+import image from '../../../test2-min.png'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -193,7 +194,7 @@ const ValidationTextFields = () => {
             <MDBMask overlay="stylish-light" className="flex-center flex-column text-white text-center">
       
                
-                            <MDBCard style={{ background: "rgb(220,220,220,0.2)", padding:"60px" }}>
+                            <MDBCard style={{ background: "rgb(220,220,220,0.6)", padding:"60px" }}>
                                 <div style={{ textAlign: "center" }}>
                                     <h3 style={{ marginBottom: "40px" }}>Create an account</h3>
                                     <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
