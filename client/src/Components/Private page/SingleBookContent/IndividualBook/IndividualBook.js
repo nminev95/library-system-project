@@ -22,7 +22,12 @@ const IndividualBook = props => {
     }
 
     useEffect(() => {
-        fetch(`http://localhost:4000/books/${id}`, { mode: 'cors' })
+        fetch(`http://localhost:4000/books/${id}`, { 
+            mode: 'cors',
+            headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+            }, })
             .then(res => res.json())
             .then(data => setBookData(data[0]))
             .catch((error) => (setError(console.error.message)));

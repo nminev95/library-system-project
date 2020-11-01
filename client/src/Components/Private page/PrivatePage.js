@@ -31,7 +31,7 @@ const PrivatePage = () => {
             <>
                 <Switch>
                     <Route path='/home' component={DefaultHomePage} />
-                    <Route path='/books' component={ExploreBooksView} />
+                    <Route path='/books' exact component={ExploreBooksView} />
                     <Route exact path='/books/:id' exact component={IndividualBook} />
                     <Route exact path='/profile/borrowed' component={ProfileBorrowedBooks} />
                     <Route path="/profile" component={ProfilePage} />

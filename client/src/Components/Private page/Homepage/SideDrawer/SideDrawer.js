@@ -251,13 +251,11 @@ function SideDrawer(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" style={{ background: "none" }} className={classes.appBar}>
+      <AppBar position="fixed" color="grey lighten-2" className={classes.appBar}>
         <Toolbar>
           <MDBNavbarNav right>
             <MDBRow>
-
               <MDBFormInline>
-
                 <input
                   className="form-control mr-sm-2"
                   type="text"

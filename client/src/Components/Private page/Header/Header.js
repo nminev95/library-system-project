@@ -56,7 +56,7 @@ const NavBar = () => {
     return (
       <>
         {isLoggedIn ? (
-          <MDBNavbar id="navbar" color="bg-primary" fixed="top" dark expand="md" scrolling transparent>
+          <MDBNavbar id="navbar" color="grey" dark expand="md"  >
             <MDBNavbarBrand>
               <strong className="white-text">ReadMe</strong>
             </MDBNavbarBrand>
@@ -64,7 +64,7 @@ const NavBar = () => {
             <MDBCollapse id="navbarCollapse3" isOpen={state} navbar>
               <MDBNavbarNav left>
                 <MDBNavItem >
-                  <MDBNavLink to="/home" className="font-weight-bolder">Home</MDBNavLink>
+                  <MDBNavLink to="/home" color="gray" className="font-weight-bolder">Home</MDBNavLink>
                 </MDBNavItem>
                 <MDBNavItem  >
                   <MDBNavLink to="/books?page=1" className="font-weight-bolder">All books</MDBNavLink>
