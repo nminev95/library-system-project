@@ -79,7 +79,6 @@ const IndividualBookDetails = ({ bookData, setData }) => {
             }
 
             const newData = json.book[0];
-            console.log(newData);
             setData(newData)
 
         } catch (error) {

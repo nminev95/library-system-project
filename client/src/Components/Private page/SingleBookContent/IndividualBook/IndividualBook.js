@@ -8,10 +8,7 @@ import swal from '@sweetalert/with-react'
 
 const IndividualBook = props => {
     const { id } = props.match.params;
-    // const LikesDislikesContext = createContext({
-    //     likes: 
-    // })
-
+ 
     const [bookData, setBookData] = useState(null);
     const [bookReviewsData, setBookReviewsData] = useState([]);
     const [error, setError] = useState(null);
@@ -128,8 +125,6 @@ const IndividualBook = props => {
         try {
             const data = await fetch(`http://localhost:4000/reviews/${review_id}/vote`, ids);
             const updatedData = await data.json();
-            // const bookData = (updatedData);
-            // console.log(bookData);
         } catch (error) {
             return error.message;
         }
