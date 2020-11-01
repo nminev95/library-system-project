@@ -15,15 +15,16 @@ import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { NavLink, Link, useHistory, useLocation } from 'react-router-dom';
-import { MDBFormInline, MDBNavbar, MDBNavbarBrand, MDBNavbarToggler, MDBIcon, MDBBtn, MDBCollapse, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBRow } from 'mdbreact';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import { MDBFormInline, MDBIcon, MDBBtn, MDBNavbarNav, MDBNavItem, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBRow } from 'mdbreact';
 import AuthContext from '../../Context/AuthContext';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Container } from '@material-ui/core';
 import swal from 'sweetalert';
-
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import SortBooks from './SortBooks';
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,7 +85,6 @@ function SideDrawer(props) {
     setState((prevState) => !prevState);
   }
 
- 
   const handleChange = (event) => {
     const statuses = ['free', 'borrowed', 'unlisted']
     const currentUrl = location.pathname + location.search;
@@ -97,7 +97,7 @@ function SideDrawer(props) {
 
     if (!(statuses.includes(event.target.name) && event.target.checked)) {
       history.push(`${currentUrl}&genre=${event.target.name}`)
-    } 
+    }
 
     if (statuses.includes(event.target.name) && !(event.target.checked)) {
       const newUrl = currentUrl.replace(`&status=${event.target.name}`, '')
@@ -156,7 +156,7 @@ function SideDrawer(props) {
         <Container>
           <ListItem>
             <FormControlLabel
-              control={<Checkbox checked={state.horror || location.search.includes('horror')} onChange={handleChange} name='horror'  color="primary" />}
+              control={<Checkbox checked={state.horror || location.search.includes('horror')} onChange={handleChange} name='horror' color="primary" />}
               label='Horror'
             />
           </ListItem>
@@ -197,12 +197,12 @@ function SideDrawer(props) {
       <Divider />
       <List>
         <ListItem style={{ fontSize: "20px", fontWeight: '400' }}>
-          <ListItemIcon><MenuBookIcon /><p style={{ marginLeft: "10px" }}>Status</p></ListItemIcon>
+          <ListItemIcon><LibraryBooksIcon /><p style={{ marginLeft: "10px" }}>Status</p></ListItemIcon>
         </ListItem>
         <Container>
           <ListItem>
             <FormControlLabel
-              control={<Checkbox checked={state.free || location.search.includes('free')} onChange={handleChange} name='free'  color="primary" />}
+              control={<Checkbox checked={state.free || location.search.includes('free')} onChange={handleChange} name='free' color="primary" />}
               label='Free'
             />
           </ListItem>
@@ -224,6 +224,18 @@ function SideDrawer(props) {
           </ListItem>
         </Container>
       </List>
+      <Divider />
+      <List>
+        <ListItem style={{ fontSize: "20px", fontWeight: '400' }}>
+          <ListItemIcon><LibraryBooksIcon /><p style={{ marginLeft: "10px" }}>Sort results</p></ListItemIcon>
+        </ListItem>
+        <Container>
+          <ListItem style={{right: "16px"}}>
+            <SortBooks />
+          </ListItem>
+        </Container>
+      </List>
+      <Divider />
     </div>
   );
 

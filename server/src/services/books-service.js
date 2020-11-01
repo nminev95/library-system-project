@@ -103,7 +103,8 @@ const getPage = booksData => {
         const search = query.search || null;
         const genre = query.genre || null;
         const status = query.status || null;
-
+        const sort = query.sort || null;
+        
         const limit = 9;
         const offset = (pageNumber - 1) * limit;
         const page = await booksData.getPageResult(limit, offset, search, genre, status);     
