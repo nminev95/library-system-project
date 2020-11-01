@@ -101,7 +101,7 @@ const IndividualBookDetails = ({ bookData, setData }) => {
     }, []);
 
 
-    
+
 
     const stars = {
         size: 40,
@@ -120,7 +120,7 @@ const IndividualBookDetails = ({ bookData, setData }) => {
             cancel: "Close",
         },
         content: (
-            <div>
+            <div style={{display: 'flex', justifyContent: 'center'}}>
                 <ReactStars {...stars} />
             </div>
         )
@@ -130,7 +130,7 @@ const IndividualBookDetails = ({ bookData, setData }) => {
     return (
 
         <div id="book-details" className="container my-5 z-depth-1">
-            <section className="white-text">
+            <section className="black-text">
 
                 <div className="row d-flex ">
                     <div className="col-md-4 justify-content-center">
@@ -144,7 +144,7 @@ const IndividualBookDetails = ({ bookData, setData }) => {
                             <div> Written by: {bookData.Author}</div>
                         </div>
                         <div className="p-1 text-center text-justify ">
-                            <div className="p-1 text-center text-justify">
+                            <div className="p-1 text-center text-justify" style={{display: 'flex', justifyContent: 'center'}}>
                                 <ReactStars
                                     size={40}
                                     count={5}
