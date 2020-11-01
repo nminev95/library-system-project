@@ -8,17 +8,18 @@ const SingleBookDisplay = ({book, history}) => {
 
     return (
         <MDBCol xl="3" className="cardBook">
-            <MDBCard>
-                <MDBView cascade className="d-flex justify-content-center">
+            <MDBCard style={{height: '100%'}}>
+                <MDBView cascade className="d-flex justify-content-center" style={{maxHeigth: '342px', minHeight: '342px'}}>
                     <MDBCardImage id="bookImageContainer"
                         hover
+                        style={{maxHeigth:"200px", minHeight: '200px'}}
                         overlay='white-slight'
                         className='card-img-top w-responsive text-center mx-auto p-3 mt-2 h-auto d-inline-block'
                         src={book.Cover}
                         alt='food'
                     />
                 </MDBView>
-                <MDBCardBody>
+                <MDBCardBody style={{justifyContent: 'flex-end', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                     <h5 className='pink-text'>
                         <MDBIcon icon='pen-nib' />{book.Genre}
                     </h5>
@@ -31,7 +32,7 @@ const SingleBookDisplay = ({book, history}) => {
                     <MDBCardText>
                         Year: {book.Year}
                     </MDBCardText>              
-                    <MDBBtn id="main-button" onClick={()=> {history.push(`/books/${book.id}`)}} >  See more </MDBBtn>        
+                    <MDBBtn id="main-button" onClick={()=> {history.push(`/books/${book.id}`)}} style={{width: '30%'}}>  See more </MDBBtn>        
                 </MDBCardBody>
             </MDBCard>
         </MDBCol>

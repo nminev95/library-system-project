@@ -26,3 +26,7 @@
     background:linear-gradient(to bottom,  #7f8585 20%, #f1e1cf 100%);
     
 }
+
+.card-img-top{
+    max-width: 300px;
+}
