@@ -5,6 +5,7 @@ import CarouselItem from './CarouselItem/CarouselItem'
 
 const BooksCarousel = ({ books }) => {
     let count = 0;
+    
     return (
         
         <MDBContainer style={{ width: "100%", maxWidth: "100%", padding: "0", background: "lightgray" }}>
