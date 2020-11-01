@@ -17,7 +17,6 @@ booksController
         roleMiddleware(['admin', 'user']),
         async (req, res) => {
             const page = +req.query.page;
-            console.log(req.query)
             const { error, books } = await booksService.getPage(booksData)(page, req.query);
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'No books found!' });
@@ -202,6 +201,10 @@ booksController
             res.status(201).send(review);
 
         })
+
+
+       
+
     .put('/:id/rate',
         authMiddleware,
         roleMiddleware(['admin', 'user']),
@@ -222,8 +225,7 @@ booksController
                 res.status(404).send({ message: 'Users can only rate book they have borrowed and returned!' });
             } else if (error === serviceErrors.DUPLICATE_RECORD) {
                 res.status(400).send({ message: 'You have already rated this book with the same value! You can update your rating if you have changed your mind!' });
-            } else {
-                
+            } else {             
                 res.status(201).send(rate);
             }
         })

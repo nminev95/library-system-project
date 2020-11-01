@@ -71,9 +71,9 @@ const IndividualBookDetails = ({ bookData, setData }) => {
             const json = await data.json()
             if (json.message) {
                 const modal = await swal({
-                    title: "Oops!",
+                    title: "Thank you!",
                     text: `${json.message}`,
-                    icon: "error",
+                    icon: "success",
                     button: "Ok"
                 })
             }

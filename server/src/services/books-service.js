@@ -100,7 +100,7 @@ const getBookById = booksData => {
 
 const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
-}
+};
 
 const getPage = booksData => {
     return async (pageNumber, query) => {
@@ -647,7 +647,7 @@ const voteReview = booksData => {
         }
         const authorId = +(review[0].user_Id);
         const existingVote = await booksData.getUserVoteForBook(reviewId, userId);
-        
+
 
         if (existingVote.length === 0) {
             const _ = await booksData.insertVote(reviewId, vote, userId);
