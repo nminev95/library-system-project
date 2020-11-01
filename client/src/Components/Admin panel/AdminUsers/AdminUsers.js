@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { MDBBtn, MDBContainer, MDBDataTableV5 } from 'mdbreact';
 import Loader from '../../Utils/Loader/Loader';
 import './AdminUsers.css'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 
 const AdminUsers = () => {
     const [currentUser, setCurrentUser] = useState('');
     const [loading, setLoading] = useState(false);
     const [records, setRecords] = useState([]);
-    const [confirmState, setConfirmState] = useState(false);
+    const history = useHistory();
     const [allBanned, setAllBanned] = useState([]);
     const [columns, setColumns] = useState([
         {
@@ -127,8 +127,7 @@ const AdminUsers = () => {
             })
     }
 
-    const deleteUser = (id) => {
-
+    const removeUser = (id) => {
         const settings = {
             method: 'DELETE',
             headers: {
@@ -137,35 +136,38 @@ const AdminUsers = () => {
             },
         };
 
+        fetch(`http://localhost:4000/admin/users/${id}`, settings)
+            .then((response) => response.json())
+            .then(() => {
+                const index = records.findIndex((record) => record.id === id);
+                const updatedRecords = records.slice();
+                updatedRecords.splice(index, 1);
+
+                setRecords(updatedRecords)
+            })
+    }
+
+    const deleteUser = (id) => {
+
         swal({
             title: "Are you sure?",
-            text: "Once deleted, you will not be able to recover this imaginary file!",
+            text: "Once deleted, this user's data will be forever lost!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    swal("Poof! Your imaginary file has been deleted!", {
+                    removeUser(id)
+                    swal({
+                        title: "Are you sure?",
+                        text:"User was successfully removed from database.", 
                         icon: "success",
+                        buttons:false,
+                        timer: 1500,
                     });
-                    setConfirmState((prevState) => !prevState);
                 }
             })
-
-        if (confirmState) {
-            fetch(`http://localhost:4000/admin/users/${id}`, settings)
-                .then((response) => response.json())
-                .then(() => {
-                    const index = records.findIndex((record) => record.id === id);
-                    const updatedRecords = records.slice();
-                    updatedRecords.splice(index, 1);
-
-                    setRecords(updatedRecords)
-                })
-        } else {
-            return;
-        }
     }
 
     const loader = () => {

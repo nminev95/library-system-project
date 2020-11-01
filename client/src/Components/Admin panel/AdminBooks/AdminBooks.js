@@ -3,6 +3,7 @@ import { MDBBtn, MDBIcon, MDBContainer, MDBDataTableV5, MDBTableBody, MDBSpinner
 import './AdminBooks.css';
 import Loader from '../../Utils/Loader/Loader';
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 
 const AdminBooks = () => {
 
@@ -105,9 +106,32 @@ const AdminBooks = () => {
     }, [records.length]);
 
     const deleteBook = (id) => {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, this book will be forever lost!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    removeBook(id)
+                    swal({
+                        title: "Success!",
+                        text:"Book was successfully removed from database.", 
+                        icon: "success",
+                        buttons:false,
+                        timer: 1500,
+                    });
+                }
+            })
+    }
+
+    const removeBook = (id) => {
         const settings = {
             method: 'DELETE',
             headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
                 'Content-Type': 'application/json'
             },
         };
@@ -115,7 +139,6 @@ const AdminBooks = () => {
             .then((response) => response.json())
             .then(() => {
                 const filtered = records.filter((book) => +(book.id) !== +id);
-                console.log(filtered)
                 setRecords(filtered)
             })
     }

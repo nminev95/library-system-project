@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { MDBInput, MDBBtn, MDBContainer } from "mdbreact";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import swal from 'sweetalert';
 
 const EditReviewPage = (props) => {
-    console.log(props.location.state.bookId)
-
+    
+    const history = useHistory();
     const [reviewText, setReviewText] = useState(props.location.state.content);
 
     const editReview = (id, reviewId) => {
@@ -13,6 +14,8 @@ const EditReviewPage = (props) => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+
             },
             body: JSON.stringify({
                 content: reviewText
@@ -23,8 +26,15 @@ const EditReviewPage = (props) => {
                 if (result.error) {
                     throw new Error(result.error);
                 }
+                swal({
+                    title: "Success!",
+                    text:"Review was successfully updated.", 
+                    icon: "success",
+                    buttons:false,
+                    timer: 1500,
+                });
+                history.push('/admin/reviews')
             })
-        //.catch(error => setError(error.message));
     };
 
 

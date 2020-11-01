@@ -13,7 +13,7 @@ const SideNav = () => {
                 : (
                     <div className="sidebar-fixed position-fixed">
                         <MDBContainer className="buttonDiv">
-                            <Link to="/books">
+                            <Link to="/home">
                                 <MDBBtn className='backToSite'><MDBIcon icon="home" />Back to website</MDBBtn>
                             </Link>
                         </MDBContainer>

@@ -3,6 +3,7 @@ import { MDBBtn, MDBContainer, MDBDataTableV5 } from 'mdbreact';
 import Loader from '../../Utils/Loader/Loader';
 import './AdminReviews.css';
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 
 const AdminReviews = () => {
     const [bookId, setBookId] = useState('');
@@ -87,6 +88,28 @@ const AdminReviews = () => {
     }, [records.length]);
 
     const deleteReview = (bookId, id) => {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, this review will be forever lost!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    removeReview(bookId, id)
+                    swal({
+                        title: "Success!",
+                        text:"Review was successfully removed from database.", 
+                        icon: "success",
+                        buttons:false,
+                        timer: 1500,
+                    });
+                }
+            })
+    }
+
+    const removeReview = (bookId, id) => {
         const settings = {
             method: 'DELETE',
             headers: {

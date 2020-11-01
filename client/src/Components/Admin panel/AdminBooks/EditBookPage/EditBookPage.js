@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { MDBInput, MDBBtn, MDBContainer } from "mdbreact";
 import BookStatusDropdown from './BookStatusDropdown/BookStatusDropdown';
+import swal from 'sweetalert';
 
 const EditBookPage = (props) => {
 
@@ -11,6 +12,7 @@ const EditBookPage = (props) => {
     const [bookGenre, setBookGenre] = useState(props.location.state.genre);
     const [bookStatus, setBookStatus] = useState(props.location.state.status);
     const [bookDescription, setBookDescription] = useState(props.location.state.description);
+    const history = useHistory();
 
     const editBook = (id) => {
         
@@ -33,6 +35,14 @@ const EditBookPage = (props) => {
                 if (result.error) {
                     throw new Error(result.error);
                 }
+                swal({
+                    title: "Success!",
+                    text:"Book info was successfully updated.", 
+                    icon: "success",
+                    buttons:false,
+                    timer: 1500,
+                });
+                history.push('/admin/books')
             })
             //.catch(error => setError(error.message));
     };
