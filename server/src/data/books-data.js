@@ -137,6 +137,49 @@ const getPageResult = async (limit, offset, searched, genre, status) => {
     return await pool.query(sql, [searched, genre, status, status, limit, offset]);
 };
 
+const getPageResultWithSort = async (limit, offset, searched, genre, status, sort, order) => {
+
+    const sql = `
+            SELECT
+            b.book_Id AS id,
+            b.title AS Title, 
+            b.author AS Author, 
+            b.description as 'Description',
+            b.genre as Genre,
+            b.year as Year,
+            b.imageUrl as Cover,
+            s.type as Status,
+            ROUND(AVG(rr.rating_value), 2) as Rating
+        from 
+            books b
+        join 
+            status s
+        on 
+            s.status_Id = b.borrowedStatus_Id
+        LEFT JOIN   
+            books_has_book_ratings br 
+        ON 
+            b.book_Id = br.book_to_be_rated_Id
+        LEFT JOIN 
+            book_ratings rr 
+        ON 
+            br.rating_Id = rr.rating_Id
+        WHERE   
+            (? IS NULL OR title LIKE '%${searched}%')
+        AND 
+            (? IS NULL OR genre LIKE '%${genre}%')
+        AND 
+            (? IS NULL OR borrowedStatus_Id LIKE (SELECT status_Id FROM status WHERE type LIKE ?))
+        GROUP BY 
+            IFNULL(b.book_Id, b.description)
+        ORDER BY
+            ${sort} ${order}
+        LIMIT ? OFFSET ?;
+        `;
+
+    return await pool.query(sql, [searched, genre, status, status, limit, offset]);
+};
+
 const getBooksCount = async (genre, search, status) => {
     const sql = `
         SELECT COUNT(*) as count FROM books 
@@ -824,5 +867,6 @@ export default {
     getReviewsInDatabase,
     borrowedByUser,
     getBooksCount,
-    getBookGenres
+    getBookGenres,
+    getPageResultWithSort
 };

@@ -18,6 +18,10 @@ export default function SortBooks() {
     const classes = useStyles();
     const location = useLocation();
     const sample = 'sort_by=first_name&order=asc'
+
+    const setSort = (event) => {
+        
+    }
     return (
         <div>
             <FormControl style={{ width: "190px" }}>

@@ -17,7 +17,7 @@ booksController
         roleMiddleware(['admin', 'user']),
         async (req, res) => {
             const page = +req.query.page;
-
+            console.log(req.query)
             const { error, books } = await booksService.getPage(booksData)(page, req.query);
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'No books found!' });

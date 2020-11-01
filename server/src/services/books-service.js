@@ -98,16 +98,25 @@ const getBookById = booksData => {
     };
 };
 
+const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 const getPage = booksData => {
     return async (pageNumber, query) => {
         const search = query.search || null;
         const genre = query.genre || null;
         const status = query.status || null;
         const sort = query.sort || null;
-        
+        const order= query.order || null;
         const limit = 9;
         const offset = (pageNumber - 1) * limit;
-        const page = await booksData.getPageResult(limit, offset, search, genre, status);     
+        let page;
+        if (sort && order) {
+            page = await booksData.getPageResultWithSort(limit, offset, search, genre, status, capitalizeFirstLetter(sort), order);     
+        } else {
+            page = await booksData.getPageResult(limit, offset, search, genre, status);     
+        }
         const [{ count }] = await booksData.getBooksCount(genre, search, status);
 
         return {
