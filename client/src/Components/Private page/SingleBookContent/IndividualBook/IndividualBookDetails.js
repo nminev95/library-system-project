@@ -172,7 +172,7 @@ const IndividualBookDetails = ({ bookData, setData }) => {
                             {bookData.Status === "Borrowed" && loggedUser === borrower && (
                                 <MDBBtn id="main-button" onClick={returnBoook}> Return </MDBBtn>)}
                             {bookHistory && (
-                                <MDBBtn id="main-button" onClick={popUp}> Rate </MDBBtn>)}
+                                <MDBBtn id="main-button" className="rate-button" onClick={popUp}> Rate </MDBBtn>)}
                         </div>
 
 
