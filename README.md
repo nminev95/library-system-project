@@ -20,7 +20,7 @@
 
     Please use latest version of `node`.
 
-    To run the application locally and visit `[localhost:3000]` to explore.
+    To run the application locally and visit `[localhost:4000]` to explore.
 
 
 2. Setup MySQL Database with new Schema.
@@ -45,6 +45,30 @@
 
     `npm run start:dev`
   
+---
+
+### Client
+
+6. Navigate to the `client` folder. Open the terminal and run the following commands:
+
+  ```sh
+  $ npm install
+  ```
+
+  ```sh
+  $ npm run start
+  ```
+
+
+---
+
+### Built With
+
+ - [React JS](https://reactjs.org/) - library used for our client.
+ - [Express.js](https://expressjs.com/)
+ - [Material Design for Bootstrap](https://mdbootstrap.com/) - to design our components in the client.
+ - [JWT](https://jwt.io/) - for authentication.
+
 ---
 
 ### What helped in our research and coding:
