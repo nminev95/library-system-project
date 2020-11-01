@@ -54,7 +54,13 @@ const AdminReviews = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetch(`http://localhost:4000/admin/reviews`)
+        fetch(`http://localhost:4000/admin/reviews`, {
+            mode: 'cors',
+            headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+            }
+        })
             .then(res => res.json())
             .then(data => {
                 data.map((record) => {
@@ -84,7 +90,8 @@ const AdminReviews = () => {
         const settings = {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
             },
         };
         fetch(`http://localhost:4000/admin/books/${bookId}/reviews/${id}`, settings)

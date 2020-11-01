@@ -56,7 +56,13 @@ const AdminUsers = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetch(`http://localhost:4000/admin/users`)
+        fetch(`http://localhost:4000/admin/users`, {
+            mode: 'cors',
+            headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+            }
+        })
             .then(res => res.json())
             .then(data => {
                 data.map((record) => {
@@ -84,7 +90,8 @@ const AdminUsers = () => {
         const settings = {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
             },
         };
 
