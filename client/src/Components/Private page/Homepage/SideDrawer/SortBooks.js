@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -15,27 +15,46 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SortBooks() {
-    const classes = useStyles();
     const location = useLocation();
-    const sample = 'sort_by=first_name&order=asc'
+    const history = useHistory();
+    const sample = 'sort=first_name&order=asc'
+    const currentUrl = location.pathname + location.search
 
     const setSort = (event) => {
-        
+        const sortAndOrder = event.target.value.split('=');
+        const sort = sortAndOrder[0];
+        const order = sortAndOrder[1];
+
+        if (event.target.value === 'none') {
+            const res = currentUrl.split('&sort')
+            const url = res[0];
+            history.push(url);
+            return;
+        }
+
+        if (currentUrl.includes('sort')) {
+            const res = currentUrl.split('&sort')
+            const url = res[0];
+            history.push(`${url}&sort=${sort}&order=${order}`);
+        } else {
+            history.push(`${currentUrl}&sort=${sort}&order=${order}`);
+        }
     }
+
     return (
         <div>
             <FormControl style={{ width: "190px" }}>
                 <InputLabel htmlFor="grouped-select">Sort by</InputLabel>
-                <Select defaultValue="" id="grouped-select"  onChange={(ev) => console.log(ev.target)}>
-                    <MenuItem value="">
+                <Select defaultValue="" id="grouped-select" onChange={(ev) => setSort(ev)}>
+                    <MenuItem value="none">
                         <em>Default (None)</em>
                     </MenuItem>
                     <ListSubheader>By title</ListSubheader>
-                    <MenuItem value='titleAsc' name="titleAsc">Alphabetically, A-Z</MenuItem>
-                    <MenuItem value='titleDesc' name="titleDesc">Alphabetically, Z-A</MenuItem>
+                    <MenuItem value='title=asc' name="titleAsc">Alphabetically, A-Z</MenuItem>
+                    <MenuItem value='title=desc' name="titleDesc">Alphabetically, Z-A</MenuItem>
                     <ListSubheader>By rating</ListSubheader>
-                    <MenuItem value='ratingAsc' name="ratingAsc">Highest to lowest</MenuItem>
-                    <MenuItem value='ratingDesc' name="ratingDesc">Lowest to highest</MenuItem>
+                    <MenuItem value='rating=asc' name="ratingAsc">Highest to lowest</MenuItem>
+                    <MenuItem value='rating=desc' name="ratingDesc">Lowest to highest</MenuItem>
                 </Select>
             </FormControl>
         </div>

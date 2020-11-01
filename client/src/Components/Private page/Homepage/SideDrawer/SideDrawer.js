@@ -25,6 +25,8 @@ import { Container } from '@material-ui/core';
 import swal from 'sweetalert';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import SortBooks from './SortBooks';
+import SortIcon from '@material-ui/icons/Sort';
+
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -227,7 +229,7 @@ function SideDrawer(props) {
       <Divider />
       <List>
         <ListItem style={{ fontSize: "20px", fontWeight: '400' }}>
-          <ListItemIcon><LibraryBooksIcon /><p style={{ marginLeft: "10px" }}>Sort results</p></ListItemIcon>
+          <ListItemIcon><SortIcon style={{}} /><p style={{ marginLeft: "10px" }}>Sort results</p></ListItemIcon>
         </ListItem>
         <Container>
           <ListItem style={{right: "16px"}}>
