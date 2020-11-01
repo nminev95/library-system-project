@@ -69,7 +69,7 @@ usersController
             if (error === serviceErrors.NO_MATCH) {
                 res.status(400).send({ message: 'Password is invalid!'});
             } else {
-                res.status(201).send(user);
+                res.status(201).send({ message: 'Success!'});
             }
         });
     
