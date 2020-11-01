@@ -17,7 +17,6 @@ const CarouselItem = ({ book, count }) => {
                     <h2>{book.Author}</h2>
                     <h3>{book.Genre}</h3>
                     <h4>{book.Year}</h4>
-                    <h5>{book.Rating}</h5>
                     <br></br>
                     <h6>Book has been borrowed {book.TimesBorrowed} times.</h6>
                     <br></br>

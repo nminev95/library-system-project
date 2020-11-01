@@ -18,6 +18,21 @@
     width: 600px
 }
 
+@media only screen and (max-width: 600px) {
+    .sliderTextContainer h1 {
+        font-size: 1.5rem;
+    }
+    .sliderTextContainer h2 {
+        font-size: 1rem;
+    }
+    .sliderTextContainer h3 {
+        font-size: 1rem;
+    }
+    .sliderTextContainer h4 {
+        font-size: 1rem;
+    }
+}
+
 .bookParams {
     display:inline-block;
     justify-self:center;

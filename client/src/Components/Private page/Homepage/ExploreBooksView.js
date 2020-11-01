@@ -40,7 +40,7 @@ const HomepageLogged = (props) => {
 
     return (
         <div>
-            <div style={{ display: "grid", gridTemplateColumns: "15% 85%", background: "#EDEDEE" }}>
+            <div className="exploreGrid">
                 <div>
                     <SideDrawer genres={genres} page={page} />
                 </div>

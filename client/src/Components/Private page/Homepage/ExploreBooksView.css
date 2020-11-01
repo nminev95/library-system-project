@@ -46,8 +46,19 @@
         font-size: small;
         height: auto;
     }
-}
 
+    .exploreGrid {
+        display:grid;
+        grid-template-columns: none;
+    }
+}
+@media only screen and (min-width: 650px) {
+.exploreGrid {
+    display: grid; 
+    grid-template-columns: 15% 85%;
+    background: #EDEDEE;
+}
+}
 @media all{
     *,*::before,*::after{box-sizing:border-box;}
     img{vertical-align:middle;border-style:none;}
