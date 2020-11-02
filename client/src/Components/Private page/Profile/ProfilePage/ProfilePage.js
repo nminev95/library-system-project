@@ -57,7 +57,6 @@ const ProfilePage = () => {
             .then((data) => {
                 if (data.message) {
                     setError(data.message)
-                    console.log(data.message)
                 } else {
                     setBorrowedBooks(data)
                     setLatestBorrowedBooks(data.slice(data.length - 2, data.length));
@@ -253,7 +252,7 @@ const ProfilePage = () => {
                         <h3>Recently borrowed books</h3>
                         <div style={{ display: "grid", gridTemplateColumns: "50% 50%" }}>
                             {latestBorrowedBooks.length !== 0 ? (
-                                latestBorrowedBooks.map((book) => <SingleBorrowedBook book={book} key={book.book_Id} />)
+                                latestBorrowedBooks.map((book) => <SingleBorrowedBook book={book} key={book.book_Id}/>)
                             ) : (<h4 style={{marginTop: "20px", color:"gray"}}>You haven't borrowed any books recently.</h4>)
                             }
                         </div>

@@ -124,8 +124,7 @@ const LoginForm = () => {
                             value={usernameControl.value}
                             onChange={onInputChange}
                             variant="outlined"
-                            error
-                            helperText="Username is required."
+      
                           />
                           <TextField
                             label="password"
@@ -134,8 +133,7 @@ const LoginForm = () => {
                             value={passwordControl.value}
                             onChange={onInputChange}
                             variant="outlined"
-                            error
-                            helperText="Password is required."
+                        
                           />
                         </>
                       ) : (

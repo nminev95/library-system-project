@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { MDBInput, MDBBtn, MDBContainer } from "mdbreact";
 import BookStatusDropdown from '../EditBookPage/BookStatusDropdown/BookStatusDropdown';
+import swal from 'sweetalert';
 
 const CreateBookPage = () => {
 
@@ -12,7 +13,7 @@ const CreateBookPage = () => {
     const [bookStatus, setBookStatus] = useState('');
     const [bookDescription, setBookDescription] = useState('');
     const [bookCover, setBookCover] = useState('Enter cover URL address')
-
+    const history = useHistory();
     const book = {
         title: bookTitle,
         author: bookAuthor,
@@ -24,7 +25,7 @@ const CreateBookPage = () => {
     }
     
     const createBook = async (book) => {
-       
+    
         const settings = {
             method: 'POST',
             headers: {
@@ -35,6 +36,14 @@ const CreateBookPage = () => {
         };
         try {
             const data = await fetch(`http://localhost:4000/admin/books`, settings);
+            swal({
+                title: "Success!",
+                text:"Book was successfully created.", 
+                icon: "success",
+                buttons:false,
+                timer: 1500,
+            });
+            history.push('/admin/books')
         } catch (e) {
             return e;
         }

@@ -46,7 +46,7 @@ class FullPageIntroWithFixedTransparentNavbar extends React.Component {
           <MDBView src={home}>
             <MDBMask overlay="stylish-light" className="flex-center flex-column text-white text-center">
               <div className="container my-5 z-depth-1" className="centered" style={{display: 'flex',flexDirection: 'column', justifyContent: 'space-between'}}>
-                <div>
+                <div style={{marginTop: '40px'}}>
                 <h1 className="centeredText">All your favourite books in one place.</h1>
                 <h3 className="centeredText2">Grab your pass to personal freedom.</h3>
                 </div>

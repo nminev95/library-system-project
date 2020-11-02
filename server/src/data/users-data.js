@@ -91,6 +91,13 @@ const update = async (user) => {
     return await pool.query(sql, [username, email, id]);
 };
 
+const getAllMonthly = async (startDate, endDate) => {
+    const sql = `
+    SELECT COUNT(*) as Count from users WHERE register_date > ? AND register_date < ?
+    `
+
+    return await pool.query(sql, [startDate, endDate]);
+}
 const updatePass = async (newPassword, id) => {
     const sql = `
         UPDATE users SET
@@ -226,5 +233,6 @@ export default {
     deleteBan,
     updatePass,
     getUsersBans,
-    deleteBanByUser
+    deleteBanByUser,
+    getAllMonthly
 };

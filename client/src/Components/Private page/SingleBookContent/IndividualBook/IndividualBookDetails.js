@@ -30,6 +30,13 @@ const IndividualBookDetails = ({ bookData, setData }) => {
             const data = await fetch(`http://localhost:4000/books/${bookId}`, ids);
             const updatedData = await data.json();
             setData(updatedData.book[0])
+            swal({
+                title: "Success!",
+                text: "You have successfully borrowed this book.",
+                icon: "success",
+                buttons: false,
+                timer: 1500,
+            });
         } catch (error) {
             return error.message;
         }
@@ -48,6 +55,13 @@ const IndividualBookDetails = ({ bookData, setData }) => {
             const data = await fetch(`http://localhost:4000/books/${bookId}`, settings);
             const updatedData = await data.json();
             setData(updatedData.book[0])
+            swal({
+                title: "Success!",
+                text: "Book was returned successfully.",
+                icon: "success",
+                buttons: false,
+                timer: 1500,
+            });
         } catch (error) {
             return error.message;
         }

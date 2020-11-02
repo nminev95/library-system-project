@@ -1,15 +1,44 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarToggler, MDBCollapse, MDBNavItem, MDBNavLink, MDBIcon, MDBBtn } from 'mdbreact';
 import TopNavBtn from '../TopNavButton/TopNavButton';
 import { useLocation } from 'react-router-dom';
+import AuthContext from '../../Private page/Context/AuthContext';
+import swal from 'sweetalert';
 
 const TopNav = (props) => {
     const path = useLocation().pathname
     const [collapsed, setCollapsed] = useState(false);
-
+    const { setLoginState } = useContext(AuthContext);
     const collapse = () => {
         return setCollapsed(!collapsed)
     }
+
+    const handleLogout = () => {
+
+        fetch('http://localhost:4000/signout', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+            'Content-Type': 'application/json'
+          },
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.message) {
+              swal({
+                title: "Sorry to see you go! :(",
+                text: "You have logged out successfully!",
+                icon: "success",
+                buttons: false,
+                timer: 1500,
+              })
+            }
+          })
+        setTimeout(() => {
+          localStorage.removeItem("token");
+          setLoginState(false);
+        }, 1500)
+      }
 
     return (
         <>
@@ -32,7 +61,7 @@ const TopNav = (props) => {
                     </MDBNavItem>
                 </MDBNavbarNav> */}
                             <MDBNavbarNav right>
-                                <MDBBtn>Logout</MDBBtn>
+                                <MDBBtn onClick={() => handleLogout()}>Logout</MDBBtn>
                             </MDBNavbarNav>
                         </MDBCollapse>
                     </MDBNavbar>

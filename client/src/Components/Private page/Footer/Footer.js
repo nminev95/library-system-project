@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import './Footer.css';
 import AuthContext from "../Context/AuthContext";
 
 const Footer = () => {
+  const history = useHistory();
   const path = useLocation().pathname;
   const { user } = useContext(AuthContext);
   return (
@@ -20,7 +21,7 @@ const Footer = () => {
                   Library system
             </h5>
                 <p>
-                  .
+                  Library system was developed by Maria and Niki for an academy project.
             </p>
               </MDBCol>
               <hr className="clearfix w-100 d-md-none" />
@@ -28,10 +29,11 @@ const Footer = () => {
                 <h5 className="text-uppercase mb-4 font-weight-bold">About</h5>
                 <ul className="list-unstyled">
                   <p>
-                    <a href="#!">Home</a>
+                    <a onClick={() => history.push('/home') }
+                    href="#!" >Home</a>
                   </p>
                   <p>
-                    <a href="#!">Browse books</a>
+                    <a onClick={() => history.push('/books?page=1')} href="#!">Browse books</a>
                   </p>
                 </ul>
               </MDBCol>

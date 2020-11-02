@@ -52,7 +52,7 @@ booksController
         authMiddleware,
         roleMiddleware(['admin', 'user']),
         async (req, res) => {
-            const { error, books } = await booksService.getAllBooks(booksData)(req.query);
+            const { error, books } = await booksService.getTopBooks(booksData)(req.query);
             if (error === serviceErrors.RECORD_NOT_FOUND) {
                 res.status(404).send({ message: 'No books found!' });
             } else {

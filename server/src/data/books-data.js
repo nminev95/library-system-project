@@ -833,6 +833,40 @@ const getBookGenres = async () => {
     return await pool.query(sql);
 };
 
+const getThreeTopBooks = async () => {
+    const sql = `
+    SELECT
+    b.book_Id AS id,
+    b.title AS Title, 
+    b.author AS Author, 
+    b.description as 'Description',
+    b.genre as Genre,
+    b.year as Year,
+    b.imageUrl as Cover,
+    s.type as Status,
+    (SELECT COUNT(*) FROM users_history WHERE book_Id = b.book_Id) as TimesBorrowed,
+    ROUND(AVG(rr.rating_value), 2) as Rating
+from 
+    books b
+join 
+    status s
+on 
+    s.status_Id = b.borrowedStatus_Id
+LEFT JOIN   
+    books_has_book_ratings br 
+ON 
+    b.book_Id = br.book_to_be_rated_Id
+LEFT JOIN 
+    book_ratings rr 
+ON 
+    br.rating_Id = rr.rating_Id
+GROUP BY 
+    IFNULL(b.book_Id, b.description)
+    ORDER BY Rating Desc
+    LIMIT 3`
+
+    return await pool.query(sql);
+}
 export default {
     getReviews,
     getById,
@@ -870,4 +904,5 @@ export default {
     getBooksCount,
     getBookGenres,
     getPageResultWithSort,
+    getThreeTopBooks
 };

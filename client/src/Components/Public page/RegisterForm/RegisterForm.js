@@ -27,7 +27,7 @@ const ValidationTextFields = () => {
             type: 'text',
             validators: {
                 required: true,
-                minLen: 6,
+                minLen: 4,
                 maxLen: 30,
             },
             valid: true,
@@ -50,7 +50,7 @@ const ValidationTextFields = () => {
             type: 'password',
             validators: {
                 required: true,
-                minLen: 8,
+                minLen: 4,
                 maxLen: 40
             },
             valid: true,
@@ -62,7 +62,7 @@ const ValidationTextFields = () => {
             type: 'password',
             validators: {
                 required: true,
-                minLen: 8,
+                minLen: 4,
                 maxLen: 40,
             },
             valid: true,

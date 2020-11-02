@@ -145,6 +145,18 @@ const getAllUsers = usersData => {
     };
 };
 
+const getAllUsersForMonth = usersData => {
+    return async () => {
+        const date = new Date();
+        const currMonth = +date.getMonth() + 1;
+        const startDate = `2020-${currMonth}-01`
+        const endDate = `2020-${currMonth}-30`
+        const res = await usersData.getAllMonthly(startDate, endDate)
+    
+        return res;
+    };
+};
+
 const getAllBans = (usersData) => {
     return async () => {
         const bans = await usersData.getUsersBans();
@@ -289,5 +301,6 @@ export default {
     removeBan,
     updateUserPassword,
     getAllBans,
-    banDelete
+    banDelete,
+    getAllUsersForMonth
 };

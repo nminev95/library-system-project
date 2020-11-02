@@ -5,43 +5,56 @@ import { Line } from 'react-chartjs-2'
 const LineChart = () => {
 
     const [months, setMonths] = useState([]);
-    const [usersCount, setUsersCount] = useState()
-    useEffect (() => {
-        
-            const month = new Array();
-            month[0] = "January";
-            month[1] = "February";
-            month[2] = "March";
-            month[3] = "April";
-            month[4] = "May";
-            month[5] = "June";
-            month[6] = "July";
-            month[7] = "August";
-            month[8] = "September";
-            month[9] = "October";
-            month[10] = "November";
-            month[11] = "December";
-            const months = [];
-            const date = new Date();
-            const result = date.getMonth();
-            for (let i = result; months.length < 6; i--) {
-                months.push(i);
-                if (i === 0) {
-                    i = 12;
-                }
-            }
-    
-            const monthsAlph = [];
-            months.forEach(monthNum => {
-                monthsAlph.push(month[monthNum]);
-            })
+    const [usersCount, setUsersCount] = useState(null)
 
-            setMonths(monthsAlph.reverse())
+    useEffect(() => {
+
+        const month = new Array();
+        month[0] = "January";
+        month[1] = "February";
+        month[2] = "March";
+        month[3] = "April";
+        month[4] = "May";
+        month[5] = "June";
+        month[6] = "July";
+        month[7] = "August";
+        month[8] = "September";
+        month[9] = "October";
+        month[10] = "November";
+        month[11] = "December";
+        const months = [];
+        const date = new Date();
+        const result = date.getMonth();
+        for (let i = result; months.length < 6; i--) {
+            months.push(i);
+            if (i === 0) {
+                i = 12;
+            }
         }
-    , []);
+
+        const monthsAlph = [];
+        months.forEach(monthNum => {
+            monthsAlph.push(month[monthNum]);
+        })
+
+        setMonths(monthsAlph.reverse())
+    }
+        , []);
+
+    useEffect(() => {
+        fetch(`http://localhost:4000/admin/users/monthly`, {
+            mode: 'cors',
+            headers: {
+                'Authorization': `Bearer  ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(res => res.json())
+            .then(data => setUsersCount(data[0].Count))
+    })
 
     const dataLine = {
-        
+
         labels: months,
         datasets: [
             {
@@ -63,7 +76,7 @@ const LineChart = () => {
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: [0, 0, 0, 0, 0, 5]
+                data: [0, 0, 0, 0, 0, usersCount]
             }
         ]
     };

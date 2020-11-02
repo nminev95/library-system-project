@@ -42,6 +42,14 @@ adminsController
 
             res.status(200).send(users);
         })
+    .get('/users/monthly',
+        authMiddleware,
+        roleMiddleware(['admin']),
+        async (req, res) => {
+            const users = await usersService.getAllUsersForMonth(usersData)();
+
+            res.status(200).send(users);
+        })
     .get('/bans',
         authMiddleware,
         roleMiddleware(['admin']),

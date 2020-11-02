@@ -67,6 +67,23 @@ const getAllBooks = booksData => {
     };
 };
 
+const getTopBooks = booksData => {
+    return async () => {
+        const books = await booksData.getThreeTopBooks();
+                if (books.length === 0) {
+                    return {
+                        error: serviceErrors.RECORD_NOT_FOUND,
+                        books: null,
+                    };
+                }
+                books.forEach(b => {
+                    if (b.Rating === null) {
+                        b.Rating = 'Be the first person to rate this book!';
+                    }
+                });
+                return { error: null, books: books };
+    }
+}
 
 /**
 * Gets book information found by unique book number in the database.
@@ -782,4 +799,5 @@ export default {
     getGenres,
     getUserHistory,
     getUserVote,
+    getTopBooks
 };

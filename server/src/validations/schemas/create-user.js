@@ -4,7 +4,7 @@ export const createUserSchema = {
             return 'Username is required';
         }
         
-        if (typeof value !== 'string' || value.trim().length < 3 || value.trim().length > 25) {
+        if (typeof value !== 'string' || value.trim().length < 4 || value.trim().length > 25) {
             return 'Username should be a string in range [3..25]';
         }
 
@@ -15,7 +15,7 @@ export const createUserSchema = {
             return 'Password is required';
         }
         
-        if (typeof value !== 'string' || value.trim().length < 3 || value.trim().length > 25) {
+        if (typeof value !== 'string' || value.trim().length < 4 || value.trim().length > 25) {
             return 'Password should be a string in range [3..25]';
         }
 
@@ -26,7 +26,7 @@ export const createUserSchema = {
             return 'Password is required';
         }
         
-        if (typeof value !== 'string' || value.trim().length < 3 || value.trim().length > 25) {
+        if (typeof value !== 'string' || value.trim().length < 4 || value.trim().length > 25) {
             return 'Password should be a string in range [3..25]';
         }
 
