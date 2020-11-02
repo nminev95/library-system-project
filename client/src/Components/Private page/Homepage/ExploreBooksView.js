@@ -36,17 +36,22 @@ const HomepageLogged = (props) => {
         })
             .then(res => res.json())
             .then(data => setGenres(data))
-    },[]);
- 
+    }, []);
+
     return (
         <div>
-            <div style={{ display: "grid", gridTemplateColumns: "15% 85%", background: "#EDEDEE" }}>
+            <div className="exploreGrid">
                 <div>
-                    <SideDrawer genres={genres} page={page}/>
+                    <SideDrawer genres={genres} page={page} />
                 </div>
                 <div>
                     {stateData.books && <Books books={stateData.books} />}
-                    <Pagination stateData={stateData}/>
+                    {stateData.books && stateData.books.length === 0 ?
+                        (<div style={{height: '650px'}}>
+                            <h2 style={{ minHeight: "100%" }}>No books were found matching your criteria.</h2>
+                        </div>
+                        ) : (null)}
+                    <Pagination stateData={stateData} />
                 </div>
             </div>
         </div>
